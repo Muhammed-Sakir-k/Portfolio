@@ -1,1238 +1,959 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Muhammed Sakir | Cybersecurity Portfolio</title>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --black:   #000000;
-    --bg:      #050505;
-    --bg2:     #0a0a0a;
-    --bg3:     #0f0f0f;
-    --green:   #00ff41;
-    --green2:  #00cc33;
-    --green3:  #008f20;
-    --green4:  #003d0d;
-    --dim:     #1a2e1a;
-    --muted:   #3a5a3a;
-    --text:    #c8f0c8;
-    --text2:   #7ab87a;
-    --border:  #1a3a1a;
-    --red:     #ff2b2b;
-    --amber:   #ffb700;
-    --cyan:    #00fff5;
-    --glow:    0 0 8px rgba(0,255,65,0.6), 0 0 20px rgba(0,255,65,0.2);
-    --glow-sm: 0 0 6px rgba(0,255,65,0.4);
-  }
-
-  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior: smooth; }
-
-  /* ── SCANLINES ── */
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Share Tech Mono', monospace;
-    overflow-x: hidden;
-    cursor: crosshair;
-  }
-
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.08) 2px,
-      rgba(0,0,0,0.08) 4px
-    );
-    pointer-events: none;
-    z-index: 9998;
-  }
-
-  /* ── CRT VIGNETTE ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.7) 100%);
-    pointer-events: none;
-    z-index: 9997;
-  }
-
-  /* ── CUSTOM CURSOR ── */
-  * { cursor: crosshair; }
-  a, button { cursor: crosshair; }
-
-  /* ── MATRIX CANVAS ── */
-  #matrix {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    opacity: 0.04;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 1000;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2rem;
-    background: rgba(0,0,0,0.92);
-    border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(4px);
-  }
-
-  .nav-logo {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--green);
-    letter-spacing: 0.15em;
-    text-shadow: var(--glow);
-  }
-
-  .nav-logo span { color: var(--text2); font-weight: 400; }
-
-  .nav-status {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.65rem;
-    color: var(--text2);
-    letter-spacing: 0.1em;
-  }
-
-  .status-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--green);
-    box-shadow: var(--glow-sm);
-    animation: pulse 2s ease infinite;
-  }
-
-  @keyframes pulse {
-    0%,100% { opacity: 1; transform: scale(1); }
-    50%      { opacity: 0.4; transform: scale(0.8); }
-  }
-
-  .nav-links {
-    display: flex; gap: 2rem; list-style: none;
-  }
-
-  .nav-links a {
-    font-size: 0.7rem;
-    color: var(--text2);
-    text-decoration: none;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    transition: color 0.15s, text-shadow 0.15s;
-  }
-
-  .nav-links a::before { content: '//'; color: var(--green3); margin-right: 0.3em; }
-  .nav-links a:hover { color: var(--green); text-shadow: var(--glow-sm); }
-
-  /* ── WRAPPER ── */
-  .wrapper { position: relative; z-index: 1; }
-
-  /* ── HERO ── */
-  #hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 7rem 3rem 4rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Grid lines */
-  #hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,255,65,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,255,65,0.04) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-  }
-
-  .boot-line {
-    font-size: 0.7rem;
-    color: var(--green3);
-    letter-spacing: 0.08em;
-    margin-bottom: 3rem;
-    opacity: 0;
-    animation: fadeIn 0.3s ease 0.2s forwards;
-  }
-
-  .boot-line span { color: var(--green2); }
-
-  @keyframes fadeIn {
-    to { opacity: 1; }
-  }
-
-  /* Glitch title */
-  .hero-name {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(2.8rem, 7vw, 6.5rem);
-    font-weight: 900;
-    line-height: 1;
-    letter-spacing: 0.05em;
-    color: var(--green);
-    text-shadow: var(--glow);
-    margin-bottom: 0.3rem;
-    position: relative;
-    opacity: 0;
-    animation: fadeIn 0.5s ease 0.5s forwards;
-  }
-
-  .hero-name::before,
-  .hero-name::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%;
-  }
-
-  .hero-name::before {
-    color: var(--cyan);
-    text-shadow: none;
-    animation: glitch1 4s infinite;
-    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-    opacity: 0.6;
-  }
-
-  .hero-name::after {
-    color: var(--red);
-    text-shadow: none;
-    animation: glitch2 4s infinite;
-    clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
-    opacity: 0.5;
-  }
-
-  @keyframes glitch1 {
-    0%,92%,100% { transform: translate(0); opacity: 0; }
-    93%          { transform: translate(-3px, 1px); opacity: 0.6; }
-    94%          { transform: translate(3px, -1px); opacity: 0.6; }
-    95%          { transform: translate(0); opacity: 0; }
-  }
-
-  @keyframes glitch2 {
-    0%,92%,100% { transform: translate(0); opacity: 0; }
-    93%          { transform: translate(3px, 2px); opacity: 0.5; }
-    94%          { transform: translate(-2px, -1px); opacity: 0.5; }
-    95%          { transform: translate(0); opacity: 0; }
-  }
-
-  .hero-role {
-    font-family: 'VT323', monospace;
-    font-size: clamp(1.4rem, 3vw, 2.2rem);
-    color: var(--text2);
-    letter-spacing: 0.08em;
-    margin-bottom: 2rem;
-    opacity: 0;
-    animation: fadeIn 0.5s ease 0.7s forwards;
-  }
-
-  .hero-role .blink {
-    animation: blink-cursor 1s step-end infinite;
-    color: var(--green);
-  }
-
-  @keyframes blink-cursor {
-    0%,100% { opacity: 1; }
-    50%      { opacity: 0; }
-  }
-
-  .hero-desc {
-    max-width: 600px;
-    font-size: 0.82rem;
-    color: var(--text2);
-    line-height: 2;
-    margin-bottom: 2.5rem;
-    letter-spacing: 0.04em;
-    opacity: 0;
-    animation: fadeIn 0.5s ease 0.9s forwards;
-  }
-
-  .hero-desc .hl { color: var(--green); }
-
-  /* Terminal prompt style */
-  .prompt::before {
-    content: '> ';
-    color: var(--green);
-  }
-
-  /* Stats bar */
-  .hero-stats {
-    display: flex;
-    gap: 0;
-    margin-bottom: 2.5rem;
-    border: 1px solid var(--border);
-    width: fit-content;
-    opacity: 0;
-    animation: fadeIn 0.5s ease 1.1s forwards;
-  }
-
-  .stat-block {
-    padding: 0.8rem 2rem;
-    border-right: 1px solid var(--border);
-    text-align: center;
-    transition: background 0.2s;
-  }
-
-  .stat-block:last-child { border-right: none; }
-  .stat-block:hover { background: var(--dim); }
-
-  .stat-val {
-    font-family: 'Orbitron', monospace;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--green);
-    display: block;
-    text-shadow: var(--glow-sm);
-  }
-
-  .stat-lbl {
-    font-size: 0.58rem;
-    color: var(--muted);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    display: block;
-    margin-top: 0.2rem;
-  }
-
-  .hero-cta {
-    display: flex;
-    gap: 1rem;
-    opacity: 0;
-    animation: fadeIn 0.5s ease 1.3s forwards;
-  }
-
-  .btn {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 0.7rem 1.8rem;
-    border: 1px solid var(--green);
-    color: var(--green);
-    background: transparent;
-    transition: all 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--green);
-    transform: translateX(-100%);
-    transition: transform 0.2s;
-    z-index: -1;
-  }
-
-  .btn:hover::before { transform: translateX(0); }
-  .btn:hover { color: var(--black); text-shadow: none; }
-  .btn:hover { box-shadow: var(--glow); }
-
-  .btn-ghost {
-    border-color: var(--border);
-    color: var(--text2);
-  }
-
-  .btn-ghost:hover {
-    border-color: var(--green2);
-    color: var(--green);
-    background: transparent;
-  }
-
-  .btn-ghost::before { background: transparent; }
-
-  /* ── SECTION SHELL ── */
-  section { position: relative; z-index: 1; padding: 5rem 3rem; }
-
-  .sec-header {
-    display: flex;
-    align-items: center;
-    gap: 1.2rem;
-    margin-bottom: 3rem;
-  }
-
-  .sec-tag {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.6rem;
-    font-weight: 700;
-    color: var(--green);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    text-shadow: var(--glow-sm);
-  }
-
-  .sec-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--border), transparent);
-  }
-
-  .sec-num {
-    font-size: 0.6rem;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-  }
-
-  h2 {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(1.5rem, 3.5vw, 2.8rem);
-    font-weight: 900;
-    color: var(--text);
-    letter-spacing: 0.05em;
-    line-height: 1.1;
-    margin-bottom: 2.5rem;
-  }
-
-  h2 span { color: var(--green); text-shadow: var(--glow-sm); }
-
-  /* ── ABOUT ── */
-  #about {
-    background: var(--bg2);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5rem;
-    align-items: start;
-  }
-
-  .about-text p {
-    font-size: 0.8rem;
-    color: var(--text2);
-    line-height: 2.1;
-    margin-bottom: 1.2rem;
-    letter-spacing: 0.03em;
-  }
-
-  .about-text p .hl { color: var(--green); }
-
-  .terminal-box {
-    background: var(--black);
-    border: 1px solid var(--border);
-    padding: 1.2rem 1.5rem;
-    margin: 1.5rem 0;
-    position: relative;
-  }
-
-  .terminal-box::before {
-    content: '// PROFILE';
-    position: absolute;
-    top: -0.55rem;
-    left: 1rem;
-    background: var(--bg2);
-    padding: 0 0.5rem;
-    font-size: 0.6rem;
-    color: var(--green3);
-    letter-spacing: 0.1em;
-  }
-
-  .terminal-box p {
-    font-size: 0.75rem !important;
-    color: var(--text2) !important;
-    margin: 0 !important;
-  }
-
-  .terminal-box p::before { content: '> '; color: var(--green); }
-
-  .social-links {
-    display: flex;
-    gap: 1.2rem;
-    margin-top: 2rem;
-    flex-wrap: wrap;
-  }
-
-  .soc-link {
-    font-size: 0.7rem;
-    color: var(--text2);
-    text-decoration: none;
-    letter-spacing: 0.1em;
-    transition: color 0.15s;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 2px;
-  }
-
-  .soc-link:hover { color: var(--green); border-color: var(--green); }
-
-  /* Cert table */
-  .cert-table { width: 100%; border-collapse: collapse; }
-
-  .cert-table tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.15s;
-  }
-
-  .cert-table tr:hover { background: var(--dim); }
-
-  .cert-table td {
-    padding: 0.85rem 0.6rem;
-    font-size: 0.72rem;
-    vertical-align: middle;
-  }
-
-  .cert-table td:first-child { color: var(--text2); }
-  .cert-table td:nth-child(2) { color: var(--muted); font-size: 0.62rem; letter-spacing: 0.05em; }
-  .cert-table td:last-child { text-align: right; }
-
-  .badge {
-    font-size: 0.58rem;
-    padding: 0.2rem 0.5rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border: 1px solid;
-  }
-
-  .badge-done { border-color: var(--green3); color: var(--green2); }
-  .badge-wip  { border-color: var(--amber); color: var(--amber); animation: amber-pulse 1.5s ease infinite; }
-
-  @keyframes amber-pulse {
-    0%,100% { opacity: 1; }
-    50%      { opacity: 0.5; }
-  }
-
-  /* ── SKILLS ── */
-  #skills {}
-
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    gap: 1.5rem;
-  }
-
-  .skill-panel {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    padding: 1.5rem;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.2s;
-  }
-
-  .skill-panel::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, var(--green), transparent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s;
-  }
-
-  .skill-panel:hover { border-color: var(--green3); }
-  .skill-panel:hover::before { transform: scaleX(1); }
-
-  .skill-panel-title {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.62rem;
-    font-weight: 700;
-    color: var(--green);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 1.2rem;
-    padding-bottom: 0.8rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .skill-row {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.4rem 0;
-    font-size: 0.72rem;
-    color: var(--text2);
-    letter-spacing: 0.03em;
-    transition: color 0.15s;
-    border-bottom: 1px solid rgba(26,58,26,0.5);
-  }
-
-  .skill-row:last-child { border-bottom: none; }
-  .skill-row:hover { color: var(--green); }
-
-  .skill-row::before {
-    content: '▸';
-    color: var(--green3);
-    font-size: 0.6rem;
-    flex-shrink: 0;
-  }
-
-  /* ── PROJECTS ── */
-  #projects {
-    background: var(--bg2);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .proj-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-  }
-
-  .proj-card {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    padding: 2rem;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.3s, transform 0.3s;
-  }
-
-  .proj-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--green), transparent);
-    transform: scaleX(0);
-    transition: transform 0.4s;
-  }
-
-  .proj-card:hover { border-color: var(--green3); transform: translateY(-3px); }
-  .proj-card:hover::after { transform: scaleX(1); }
-
-  .proj-id {
-    font-family: 'VT323', monospace;
-    font-size: 0.85rem;
-    color: var(--green3);
-    letter-spacing: 0.08em;
-    margin-bottom: 0.8rem;
-  }
-
-  .proj-name {
-    font-family: 'Orbitron', monospace;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 0.8rem;
-    letter-spacing: 0.05em;
-    line-height: 1.3;
-  }
-
-  .proj-desc {
-    font-size: 0.72rem;
-    color: var(--text2);
-    line-height: 2;
-    margin-bottom: 1.5rem;
-    letter-spacing: 0.03em;
-  }
-
-  .proj-stack {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-
-  .stack-tag {
-    font-size: 0.6rem;
-    padding: 0.2rem 0.55rem;
-    border: 1px solid var(--green4);
-    color: var(--green3);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    background: rgba(0,255,65,0.04);
-  }
-
-  .proj-status-active {
-    position: absolute;
-    top: 1.5rem; right: 1.5rem;
-    display: flex; align-items: center; gap: 0.4rem;
-    font-size: 0.58rem;
-    color: var(--green);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .proj-status-active::before {
-    content: '';
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: var(--green);
-    box-shadow: var(--glow-sm);
-    animation: pulse 1.5s ease infinite;
-  }
-
-  /* ── PLATFORM ── */
-  #platform {}
-
-  .platform-inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-  }
-
-  .rank-terminal {
-    background: var(--black);
-    border: 1px solid var(--green3);
-    box-shadow: var(--glow);
-    font-family: 'Share Tech Mono', monospace;
-    overflow: hidden;
-  }
-
-  .terminal-titlebar {
-    background: var(--green);
-    padding: 0.4rem 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .terminal-titlebar span {
-    font-size: 0.7rem;
-    color: var(--black);
-    font-weight: bold;
-    letter-spacing: 0.1em;
-  }
-
-  .terminal-dots { display: flex; gap: 0.4rem; }
-  .tdot {
-    width: 8px; height: 8px; border-radius: 50%; background: rgba(0,0,0,0.4);
-  }
-
-  .terminal-body { padding: 1.5rem; }
-
-  .t-line {
-    font-size: 0.72rem;
-    line-height: 1.9;
-    letter-spacing: 0.04em;
-  }
-
-  .t-line .t-key   { color: var(--green); }
-  .t-line .t-val   { color: var(--text); }
-  .t-line .t-str   { color: var(--amber); }
-  .t-line .t-num   { color: var(--cyan); }
-  .t-line .t-com   { color: var(--muted); }
-  .t-line .t-red   { color: var(--red); }
-
-  .platform-text p {
-    font-size: 0.78rem;
-    color: var(--text2);
-    line-height: 2.2;
-    margin-bottom: 1rem;
-    letter-spacing: 0.03em;
-  }
-
-  /* ── CONTACT ── */
-  #contact {
-    background: var(--bg2);
-    border-top: 1px solid var(--border);
-  }
-
-  .contact-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5rem;
-    align-items: start;
-  }
-
-  .contact-heading {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(2rem, 4.5vw, 4rem);
-    font-weight: 900;
-    color: var(--text);
-    letter-spacing: 0.05em;
-    line-height: 1.1;
-    margin-bottom: 1rem;
-  }
-
-  .contact-heading span { color: var(--green); text-shadow: var(--glow); }
-
-  .contact-sub {
-    font-size: 0.75rem;
-    color: var(--muted);
-    line-height: 2;
-    letter-spacing: 0.04em;
-  }
-
-  .contact-items { display: flex; flex-direction: column; gap: 0; }
-
-  .c-row {
-    display: grid;
-    grid-template-columns: 90px 1fr 20px;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--border);
-    text-decoration: none;
-    transition: background 0.15s;
-  }
-
-  .c-row:first-child { border-top: 1px solid var(--border); }
-  .c-row:hover { background: var(--dim); padding-left: 0.8rem; }
-
-  .c-row-key {
-    font-size: 0.6rem;
-    color: var(--green3);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-  }
-
-  .c-row-val {
-    font-size: 0.73rem;
-    color: var(--text2);
-    letter-spacing: 0.04em;
-    transition: color 0.15s;
-  }
-
-  .c-row:hover .c-row-val { color: var(--green); }
-
-  .c-row-arr {
-    font-size: 0.8rem;
-    color: var(--border);
-    transition: color 0.15s, transform 0.15s;
-  }
-
-  .c-row:hover .c-row-arr { color: var(--green); transform: translateX(4px); }
-
-  /* ── FOOTER ── */
-  footer {
-    position: relative; z-index: 1;
-    border-top: 1px solid var(--border);
-    padding: 1.5rem 3rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--black);
-  }
-
-  .footer-l {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.6rem;
-    font-weight: 700;
-    color: var(--green);
-    letter-spacing: 0.15em;
-    text-shadow: var(--glow-sm);
-  }
-
-  .footer-r {
-    font-size: 0.6rem;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-  }
-
-  /* ── SCROLL FX ── */
-  .reveal {
-    opacity: 0;
-    transform: translateY(18px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-  }
-
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 900px) {
-    nav { padding: 0 1.2rem; }
-    .nav-links, .nav-status { display: none; }
-    section { padding: 4rem 1.2rem; }
-    #hero { padding: 6rem 1.2rem 3rem; }
-    .about-grid, .skills-grid, .proj-grid,
-    .platform-inner, .contact-layout { grid-template-columns: 1fr; gap: 2.5rem; }
-    .hero-stats { flex-wrap: wrap; }
-    footer { padding: 1.2rem; flex-direction: column; gap: 0.5rem; }
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muhammed Sakir K | Cybersecurity Analyst & VAPT Specialist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        rajdhani: ['Rajdhani', 'sans-serif'],
+                        fira: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        matrix: '#00ff41',
+                        cyber: '#00d9ff',
+                        alert: '#ff003c',
+                        dark: '#050505',
+                        panel: '#0a0a0a',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #050505; color: #e0e0e0; overflow-x: hidden; }
+        
+        .glitch {
+            position: relative;
+            color: #00ff41;
+        }
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+        }
+        .glitch::before {
+            left: 2px;
+            text-shadow: -1px 0 #ff003c;
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: -2px;
+            text-shadow: -1px 0 #00d9ff;
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim 2.5s infinite linear alternate-reverse;
+        }
+        @keyframes glitch-anim {
+            0% { clip: rect(10px, 9999px, 85px, 0); }
+            20% { clip: rect(63px, 9999px, 130px, 0); }
+            40% { clip: rect(25px, 9999px, 15px, 0); }
+            60% { clip: rect(88px, 9999px, 95px, 0); }
+            80% { clip: rect(43px, 9999px, 70px, 0); }
+            100% { clip: rect(15px, 9999px, 120px, 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(65px, 9999px, 100px, 0); }
+            20% { clip: rect(20px, 9999px, 35px, 0); }
+            40% { clip: rect(90px, 9999px, 140px, 0); }
+            60% { clip: rect(40px, 9999px, 60px, 0); }
+            80% { clip: rect(10px, 9999px, 50px, 0); }
+            100% { clip: rect(75px, 9999px, 110px, 0); }
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.3;
+        }
+
+        .glow-text { text-shadow: 0 0 10px rgba(0,255,65,0.5), 0 0 20px rgba(0,255,65,0.3); }
+        .glow-box { box-shadow: 0 0 20px rgba(0,255,65,0.1), inset 0 0 20px rgba(0,255,65,0.05); }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #00ff41; border-radius: 4px; }
+        
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        .skill-track { background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; }
+        .skill-fill { height: 100%; background: linear-gradient(90deg, #00ff41, #00d9ff); width: 0; transition: width 1.5s ease-out; border-radius: 4px; position: relative; overflow: hidden; }
+        .skill-fill::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+        .tilt-card { transform-style: preserve-3d; transition: transform 0.1s; }
+        .tilt-content { transform: translateZ(20px); }
+
+        .typing::after { content: '|'; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .pulse-ring { position: relative; }
+        .pulse-ring::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: inherit;
+            border: 2px solid #00ff41;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.1); opacity: 0; } }
+
+        .hex-bg {
+            background-color: #050505;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%2300ff41' fill-opacity='0.03'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-7.5L27.99 34H28v2.31h-.01L17 42.65V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .marquee-container { overflow: hidden; white-space: nowrap; }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+    </style>
 </head>
-<body>
+<body class="font-rajdhani hex-bg">
 
-<!-- MATRIX RAIN -->
-<canvas id="matrix"></canvas>
+    <div class="scanlines"></div>
+    <canvas id="matrixCanvas" class="fixed inset-0 w-full h-full -z-10 opacity-20"></canvas>
 
-<nav>
-  <div class="nav-logo">MSK<span>.SEC // v3.0</span></div>
-  <div class="nav-status"><div class="status-dot"></div>SYSTEM ONLINE</div>
-  <ul class="nav-links">
-    <li><a href="#about">ABOUT</a></li>
-    <li><a href="#skills">SKILLS</a></li>
-    <li><a href="#projects">PROJECTS</a></li>
-    <li><a href="#contact">CONTACT</a></li>
-  </ul>
-</nav>
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 top-0 border-b border-white/10 backdrop-blur-md bg-dark/80 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="font-orbitron text-2xl font-bold text-matrix tracking-wider glow-text">&lt;MSK /&gt;</div>
+            <div class="hidden md:flex space-x-8 font-fira text-sm tracking-widest">
+                <a href="#about" class="hover:text-matrix transition-colors duration-300">[01] ABOUT</a>
+                <a href="#skills" class="hover:text-matrix transition-colors duration-300">[02] ARSENAL</a>
+                <a href="#projects" class="hover:text-matrix transition-colors duration-300">[03] PROJECTS</a>
+                <a href="#certs" class="hover:text-matrix transition-colors duration-300">[04] CREDS</a>
+                <a href="#contact" class="hover:text-matrix transition-colors duration-300">[05] CONTACT</a>
+            </div>
+            <button id="mobileMenuBtn" class="md:hidden text-matrix text-2xl"><i class="fas fa-bars"></i></button>
+        </div>
+        <div id="mobileMenu" class="hidden md:hidden bg-panel border-t border-white/10 p-6 space-y-4 font-fira">
+            <a href="#about" class="block hover:text-matrix">[01] ABOUT</a>
+            <a href="#skills" class="block hover:text-matrix">[02] ARSENAL</a>
+            <a href="#projects" class="block hover:text-matrix">[03] PROJECTS</a>
+            <a href="#certs" class="block hover:text-matrix">[04] CREDS</a>
+            <a href="#contact" class="block hover:text-matrix">[05] CONTACT</a>
+        </div>
+    </nav>
 
-<div class="wrapper">
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center relative px-6 pt-20">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6 z-10">
+                <div class="font-fira text-matrix text-sm tracking-widest mb-2 opacity-80">
+                    <i class="fas fa-shield-halved mr-2"></i>SECURITY ANALYST // VAPT // SOC
+                </div>
+                <h1 class="font-orbitron text-5xl md:text-7xl font-black leading-tight">
+                    <span class="glitch glow-text" data-text="MUHAMMED">MUHAMMED</span><br>
+                    <span class="glitch glow-text" data-text="SAKIR K">SAKIR K</span>
+                </h1>
+                <div class="h-8">
+                    <span id="typewriter" class="font-fira text-cyber text-lg md:text-xl typing"></span>
+                </div>
+                <p class="text-gray-400 text-lg max-w-lg leading-relaxed">
+                    Cybersecurity postgraduate specializing in <span class="text-matrix">SOC operations</span>, 
+                    <span class="text-cyber">VAPT</span>, and <span class="text-alert">penetration testing</span>. 
+                    Ranked <span class="text-matrix font-bold">Top 1%</span> on TryHackMe. Building AI-powered security tools.
+                </p>
+                <div class="flex flex-wrap gap-4 pt-4">
+                    <a href="#projects" class="group relative px-8 py-3 bg-matrix/10 border border-matrix text-matrix font-orbitron font-bold tracking-wider hover:bg-matrix hover:text-dark transition-all duration-300 overflow-hidden">
+                        <span class="relative z-10">VIEW PROJECTS</span>
+                        <div class="absolute inset-0 bg-matrix transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+                    </a>
+                    <a href="#contact" class="px-8 py-3 border border-white/20 text-white font-orbitron font-bold tracking-wider hover:border-cyber hover:text-cyber transition-all duration-300">
+                        CONTACT ME
+                    </a>
+                </div>
+                <div class="flex gap-6 pt-6 text-2xl">
+                    <a href="https://linkedin.com/in/muhammed-sakir-k" target="_blank" class="hover:text-matrix hover:scale-110 transition-all"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/Muhammed-Sakir-k" target="_blank" class="hover:text-cyber hover:scale-110 transition-all"><i class="fab fa-github"></i></a>
+                    <a href="mailto:muhammedsakir.26.career@gmail.com" class="hover:text-alert hover:scale-110 transition-all"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+            
+            <div class="relative hidden md:block">
+                <div class="relative w-96 h-96 mx-auto">
+                    <div class="absolute inset-0 border border-matrix/30 rounded-full animate-[spin_10s_linear_infinite]"></div>
+                    <div class="absolute inset-4 border border-cyber/20 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
+                    <div class="absolute inset-8 border border-alert/20 rounded-full animate-[spin_20s_linear_infinite]"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="font-orbitron text-6xl font-black text-matrix glow-text">TOP</div>
+                            <div class="font-orbitron text-5xl font-black text-white">1%</div>
+                            <div class="font-fira text-sm text-gray-400 mt-2">TRYHACKME GLOBAL</div>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 animate-[spin_8s_linear_infinite]">
+                        <div class="absolute top-0 left-1/2 w-3 h-3 bg-matrix rounded-full shadow-[0_0_10px_#00ff41]"></div>
+                    </div>
+                    <div class="absolute inset-0 animate-[spin_12s_linear_infinite_reverse]">
+                        <div class="absolute bottom-4 right-4 w-2 h-2 bg-cyber rounded-full shadow-[0_0_10px_#00d9ff]"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-matrix text-2xl"></i>
+        </div>
+    </section>
 
-<!-- ── HERO ── -->
-<section id="hero">
-  <p class="boot-line">
-    [<span>OK</span>] LOADING PROFILE :: MUHAMMED_SAKIR_K :: BENGALURU_IN
-  </p>
-
-  <h1 class="hero-name" data-text="MUHAMMED SAKIR">MUHAMMED SAKIR</h1>
-  <p class="hero-role">SOC_ANALYST &amp; VAPT_SPECIALIST<span class="blink">█</span></p>
-
-  <p class="hero-desc">
-    <span class="prompt">Cybersecurity postgraduate with <span class="hl">offensive + defensive</span> expertise.</span><br>
-    <span class="prompt">Ranked <span class="hl">TOP 1% globally</span> on TryHackMe [LEGEND rank].</span><br>
-    <span class="prompt">Building real-world security tools aligned with <span class="hl">OWASP</span> standards.</span>
-  </p>
-
-  <div class="hero-stats">
-    <div class="stat-block">
-      <span class="stat-val">TOP 1%</span>
-      <span class="stat-lbl">TryHackMe</span>
-    </div>
-    <div class="stat-block">
-      <span class="stat-val">100+</span>
-      <span class="stat-lbl">Labs Done</span>
-    </div>
-    <div class="stat-block">
-      <span class="stat-val">7+</span>
-      <span class="stat-lbl">Certs</span>
-    </div>
-    <div class="stat-block">
-      <span class="stat-val">4</span>
-      <span class="stat-lbl">Projects</span>
-    </div>
-  </div>
-
-  <div class="hero-cta">
-    <a href="#contact" class="btn">INITIATE_CONTACT</a>
-    <a href="#projects" class="btn btn-ghost">VIEW_PROJECTS</a>
-  </div>
-</section>
-
-<!-- ── ABOUT ── -->
-<section id="about">
-  <div class="sec-header">
-    <span class="sec-tag">// ABOUT</span>
-    <div class="sec-line"></div>
-    <span class="sec-num">01</span>
-  </div>
-
-  <div class="about-grid">
-    <div class="about-text reveal">
-      <h2><span>OFFENSIVE</span><br>MEETS DEFENSIVE</h2>
-
-      <p>
-        Cybersecurity postgraduate based in <span class="hl">Bengaluru, India</span>. Currently pursuing a Master's in Computer Application at Krupanidhi College of Management — specializing in penetration testing and security operations.
-      </p>
-
-      <div class="terminal-box">
-        <p>focus: identify vulnerabilities before attackers do.</p>
-      </div>
-
-      <p>
-        Proficient with <span class="hl">Burp Suite, Nmap, FFUF, Wireshark</span> and Kali Linux. Expert at OWASP Top 10 exploitation, network traffic analysis, and log-based threat detection. Active on both TryHackMe and Hack The Box.
-      </p>
-
-      <div class="social-links">
-        <a href="https://github.com/Muhammed-Sakir-k" target="_blank" class="soc-link">⌥ GITHUB</a>
-        <a href="https://linkedin.com/in/muhammed-sakir-k" target="_blank" class="soc-link">in LINKEDIN</a>
-        <a href="mailto:muhammedsakir.26.career@gmail.com" class="soc-link">✉ EMAIL</a>
-      </div>
-    </div>
-
-    <div class="reveal">
-      <div class="sec-header" style="margin-bottom:1.5rem">
-        <span class="sec-tag">// CERTS</span>
-        <div class="sec-line"></div>
-      </div>
-      <table class="cert-table">
-        <tr>
-          <td>Advanced SOC Analyst</td>
-          <td>TECHBYHEART</td>
-          <td><span class="badge badge-done">Mar '26</span></td>
-        </tr>
-        <tr>
-          <td>Endpoint Security</td>
-          <td>Cisco</td>
-          <td><span class="badge badge-done">Mar '26</span></td>
-        </tr>
-        <tr>
-          <td>Ethical Hacker</td>
-          <td>Cisco</td>
-          <td><span class="badge badge-done">Jan '26</span></td>
-        </tr>
-        <tr>
-          <td>Fortinet Fundamentals</td>
-          <td>Fortinet</td>
-          <td><span class="badge badge-done">Jan '26</span></td>
-        </tr>
-        <tr>
-          <td>Certified Security Tester</td>
-          <td>TECHBYHEART</td>
-          <td><span class="badge badge-done">Dec '25</span></td>
-        </tr>
-        <tr>
-          <td>Foundations of Cybersecurity</td>
-          <td>Google</td>
-          <td><span class="badge badge-done">Sep '25</span></td>
-        </tr>
-        <tr>
-          <td>CEH — Certified Ethical Hacker</td>
-          <td>EC-Council</td>
-          <td><span class="badge badge-wip">Active</span></td>
-        </tr>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- ── SKILLS ── -->
-<section id="skills">
-  <div class="sec-header">
-    <span class="sec-tag">// SKILLS</span>
-    <div class="sec-line"></div>
-    <span class="sec-num">02</span>
-  </div>
-  <h2>SECURITY <span>TOOLKIT</span></h2>
-  <div class="skills-grid">
-    <div class="skill-panel reveal">
-      <div class="skill-panel-title">Technical Security</div>
-      <div class="skill-row">Web Application Security Testing</div>
-      <div class="skill-row">API Security Testing</div>
-      <div class="skill-row">VAPT</div>
-      <div class="skill-row">OWASP Top 10</div>
-      <div class="skill-row">Authentication &amp; Access Control</div>
-      <div class="skill-row">Network Security Fundamentals</div>
-    </div>
-    <div class="skill-panel reveal">
-      <div class="skill-panel-title">Defensive Security</div>
-      <div class="skill-row">Traffic Analysis (Wireshark)</div>
-      <div class="skill-row">Phishing Detection</div>
-      <div class="skill-row">Threat Detection</div>
-      <div class="skill-row">Zero Trust Principles</div>
-      <div class="skill-row">SIEM Concepts</div>
-      <div class="skill-row">Incident Response</div>
-      <div class="skill-row">Log Analysis</div>
-    </div>
-    <div class="skill-panel reveal">
-      <div class="skill-panel-title">Tools &amp; Platforms</div>
-      <div class="skill-row">Burp Suite</div>
-      <div class="skill-row">Nmap</div>
-      <div class="skill-row">FFUF</div>
-      <div class="skill-row">Wireshark</div>
-      <div class="skill-row">Kali Linux</div>
-      <div class="skill-row">Metasploit (Basic)</div>
-      <div class="skill-row">Gobuster</div>
-    </div>
-  </div>
-</section>
-
-<!-- ── PROJECTS ── -->
-<section id="projects">
-  <div class="sec-header">
-    <span class="sec-tag">// PROJECTS</span>
-    <div class="sec-line"></div>
-    <span class="sec-num">03</span>
-  </div>
-  <h2>DEPLOYED <span>TOOLS</span></h2>
-  <div class="proj-grid">
-
-    <div class="proj-card reveal">
-      <div class="proj-status-active">ACTIVE</div>
-      <div class="proj-id">PROJ_001 :: BROWSER_EXT</div>
-      <div class="proj-name">PHISHALERT</div>
-      <p class="proj-desc">
-        Browser extension monitoring credential submission behavior and detecting suspicious login patterns. Alerts users to phishing attacks in real time. Tested against 50+ known phishing URLs.
-      </p>
-      <div class="proj-stack">
-        <span class="stack-tag">JavaScript</span>
-        <span class="stack-tag">Extension APIs</span>
-        <span class="stack-tag">Client-side Storage</span>
-        <span class="stack-tag">Web Security</span>
-      </div>
+    <!-- Threat Ticker -->
+    <div class="border-y border-matrix/20 bg-black/50 py-2 marquee-container font-fira text-xs text-matrix/70">
+        <div class="marquee-content">
+            [ ALERT ] TryHackMe Top 1% Ranked &nbsp;//&nbsp; [ INFO ] 800+ Security Events Analyzed &nbsp;//&nbsp; [ WARN ] CEH Certification In Progress &nbsp;//&nbsp; [ SUCCESS ] CBTP Certified &nbsp;//&nbsp; [ ALERT ] Hack The Box Active Player &nbsp;//&nbsp; [ INFO ] AI Security Tool Developer &nbsp;//&nbsp; [ WARN ] Open to Work &nbsp;//&nbsp;
+            [ ALERT ] TryHackMe Top 1% Ranked &nbsp;//&nbsp; [ INFO ] 800+ Security Events Analyzed &nbsp;//&nbsp; [ WARN ] CEH Certification In Progress &nbsp;//&nbsp; [ SUCCESS ] CBTP Certified &nbsp;//&nbsp; [ ALERT ] Hack The Box Active Player &nbsp;//&nbsp; [ INFO ] AI Security Tool Developer &nbsp;//&nbsp; [ WARN ] Open to Work &nbsp;//&nbsp;
+        </div>
     </div>
 
-    <div class="proj-card reveal">
-      <div class="proj-status-active">ACTIVE</div>
-      <div class="proj-id">PROJ_002 :: SIEM_DASHBOARD</div>
-      <div class="proj-name">XSIEM</div>
-      <p class="proj-desc">
- Full-stack SOC dashboard built on Wazuh 4.9.2 monitoring 800+ real-time  security events. Simulates live attacks from Kali Linux — SSH brute force, port scanning, RDP brute force — with automated high-severity email alerting and a React-powered investigation panel.      </p>
-      <div class="proj-stack">
-        <span class="stack-tag">Wazuh 4.9.2</span>
-        <span class="stack-tag">Python FastAPI</span>
-        <span class="stack-tag">React 18</span>
-        <span class="stack-tag">Docker</span>
-        <span class="stack-tag">Kali Linux</span>
-        <span class="stack-tag">OpenSearch API</span>
-      </div>
-    </div>
+    <!-- Stats Bar -->
+    <section class="border-y border-white/10 bg-panel/50 backdrop-blur-sm py-8">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div class="reveal">
+                <div class="font-orbitron text-3xl md:text-4xl font-bold text-matrix counter" data-target="800">0</div>
+                <div class="font-fira text-xs text-gray-500 mt-2 tracking-widest">SECURITY EVENTS ANALYZED</div>
+            </div>
+            <div class="reveal">
+                <div class="font-orbitron text-3xl md:text-4xl font-bold text-cyber counter" data-target="100">0</div>
+                <div class="font-fira text-xs text-gray-500 mt-2 tracking-widest">THM LABS COMPLETED</div>
+            </div>
+            <div class="reveal">
+                <div class="font-orbitron text-3xl md:text-4xl font-bold text-alert counter" data-target="50">0</div>
+                <div class="font-fira text-xs text-gray-500 mt-2 tracking-widest">PHISHING SCENARIOS</div>
+            </div>
+            <div class="reveal">
+                <div class="font-orbitron text-3xl md:text-4xl font-bold text-white counter" data-target="9">0</div>
+                <div class="font-fira text-xs text-gray-500 mt-2 tracking-widest">CERTIFICATIONS</div>
+            </div>
+        </div>
+    </section>
 
-    <div class="proj-card reveal">
-      <div class="proj-status-active">ACTIVE</div>
-      <div class="proj-id">PROJ_003 :: BROWSER_EXT</div>
-      <div class="proj-name">PRIVACY_ANALYZER</div>
-      <p class="proj-desc">
-        Browser extension analyzing website behavior in real time, providing trust indicators and security warnings. Contextual risk notifications and pattern identification for suspicious sites.
-      </p>
-      <div class="proj-stack">
-        <span class="stack-tag">JavaScript</span>
-        <span class="stack-tag">Extension APIs</span>
-        <span class="stack-tag">Pattern Analysis</span>
-      </div>
-    </div>
+    <!-- About Section -->
+    <section id="about" class="py-24 px-6 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-4 mb-12 reveal">
+                <span class="font-fira text-matrix text-sm">[01]</span>
+                <h2 class="font-orbitron text-4xl md:text-5xl font-bold">ABOUT ME</h2>
+                <div class="h-px bg-gradient-to-r from-matrix to-transparent flex-grow ml-4"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6 reveal">
+                    <div class="font-fira text-cyber text-sm mb-4">> INITIALIZING PROFILE...</div>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        I'm a <span class="text-matrix font-semibold">Cybersecurity Analyst</span> with hands-on experience in 
+                        <span class="text-cyber">SOC operations</span> and 
+                        <span class="text-alert">Vulnerability Assessment & Penetration Testing</span>. 
+                        Currently pursuing my Master's in Computer Applications while actively hunting vulnerabilities and building security tools.
+                    </p>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        My core expertise spans <span class="text-matrix">threat detection</span>, 
+                        <span class="text-cyber">incident response</span>, 
+                        <span class="text-alert">log analysis</span>, and 
+                        <span class="text-white">privilege escalation</span>. 
+                        I leverage AI to develop next-generation security automation tools.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-4 pt-4">
+                        <div class="border border-white/10 p-4 bg-panel/50 hover:border-matrix/50 transition-colors group">
+                            <i class="fas fa-bug text-alert text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
+                            <div class="font-orbitron font-bold">Offensive</div>
+                            <div class="font-fira text-xs text-gray-500">VAPT, Web App, API</div>
+                        </div>
+                        <div class="border border-white/10 p-4 bg-panel/50 hover:border-cyber/50 transition-colors group">
+                            <i class="fas fa-shield-halved text-cyber text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
+                            <div class="font-orbitron font-bold">Defensive</div>
+                            <div class="font-fira text-xs text-gray-500">SIEM, IR, Monitoring</div>
+                        </div>
+                        <div class="border border-white/10 p-4 bg-panel/50 hover:border-matrix/50 transition-colors group">
+                            <i class="fas fa-brain text-matrix text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
+                            <div class="font-orbitron font-bold">AI / Dev</div>
+                            <div class="font-fira text-xs text-gray-500">LLMs, FastAPI, React</div>
+                        </div>
+                        <div class="border border-white/10 p-4 bg-panel/50 hover:border-white/50 transition-colors group">
+                            <i class="fas fa-clipboard-check text-white text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
+                            <div class="font-orbitron font-bold">Governance</div>
+                            <div class="font-fira text-xs text-gray-500">ISO 27001, NIST</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative reveal">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-matrix to-cyber rounded-lg blur opacity-30"></div>
+                    <div class="relative bg-panel border border-white/10 p-8 rounded-lg font-fira text-sm space-y-4">
+                        <div class="flex justify-between text-gray-500 border-b border-white/10 pb-2">
+                            <span>STATUS</span>
+                            <span class="text-matrix animate-pulse">● ACTIVE</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">ROLE</span>
+                                <span class="text-cyber">Cybersecurity Analyst</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">LOCATION</span>
+                                <span class="text-white">Bengaluru, India</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">EXPERIENCE</span>
+                                <span class="text-white">SOC + VAPT</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">CEH</span>
+                                <span class="text-alert animate-pulse">IN PROGRESS</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">AVAILABILITY</span>
+                                <span class="text-matrix">OPEN TO WORK</span>
+                            </div>
+                        </div>
+                        <div class="pt-4 border-t border-white/10">
+                            <div class="text-gray-500 mb-2">CURRENT FOCUS</div>
+                            <div class="text-matrix">Advanced Penetration Testing & AI Security Automation</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <div class="proj-card reveal">
-      <div class="proj-id">PROJ_004 :: WEB_APP // COMPLETED</div>
-      <div class="proj-name">COSTIQ</div>
-      <p class="proj-desc">
-        Smart price comparison and cost-analysis platform with intelligent search matching and result ranking logic. Focus on secure input handling and AI-assisted data aggregation.
-      </p>
-      <div class="proj-stack">
-        <span class="stack-tag">Web Architecture</span>
-        <span class="stack-tag">Data Aggregation</span>
-        <span class="stack-tag">AI Matching</span>
-        <span class="stack-tag">Secure Input</span>
-      </div>
-    </div>
+    <!-- Skills Section -->
+    <section id="skills" class="py-24 px-6 bg-panel/30">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-4 mb-16 reveal">
+                <span class="font-fira text-matrix text-sm">[02]</span>
+                <h2 class="font-orbitron text-4xl md:text-5xl font-bold">ARSENAL</h2>
+                <div class="h-px bg-gradient-to-r from-cyber to-transparent flex-grow ml-4"></div>
+            </div>
 
-  </div>
-</section>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Offensive -->
+                <div class="reveal group">
+                    <div class="border border-white/10 bg-panel/50 p-6 rounded-lg hover:border-alert/50 transition-all duration-300 h-full glow-box">
+                        <div class="flex items-center gap-3 mb-6">
+                            <i class="fas fa-crosshairs text-alert text-2xl"></i>
+                            <h3 class="font-orbitron text-xl font-bold">OFFENSIVE</h3>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-sm mb-1"><span>VAPT</span><span class="text-alert">95%</span></div>
+                                <div class="skill-track h-2"><div class="skill-fill" data-width="95%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1"><span>Web App Testing</span><span class="text-alert">90%</span></div>
+                                <div class="skill-track h-2"><div class="skill-fill" data-width="90%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1"><span>API Security</span><span class="text-alert">85%</span></div>
+                                <div class="skill-track h-2"><div class="skill-fill" data-width="85%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1"><span>OWASP Top 10</span><span class="text-alert">92%</span></div>
+                                <div class="skill-track h-2"><div class="skill-fill" data-width="92%"></div></div>
+                            </div>
+                            <div class="pt-2 flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-alert/10 border border-alert/30 text-xs rounded font-fira">Metasploit</span>
+                                <span class="px-2 py-1 bg-alert/10 border border-alert/30 text-xs rounded font-fira">Burp Suite</span>
+                                <span class="px-2 py-1 bg-alert/10 border border-alert/30 text-xs rounded font-fira">Nmap</span>
+                                <span class="px-2 py-1 bg-alert/10 border border-alert/30 text-xs rounded font-fira">FFUF</span>
+                                <span class="px-2 py-1 bg-alert/10 border border-alert/30 text-xs rounded font-fira">Gobuster</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-<!-- ── PLATFORM ── -->
-<section id="platform">
-  <div class="sec-header">
-    <span class="sec-tag">// PLATFORMS</span>
-    <div class="sec-line"></div>
-    <span class="sec-num">04</span>
-  </div>
-  <div class="platform-inner">
-    <div class="rank-terminal reveal">
-      <div class="terminal-titlebar">
-        <span>TRYHACKME :: PROFILE_DUMP</span>
-        <div class="terminal-dots"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div>
-      </div>
-      <div class="terminal-body">
-        <div class="t-line"><span class="t-com">// fetching user data...</span></div>
-        <div class="t-line">&nbsp;</div>
-        <div class="t-line"><span class="t-key">username</span>    : <span class="t-str">"izukka"</span></div>
-        <div class="t-line"><span class="t-key">rank</span>    : <span class="t-num">LEGEND</span></div>
-        <div class="t-line"><span class="t-key">global</span>  : <span class="t-str">TOP 1%</span></div>
-        <div class="t-line"><span class="t-key">labs</span>    : <span class="t-num">100+</span> <span class="t-com">// completed</span></div>
-        <div class="t-line"><span class="t-key">domains</span> : <span class="t-str">["web_exploit","api_sec",</span></div>
-        <div class="t-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="t-str">"priv_esc","recon","blue_team"]</span></div>
-        <div class="t-line"><span class="t-key">htb</span>     : <span class="t-str">"active participant"</span></div>
-        <div class="t-line">&nbsp;</div>
-        <div class="t-line"><span class="t-com">// status: </span><span class="t-key">VERIFIED ✓</span></div>
-      </div>
-    </div>
-    <div class="platform-text reveal">
-      <h2>HANDS-ON <span>LABS</span></h2>
-      <p>Ranked in the top 1% globally on TryHackMe with the LEGEND rank, completing 100+ labs across web exploitation, API security testing, privilege escalation, reconnaissance, and blue team fundamentals.</p>
-      <p>Active Hack The Box participant with experience in real-world machine compromises in fully controlled environments — translating directly to real penetration testing scenarios.</p>
-    </div>
-  </div>
-</section>
+                <!-- Defensive -->
+                <div class="reveal group">
+                    <div class="border border-white/10 bg-panel/50 p-6 rounded-lg hover:border-cyber/50 transition-all duration-300 h-full glow-box">
+                        <div class="flex items-center gap-3 mb-6">
+                            <i class="fas fa-shield-halved text-cyber text-2xl"></i>
+                            <h3 class="font-orbitron text-xl font-bold">DEFENSIVE</h3>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-sm mb-1"><span>SIEM (Wazuh)</span><span class="text-cyber">88%</span></div>
+                                <div class="skill-track h-2"><div class="skill-fill bg-gradient-to-r from-cyber to-blue-500" data-width="88%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1"><span>Log Analysis</span><span class="text-cyber">85%</span></div>
+                                <div class="skill-track h-2"><div class="skill-fill bg-gradient-to-r from-cyber to-blue-500" data-width="85%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1"><span>Threat Detection</span><span class="text-cyber">90%</span></div>
+                                <div class="skill-track h-2"><div class="skill-fill bg-gradient-to-r from-cyber to-blue-500" data-width="90%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1"><span>Incident Response</span><span class="text-cyber">82%</span></div>
+                                <div class="skill-track h-2"><div class="skill-fill bg-gradient-to-r from-cyber to-blue-500" data-width="82%"></div></div>
+                            </div>
+                            <div class="pt-2 flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-cyber/10 border border-cyber/30 text-xs rounded font-fira">Wireshark</span>
+                                <span class="px-2 py-1 bg-cyber/10 border border-cyber/30 text-xs rounded font-fira">Splunk</span>
+                                <span class="px-2 py-1 bg-cyber/10 border border-cyber/30 text-xs rounded font-fira">Docker</span>
+                                <span class="px-2 py-1 bg-cyber/10 border border-cyber/30 text-xs rounded font-fira">Phishing</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-<!-- ── CONTACT ── -->
-<section id="contact">
-  <div class="sec-header">
-    <span class="sec-tag">// CONTACT</span>
-    <div class="sec-line"></div>
-    <span class="sec-num">05</span>
-  </div>
-  <div class="contact-layout">
-    <div class="reveal">
-      <h2 class="contact-heading">INITIATE<br><span>CONTACT_</span></h2>
-      <p class="contact-sub">
-        Open to SOC Analyst, VAPT, and cybersecurity roles.<br>
-        Based in Bengaluru, India — available for opportunities.
-      </p>
-    </div>
-    <div class="contact-items reveal">
-      <a href="mailto:muhammedsakir.26.career@gmail.com" class="c-row">
-        <span class="c-row-key">EMAIL</span>
-        <span class="c-row-val">muhammedsakir.26.career@gmail.com</span>
-        <span class="c-row-arr">→</span>
-      </a>
-      <a href="https://linkedin.com/in/muhammed-sakir-k" target="_blank" class="c-row">
-        <span class="c-row-key">LINKEDIN</span>
-        <span class="c-row-val">muhammed-sakir-k</span>
-        <span class="c-row-arr">→</span>
-      </a>
-      <a href="https://github.com/Muhammed-Sakir-k" target="_blank" class="c-row">
-        <span class="c-row-key">GITHUB</span>
-        <span class="c-row-val">Muhammed-Sakir-k</span>
-        <span class="c-row-arr">→</span>
-      </a>
-      <a href="tel:+917560990920" class="c-row">
-        <span class="c-row-key">PHONE</span>
-        <span class="c-row-val">+91 7560990920</span>
-        <span class="c-row-arr">→</span>
-      </a>
-    </div>
-  </div>
-</section>
+                <!-- AI / Development -->
+                <div class="reveal group">
+                    <div class="border border-white/10 bg-panel/50 p-6 rounded-lg hover:border-matrix/50 transition-all duration-300 h-full glow-box">
+                        <div class="flex items-center gap-3 mb-6">
+                            <i class="fas fa-brain text-matrix text-2xl"></i>
+                            <h3 class="font-orbitron text-xl font-bold">AI / DEV</h3>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-sm mb-1"><span>Python / FastAPI</span><span class="text-matrix">90%</span></div>
+                                <div class="skill-track h-2"><div class="skill-fill" data-width="90%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1"><span>LLM Integration</span><span class="text-matrix">85%</span></div>
+                                <div class="skill-track h-2"><div class="skill-fill" data-width="85%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1"><span>JavaScript / React</span><span class="text-matrix">80%</span></div>
+                                <div class="skill-track h-2"><div class="skill-fill" data-width="80%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1"><span>Prompt Engineering</span><span class="text-matrix">88%</span></div>
+                                <div class="skill-track h-2"><div class="skill-fill" data-width="88%"></div></div>
+                            </div>
+                            <div class="pt-2 flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-matrix/10 border border-matrix/30 text-xs rounded font-fira">Ollama</span>
+                                <span class="px-2 py-1 bg-matrix/10 border border-matrix/30 text-xs rounded font-fira">Chrome Ext</span>
+                                <span class="px-2 py-1 bg-matrix/10 border border-matrix/30 text-xs rounded font-fira">JSON</span>
+                                <span class="px-2 py-1 bg-matrix/10 border border-matrix/30 text-xs rounded font-fira">Flask</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-</div><!-- /wrapper -->
+    <!-- Experience -->
+    <section class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-4 mb-12 reveal">
+                <span class="font-fira text-matrix text-sm">[EXP]</span>
+                <h2 class="font-orbitron text-4xl md:text-5xl font-bold">FIELD OPS</h2>
+                <div class="h-px bg-gradient-to-r from-alert to-transparent flex-grow ml-4"></div>
+            </div>
 
-<footer>
-  <div class="footer-l">MSK.SEC // 2026</div>
-  <div class="footer-r">BENGALURU, INDIA // ALL SYSTEMS OPERATIONAL</div>
-</footer>
+            <div class="relative border-l-2 border-matrix/30 ml-4 md:ml-0 space-y-12">
+                <div class="reveal relative pl-8 md:pl-12">
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 bg-dark border-2 border-matrix rounded-full"></div>
+                    <div class="bg-panel/50 border border-white/10 p-6 rounded-lg hover:border-matrix/50 transition-all">
+                        <div class="flex flex-wrap justify-between items-start mb-4">
+                            <div>
+                                <h3 class="font-orbitron text-2xl font-bold text-white">Cybersecurity Intern</h3>
+                                <div class="text-matrix font-fira">Future Interns</div>
+                            </div>
+                            <span class="px-3 py-1 bg-matrix/10 border border-matrix/30 text-matrix text-xs font-fira rounded">MAR 2026 - APR 2026</span>
+                        </div>
+                        <ul class="space-y-2 text-gray-400">
+                            <li class="flex items-start gap-2"><i class="fas fa-chevron-right text-matrix mt-1 text-xs"></i> Conducted vulnerability assessments on web applications using Nmap and OWASP ZAP, classifying risks as Low / Medium / High</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-chevron-right text-matrix mt-1 text-xs"></i> Performed phishing email analysis identifying spoofed domains, malicious links, and email header anomalies</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-chevron-right text-matrix mt-1 text-xs"></i> Analyzed API security risks including authentication flaws, data exposure, and input validation using Postman and DevTools</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-chevron-right text-matrix mt-1 text-xs"></i> Prepared client-ready security reports with risk classification, impact analysis, and remediation recommendations</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<script>
-/* ── MATRIX RAIN ── */
-(function() {
-  const canvas = document.getElementById('matrix');
-  const ctx = canvas.getContext('2d');
-  let cols, drops;
+    <!-- Education -->
+    <section class="py-16 px-6 bg-panel/20 border-y border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-4 mb-10 reveal">
+                <span class="font-fira text-cyber text-sm">[EDU]</span>
+                <h2 class="font-orbitron text-3xl md:text-4xl font-bold">ACADEMIC RECORD</h2>
+                <div class="h-px bg-gradient-to-r from-cyber to-transparent flex-grow ml-4"></div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="reveal bg-panel border border-white/10 p-6 rounded-lg hover:border-cyber/50 transition-all group">
+                    <div class="flex justify-between items-start mb-3">
+                        <i class="fas fa-graduation-cap text-cyber text-2xl group-hover:scale-110 transition-transform"></i>
+                        <span class="font-fira text-xs text-gray-500">OCT 2024 - PRESENT</span>
+                    </div>
+                    <h3 class="font-orbitron text-xl font-bold mb-1">Master of Computer Applications</h3>
+                    <div class="text-gray-400 text-sm">Krupanidhi College of Management</div>
+                    <div class="font-fira text-xs text-cyber mt-1">Bengaluru North University</div>
+                </div>
+                <div class="reveal bg-panel border border-white/10 p-6 rounded-lg hover:border-matrix/50 transition-all group">
+                    <div class="flex justify-between items-start mb-3">
+                        <i class="fas fa-university text-matrix text-2xl group-hover:scale-110 transition-transform"></i>
+                        <span class="font-fira text-xs text-gray-500">JUN 2021 - MAR 2024</span>
+                    </div>
+                    <h3 class="font-orbitron text-xl font-bold mb-1">Bachelor of Computer Applications</h3>
+                    <div class="text-gray-400 text-sm">LBS Model Degree College</div>
+                    <div class="font-fira text-xs text-matrix mt-1">Calicut University</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  function resize() {
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
-    cols  = Math.floor(canvas.width / 16);
-    drops = Array(cols).fill(1);
-  }
+    <!-- Projects Section -->
+    <section id="projects" class="py-24 px-6 bg-panel/30">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-4 mb-16 reveal">
+                <span class="font-fira text-matrix text-sm">[03]</span>
+                <h2 class="font-orbitron text-4xl md:text-5xl font-bold">PROJECTS</h2>
+                <div class="h-px bg-gradient-to-r from-matrix to-transparent flex-grow ml-4"></div>
+            </div>
 
-  resize();
-  window.addEventListener('resize', resize);
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Project 1 -->
+                <div class="reveal tilt-card-wrapper">
+                    <div class="tilt-card bg-panel border border-white/10 rounded-lg overflow-hidden hover:border-matrix/50 transition-colors group">
+                        <div class="h-48 bg-gradient-to-br from-matrix/20 to-dark relative overflow-hidden">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <i class="fas fa-robot text-6xl text-matrix/30 group-hover:scale-110 transition-transform duration-500"></i>
+                            </div>
+                            <div class="absolute top-4 right-4 px-3 py-1 bg-dark/80 border border-matrix/50 text-matrix text-xs font-fira rounded">AI TOOL</div>
+                        </div>
+                        <div class="p-6 tilt-content">
+                            <h3 class="font-orbitron text-2xl font-bold mb-2 group-hover:text-matrix transition-colors">AI Bug Bounty Mentor</h3>
+                            <p class="text-gray-400 text-sm mb-4">AI-powered cybersecurity assistant that analyzes targets and generates realistic bug bounty testing strategies using local LLM inference via Ollama. Features tool-aware recommendations and PDF report generation.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">FastAPI</span>
+                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">Python</span>
+                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">Ollama</span>
+                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">LLaMA 3</span>
+                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">React</span>
+                            </div>
+                            <div class="flex gap-4 text-sm font-fira">
+                                <a href="https://github.com/Muhammed-Sakir-k" target="_blank" class="text-matrix hover:underline"><i class="fab fa-github mr-1"></i> SOURCE</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-  const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ01アBCDEFGHIJKLMN01';
+                <!-- Project 2 -->
+                <div class="reveal tilt-card-wrapper">
+                    <div class="tilt-card bg-panel border border-white/10 rounded-lg overflow-hidden hover:border-cyber/50 transition-colors group">
+                        <div class="h-48 bg-gradient-to-br from-cyber/20 to-dark relative overflow-hidden">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <i class="fas fa-chart-line text-6xl text-cyber/30 group-hover:scale-110 transition-transform duration-500"></i>
+                            </div>
+                            <div class="absolute top-4 right-4 px-3 py-1 bg-dark/80 border border-cyber/50 text-cyber text-xs font-fira rounded">SIEM</div>
+                        </div>
+                        <div class="p-6 tilt-content">
+                            <h3 class="font-orbitron text-2xl font-bold mb-2 group-hover:text-cyber transition-colors">XSiem Dashboard</h3>
+                            <p class="text-gray-400 text-sm mb-4">Wazuh-based SIEM monitoring system analyzing 800+ security events with real-time dashboards, alert triage, and automated alerting. Simulated SSH brute force, port scanning, and RDP attacks to validate detection rules.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">Wazuh</span>
+                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">Docker</span>
+                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">React</span>
+                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">OpenSearch</span>
+                            </div>
+                            <div class="flex gap-4 text-sm font-fira">
+                                <a href="https://github.com/Muhammed-Sakir-k/xsiem" target="_blank" class="text-matrix hover:underline"><i class="fab fa-github mr-1"></i> SOURCE</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-  function draw() {
-    ctx.fillStyle = 'rgba(0,0,0,0.05)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#00ff41';
-    ctx.font = '13px Share Tech Mono, monospace';
-    drops.forEach((y, i) => {
-      const ch = chars[Math.floor(Math.random() * chars.length)];
-      ctx.fillText(ch, i * 16, y * 16);
-      if (y * 16 > canvas.height && Math.random() > 0.975) drops[i] = 0;
-      drops[i]++;
-    });
-  }
+                <!-- Project 3 -->
+                <div class="reveal tilt-card-wrapper">
+                    <div class="tilt-card bg-panel border border-white/10 rounded-lg overflow-hidden hover:border-alert/50 transition-colors group">
+                        <div class="h-48 bg-gradient-to-br from-alert/20 to-dark relative overflow-hidden">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <i class="fas fa-shield-virus text-6xl text-alert/30 group-hover:scale-110 transition-transform duration-500"></i>
+                            </div>
+                            <div class="absolute top-4 right-4 px-3 py-1 bg-dark/80 border border-alert/50 text-alert text-xs font-fira rounded">SECURITY</div>
+                        </div>
+                        <div class="p-6 tilt-content">
+                            <h3 class="font-orbitron text-2xl font-bold mb-2 group-hover:text-alert transition-colors">PhishAlert Extension</h3>
+                            <p class="text-gray-400 text-sm mb-4">Browser extension detecting phishing attempts by monitoring login page behavior in real-time. Achieved high accuracy across 50+ simulated attack scenarios with reduced false positives and real-time credential compromise alerts.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">JavaScript</span>
+                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">Chrome API</span>
+                            </div>
+                            <div class="flex gap-4 text-sm font-fira">
+                                <a href="https://github.com/Muhammed-Sakir-k/PhishAlert" target="_blank" class="text-matrix hover:underline"><i class="fab fa-github mr-1"></i> SOURCE</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-  setInterval(draw, 55);
-})();
+                <!-- Project 4 -->
+                <div class="reveal tilt-card-wrapper">
+                    <div class="tilt-card bg-panel border border-white/10 rounded-lg overflow-hidden hover:border-white/50 transition-colors group">
+                        <div class="h-48 bg-gradient-to-br from-white/10 to-dark relative overflow-hidden">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <i class="fas fa-shopping-cart text-6xl text-white/20 group-hover:scale-110 transition-transform duration-500"></i>
+                            </div>
+                            <div class="absolute top-4 right-4 px-3 py-1 bg-dark/80 border border-white/30 text-white text-xs font-fira rounded">FULL STACK</div>
+                        </div>
+                        <div class="p-6 tilt-content">
+                            <h3 class="font-orbitron text-2xl font-bold mb-2 group-hover:text-white transition-colors">CostIQ Platform</h3>
+                            <p class="text-gray-400 text-sm mb-4">Price comparison platform with secure web scraping from Amazon, Flipkart, and JioMart. Features historical price tracking, trend visualization with Chart.js, and smart alerts for optimal buying time with secure coding practices.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">Python</span>
+                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">Flask</span>
+                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">SQLite</span>
+                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">Chart.js</span>
+                            </div>
+                            <div class="flex gap-4 text-sm font-fira">
+                                <a href="https://github.com/Muhammed-Sakir-k/CostIQ" target="_blank" class="text-matrix hover:underline"><i class="fab fa-github mr-1"></i> SOURCE</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-/* ── SCROLL REVEAL ── */
-const revObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) e.target.classList.add('visible');
-  });
-}, { threshold: 0.08 });
+    <!-- Certifications -->
+    <section id="certs" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-4 mb-16 reveal">
+                <span class="font-fira text-matrix text-sm">[04]</span>
+                <h2 class="font-orbitron text-4xl md:text-5xl font-bold">CREDENTIALS</h2>
+                <div class="h-px bg-gradient-to-r from-cyber to-transparent flex-grow ml-4"></div>
+            </div>
 
-document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
-</script>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="reveal group relative bg-panel border border-white/10 p-6 rounded-lg hover:border-matrix/50 transition-all overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-matrix/5 rounded-bl-full group-hover:bg-matrix/10 transition-colors"></div>
+                    <i class="fas fa-certificate text-matrix text-3xl mb-4"></i>
+                    <h3 class="font-orbitron text-lg font-bold mb-1">CBTP</h3>
+                    <div class="text-gray-400 text-sm mb-2">Certified Blue Team Practitioner</div>
+                    <div class="font-fira text-xs text-matrix">The SecOps Group | APR 2026</div>
+                </div>
+
+                <div class="reveal group relative bg-panel border border-white/10 p-6 rounded-lg hover:border-cyber/50 transition-all overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-cyber/5 rounded-bl-full group-hover:bg-cyber/10 transition-colors"></div>
+                    <i class="fas fa-certificate text-cyber text-3xl mb-4"></i>
+                    <h3 class="font-orbitron text-lg font-bold mb-1">ASA</h3>
+                    <div class="text-gray-400 text-sm mb-2">Advanced SOC Analyst</div>
+                    <div class="font-fira text-xs text-cyber">TECHBYHEART | MAR 2026</div>
+                </div>
+
+                <div class="reveal group relative bg-panel border border-white/10 p-6 rounded-lg hover:border-matrix/50 transition-all overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-matrix/5 rounded-bl-full group-hover:bg-matrix/10 transition-colors"></div>
+                    <i class="fas fa-certificate text-matrix text-3xl mb-4"></i>
+                    <h3 class="font-orbitron text-lg font-bold mb-1">Endpoint Security</h3>
+                    <div class="text-gray-400 text-sm mb-2">Cisco Networking Academy</div>
+                    <div class="font-fira text-xs text-matrix">MAR 2026</div>
+                </div>
+
+                <div class="reveal group relative bg-panel border border-white/10 p-6 rounded-lg hover:border-cyber/50 transition-all overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-cyber/5 rounded-bl-full group-hover:bg-cyber/10 transition-colors"></div>
+                    <i class="fas fa-certificate text-cyber text-3xl mb-4"></i>
+                    <h3 class="font-orbitron text-lg font-bold mb-1">Cybersecurity Training</h3>
+                    <div class="text-gray-400 text-sm mb-2">Honeywell (BharatCares)</div>
+                    <div class="font-fira text-xs text-cyber">MAR 2026</div>
+                </div>
+
+                <div class="reveal group relative bg-panel border border-white/10 p-6 rounded-lg hover:border-alert/50 transition-all overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-alert/5 rounded-bl-full group-hover:bg-alert/10 transition-colors"></div>
+                    <i class="fas fa-certificate text-alert text-3xl mb-4"></i>
+                    <h3 class="font-orbitron text-lg font-bold mb-1">Ethical Hacker</h3>
+                    <div class="text-gray-400 text-sm mb-2">Cisco Networking Academy</div>
+                    <div class="font-fira text-xs text-alert">JAN 2026</div>
+                </div>
+
+                <div class="reveal group relative bg-panel border border-white/10 p-6 rounded-lg hover:border-matrix/50 transition-all overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-matrix/5 rounded-bl-full group-hover:bg-matrix/10 transition-colors"></div>
+                    <i class="fas fa-certificate text-matrix text-3xl mb-4"></i>
+                    <h3 class="font-orbitron text-lg font-bold mb-1">Fortinet Certified</h3>
+                    <div class="text-gray-400 text-sm mb-2">Fundamentals Cybersecurity</div>
+                    <div class="font-fira text-xs text-matrix">JAN 2026</div>
+                </div>
+
+                <div class="reveal group relative bg-panel border border-white/10 p-6 rounded-lg hover:border-cyber/50 transition-all overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-cyber/5 rounded-bl-full group-hover:bg-cyber/10 transition-colors"></div>
+                    <i class="fas fa-certificate text-cyber text-3xl mb-4"></i>
+                    <h3 class="font-orbitron text-lg font-bold mb-1">Certified Security Tester</h3>
+                    <div class="text-gray-400 text-sm mb-2">TECHBYHEART</div>
+                    <div class="font-fira text-xs text-cyber">DEC 2025</div>
+                </div>
+
+                <div class="reveal group relative bg-panel border border-white/10 p-6 rounded-lg hover:border-white/50 transition-all overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-bl-full group-hover:bg-white/10 transition-colors"></div>
+                    <i class="fas fa-certificate text-white text-3xl mb-4"></i>
+                    <h3 class="font-orbitron text-lg font-bold mb-1">Foundations of Cybersecurity</h3>
+                    <div class="text-gray-400 text-sm mb-2">Google</div>
+                    <div class="font-fira text-xs text-white">SEP 2025</div>
+                </div>
+
+                <div class="reveal group relative bg-panel border border-alert/30 p-6 rounded-lg hover:border-alert/60 transition-all overflow-hidden pulse-ring">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-alert/5 rounded-bl-full group-hover:bg-alert/10 transition-colors"></div>
+                    <i class="fas fa-spinner text-alert text-3xl mb-4 animate-spin"></i>
+                    <h3 class="font-orbitron text-lg font-bold mb-1 text-alert">CEH (In Progress)</h3>
+                    <div class="text-gray-400 text-sm mb-2">Certified Ethical Hacker</div>
+                    <div class="font-fira text-xs text-alert">EC-Council</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Labs & CTF -->
+    <section class="py-16 px-6 bg-panel/20 border-y border-white/5">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="reveal mb-8">
+                <span class="font-fira text-alert text-sm">[LABS]</span>
+                <h2 class="font-orbitron text-3xl font-bold mt-2">HANDS-ON BATTLEFIELD</h2>
+            </div>
+            <div class="reveal flex flex-wrap justify-center gap-8">
+                <div class="bg-panel border border-matrix/30 px-8 py-6 rounded-lg hover:border-matrix transition-all group">
+                    <i class="fas fa-flag text-matrix text-4xl mb-3 group-hover:scale-110 transition-transform"></i>
+                    <div class="font-orbitron text-2xl font-bold text-white">TryHackMe</div>
+                    <div class="font-fira text-sm text-matrix mt-1">TOP 1% GLOBALLY</div>
+                    <div class="text-gray-500 text-xs mt-2">100+ Labs Completed</div>
+                </div>
+                <div class="bg-panel border border-cyber/30 px-8 py-6 rounded-lg hover:border-cyber transition-all group">
+                    <i class="fas fa-cube text-cyber text-4xl mb-3 group-hover:scale-110 transition-transform"></i>
+                    <div class="font-orbitron text-2xl font-bold text-white">Hack The Box</div>
+                    <div class="font-fira text-sm text-cyber mt-1">ACTIVE PLAYER</div>
+                    <div class="text-gray-500 text-xs mt-2">Real-World Scenarios</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 px-6 bg-panel/30 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-matrix/5 via-transparent to-transparent"></div>
+        <div class="max-w-4xl mx-auto relative z-10 text-center">
+            <div class="reveal mb-12">
+                <span class="font-fira text-matrix text-sm">[05]</span>
+                <h2 class="font-orbitron text-4xl md:text-6xl font-bold mt-4 mb-6">ESTABLISH CONNECTION</h2>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                    Ready to secure your infrastructure or collaborate on the next breakthrough security tool? 
+                    Let's talk.
+                </p>
+            </div>
+
+            <div class="reveal grid md:grid-cols-3 gap-6 mb-12">
+                <a href="mailto:muhammedsakir.26.career@gmail.com" class="group bg-panel border border-white/10 p-6 rounded-lg hover:border-matrix/50 transition-all">
+                    <i class="fas fa-envelope text-matrix text-3xl mb-4 group-hover:scale-110 transition-transform"></i>
+                    <div class="font-orbitron font-bold mb-1">EMAIL</div>
+                    <div class="font-fira text-xs text-gray-400 break-all">muhammedsakir.26.career@gmail.com</div>
+                </a>
+                <a href="tel:+917560990920" class="group bg-panel border border-white/10 p-6 rounded-lg hover:border-cyber/50 transition-all">
+                    <i class="fas fa-phone text-cyber text-3xl mb-4 group-hover:scale-110 transition-transform"></i>
+                    <div class="font-orbitron font-bold mb-1">PHONE</div>
+                    <div class="font-fira text-xs text-gray-400">+91 7560990920</div>
+                </a>
+                <div class="group bg-panel border border-white/10 p-6 rounded-lg hover:border-alert/50 transition-all">
+                    <i class="fas fa-map-marker-alt text-alert text-3xl mb-4 group-hover:scale-110 transition-transform"></i>
+                    <div class="font-orbitron font-bold mb-1">LOCATION</div>
+                    <div class="font-fira text-xs text-gray-400">Bengaluru, India</div>
+                </div>
+            </div>
+
+            <div class="reveal flex justify-center gap-8 text-3xl">
+                <a href="https://linkedin.com/in/muhammed-sakir-k" target="_blank" class="w-14 h-14 flex items-center justify-center border border-white/10 rounded-full hover:border-matrix hover:text-matrix hover:shadow-[0_0_20px_rgba(0,255,65,0.3)] transition-all">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://github.com/Muhammed-Sakir-k" target="_blank" class="w-14 h-14 flex items-center justify-center border border-white/10 rounded-full hover:border-cyber hover:text-cyber hover:shadow-[0_0_20px_rgba(0,217,255,0.3)] transition-all">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://muhammed-sakir-k.github.io/Portfolio/" target="_blank" class="w-14 h-14 flex items-center justify-center border border-white/10 rounded-full hover:border-alert hover:text-alert hover:shadow-[0_0_20px_rgba(255,0,60,0.3)] transition-all">
+                    <i class="fas fa-globe"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-8 text-center font-fira text-xs text-gray-600">
+        <p> MUHAMMED SAKIR K | SECURED BY DESIGN | <span class="text-matrix">ENCRYPTED CONNECTION</span> | <span class="text-cyber">OPEN TO WORK</span></p>
+    </footer>
+
+    <script>
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.random() * -100;
+        }
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ff41';
+            ctx.font = fontSize + 'px monospace';
+            
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        
+        setInterval(drawMatrix, 35);
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Typewriter Effect
+        const phrases = [
+            'Securing Digital Infrastructures...',
+            'Hunting Vulnerabilities...',
+            'Analyzing Threats...',
+            'Building AI Security Tools...'
+        ];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typewriter = document.getElementById('typewriter');
+        
+        function typeEffect() {
+            const current = phrases[phraseIndex];
+            
+            if (isDeleting) {
+                typewriter.textContent = current.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typewriter.textContent = current.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            
+            let typeSpeed = isDeleting ? 50 : 100;
+            
+            if (!isDeleting && charIndex === current.length) {
+                typeSpeed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typeSpeed = 500;
+            }
+            
+            setTimeout(typeEffect, typeSpeed);
+        }
+        typeEffect();
+
+        // Intersection Observer for reveals
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    
+                    const fills = entry.target.querySelectorAll('.skill-fill');
+                    fills.forEach(fill => {
+                        fill.style.width = fill.getAttribute('data-width');
+                    });
+                    
+                    const counters = entry.target.querySelectorAll('.counter');
+                    counters.forEach(counter => {
+                        const target = parseInt(counter.getAttribute('data-target'));
+                        const duration = 2000;
+                        const increment = target / (duration / 16);
+                        let current = 0;
+                        const updateCounter = () => {
+                            current += increment;
+                            if (current < target) {
+                                counter.textContent = Math.floor(current) + (target > 100 ? '+' : '');
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                counter.textContent = target + (target > 100 ? '+' : '');
+                            }
+                        };
+                        updateCounter();
+                    });
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Tilt effect for project cards
+        document.querySelectorAll('.tilt-card-wrapper').forEach(wrapper => {
+            const card = wrapper.querySelector('.tilt-card');
+            
+            wrapper.addEventListener('mousemove', (e) => {
+                const rect = wrapper.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            
+            wrapper.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+            });
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg', 'shadow-matrix/5');
+            } else {
+                nav.classList.remove('shadow-lg', 'shadow-matrix/5');
+            }
+        });
+    </script>
 </body>
 </html>
