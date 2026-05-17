@@ -113,6 +113,7 @@
         /* Hide scrollbar */
         ::-webkit-scrollbar {
             width: 0px;
+            height: 0px;
             background: transparent;
         }
 
@@ -140,11 +141,23 @@
         }
 
         @media (max-width: 768px) {
+            .horizontal-scroll-wrapper {
+                height: auto;
+                overflow-x: auto;
+                overflow-y: hidden;
+                scroll-snap-type: x mandatory;
+                padding-bottom: 2rem;
+                -webkit-overflow-scrolling: touch;
+            }
+            .horizontal-scroll-container {
+                padding: 0 1rem;
+            }
             .project-card {
                 width: 85vw;
                 height: auto;
                 min-height: 400px;
                 margin-right: 1rem;
+                scroll-snap-align: center;
             }
         }
 
@@ -280,23 +293,23 @@
     <section
         class="min-h-screen flex flex-col justify-center items-center pt-32 md:pt-40 pb-20 px-6 relative overflow-hidden">
         <!-- Floating Icons -->
-        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 flex items-center justify-center text-2xl text-blue-500 animate-float-slow"
+        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 hidden md:flex items-center justify-center text-2xl text-blue-500 animate-float-slow"
             style="top: 20%; left: 15%;">
             <i class="fab fa-python"></i>
         </div>
-        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 flex items-center justify-center text-2xl text-orange-500 animate-float-medium"
+        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 hidden md:flex items-center justify-center text-2xl text-orange-500 animate-float-medium"
             style="top: 60%; left: 10%;">
             <i class="fab fa-linux"></i>
         </div>
-        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 flex items-center justify-center text-2xl text-sky-500 animate-float-fast"
+        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 hidden md:flex items-center justify-center text-2xl text-sky-500 animate-float-fast"
             style="top: 25%; right: 15%;">
             <i class="fas fa-shield-halved"></i>
         </div>
-        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 flex items-center justify-center text-2xl text-emerald-500 animate-float-slow"
+        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 hidden md:flex items-center justify-center text-2xl text-emerald-500 animate-float-slow"
             style="top: 65%; right: 12%;">
             <i class="fas fa-network-wired"></i>
         </div>
-        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 flex items-center justify-center text-2xl text-rose-500 animate-float-medium hidden md:flex"
+        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 hidden md:flex items-center justify-center text-2xl text-rose-500 animate-float-medium"
             style="top: 80%; left: 30%;">
             <i class="fas fa-bug"></i>
         </div>
@@ -317,10 +330,10 @@
                 class="inline-block px-4 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-black/50 backdrop-blur-sm text-xs font-mono mb-8 text-zinc-600 dark:text-zinc-400">
                 <i class="fas fa-shield-halved mr-2 text-brand"></i>SECURITY ANALYST & VAPT SPECIALIST
             </div>
-            <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter leading-[1.1] mb-6">
+            <h1 class="text-4xl sm:text-6xl md:text-8xl font-extrabold tracking-tighter leading-[1.1] mb-6">
                 Securing Digital <br />
                 <span
-                    class="text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-400">Infrastructures.</span>
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-400 break-words">Infrastructures.</span>
             </h1>
             <p class="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed">
                 I'm <strong class="text-zinc-900 dark:text-white">Muhammed Sakir K</strong>. A cybersecurity
@@ -364,7 +377,7 @@
 
     <!-- About & Experience Grid -->
     <section id="about" class="py-24 px-6 max-w-5xl mx-auto">
-        <div class="glass-card rounded-[2.5rem] p-10 md:p-14 shadow-soft dark:shadow-softDark reveal text-center">
+        <div class="glass-card rounded-[2.5rem] p-6 sm:p-10 md:p-14 shadow-soft dark:shadow-softDark reveal text-center">
             <div class="text-xs font-mono text-zinc-500 tracking-widest uppercase mb-4">[ 01 ] About Me</div>
             <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-8">Bridging the gap between offense and
                 defense.</h2>
@@ -388,12 +401,13 @@
     <!-- My Journey So Far -->
     <section id="experience" class="py-32 px-6 max-w-7xl mx-auto border-t border-zinc-100 dark:border-zinc-800/50">
         <div class="flex flex-col md:flex-row gap-16 md:gap-24 relative">
-            
+
             <!-- Left Sticky Header -->
             <div class="md:w-1/3">
                 <div class="sticky top-32">
                     <div class="text-xs font-mono font-bold text-brand tracking-widest uppercase mb-4">The Journey</div>
-                    <h2 class="text-5xl md:text-6xl font-bold tracking-tighter text-zinc-900 dark:text-white mb-6">My Journey So Far.</h2>
+                    <h2 class="text-5xl md:text-6xl font-bold tracking-tighter text-zinc-900 dark:text-white mb-6">My
+                        Journey So Far.</h2>
                     <hr class="border-zinc-200 dark:border-zinc-800 mb-6">
                     <p class="text-lg text-zinc-500 dark:text-zinc-400">
                         A timeline of my learning, certifications, and career journey in cybersecurity.
@@ -410,14 +424,20 @@
                     <!-- Event 1 -->
                     <div class="relative pl-12 reveal">
                         <!-- Dot -->
-                        <div class="absolute left-0 top-4 w-5 h-5 rounded-full bg-brand border-4 border-white dark:border-zinc-950"></div>
+                        <div
+                            class="absolute left-0 top-4 w-5 h-5 rounded-full bg-brand border-4 border-white dark:border-zinc-950">
+                        </div>
                         <!-- Card -->
-                        <div class="glass-card rounded-[2rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 transition-transform duration-300">
-                            <div class="text-sm font-bold text-brand tracking-widest uppercase mb-2">2026 — PRESENT</div>
+                        <div
+                            class="glass-card rounded-[2rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 transition-transform duration-300">
+                            <div class="text-sm font-bold text-brand tracking-widest uppercase mb-2">2026 — PRESENT
+                            </div>
                             <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-1">Cybersecurity Intern</h3>
-                            <div class="text-xs font-mono tracking-widest text-zinc-500 uppercase mb-4">WHITE AND BOX - TECH PRODUCTS & SERVICES / BENGALURU</div>
+                            <div class="text-xs font-mono tracking-widest text-zinc-500 uppercase mb-4">WHITE AND BOX -
+                                TECH PRODUCTS & SERVICES / BENGALURU</div>
                             <p class="text-zinc-600 dark:text-zinc-400">
-                                Currently focusing on modern threat detection, vulnerability assessment, and actively enhancing secure architectures.
+                                Currently focusing on modern threat detection, vulnerability assessment, and actively
+                                enhancing secure architectures.
                             </p>
                         </div>
                     </div>
@@ -425,14 +445,21 @@
                     <!-- Event 2 -->
                     <div class="relative pl-12 reveal delay-100">
                         <!-- Dot -->
-                        <div class="absolute left-0 top-4 w-5 h-5 rounded-full bg-zinc-300 dark:bg-zinc-700 border-4 border-white dark:border-zinc-950"></div>
+                        <div
+                            class="absolute left-0 top-4 w-5 h-5 rounded-full bg-zinc-300 dark:bg-zinc-700 border-4 border-white dark:border-zinc-950">
+                        </div>
                         <!-- Card -->
-                        <div class="glass-card rounded-[2rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 transition-transform duration-300">
-                            <div class="text-sm font-bold text-brand tracking-widest uppercase mb-2">2024 — PRESENT</div>
-                            <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-1">Master of Computer Applications</h3>
-                            <div class="text-xs font-mono tracking-widest text-zinc-500 uppercase mb-4">BENGALURU NORTH UNIVERSITY</div>
+                        <div
+                            class="glass-card rounded-[2rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 transition-transform duration-300">
+                            <div class="text-sm font-bold text-brand tracking-widest uppercase mb-2">2024 — PRESENT
+                            </div>
+                            <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-1">Master of Computer
+                                Applications</h3>
+                            <div class="text-xs font-mono tracking-widest text-zinc-500 uppercase mb-4">BENGALURU NORTH
+                                UNIVERSITY</div>
                             <p class="text-zinc-600 dark:text-zinc-400">
-                                Pursuing advanced concepts in software development, operating systems, and network security, building the foundation for next-generation security automation.
+                                Pursuing advanced concepts in software development, operating systems, and network
+                                security, building the foundation for next-generation security automation.
                             </p>
                         </div>
                     </div>
@@ -440,14 +467,20 @@
                     <!-- Event 3 -->
                     <div class="relative pl-12 reveal delay-200">
                         <!-- Dot -->
-                        <div class="absolute left-0 top-4 w-5 h-5 rounded-full bg-zinc-300 dark:bg-zinc-700 border-4 border-white dark:border-zinc-950"></div>
+                        <div
+                            class="absolute left-0 top-4 w-5 h-5 rounded-full bg-zinc-300 dark:bg-zinc-700 border-4 border-white dark:border-zinc-950">
+                        </div>
                         <!-- Card -->
-                        <div class="glass-card rounded-[2rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 transition-transform duration-300">
+                        <div
+                            class="glass-card rounded-[2rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 transition-transform duration-300">
                             <div class="text-sm font-bold text-brand tracking-widest uppercase mb-2">2021 — 2024</div>
-                            <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-1">Bachelor of Computer Applications</h3>
-                            <div class="text-xs font-mono tracking-widest text-zinc-500 uppercase mb-4">CALICUT UNIVERSITY</div>
+                            <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-1">Bachelor of Computer
+                                Applications</h3>
+                            <div class="text-xs font-mono tracking-widest text-zinc-500 uppercase mb-4">CALICUT
+                                UNIVERSITY</div>
                             <p class="text-zinc-600 dark:text-zinc-400">
-                                Developed strong core foundations in computer science, programming logic, and systems architecture.
+                                Developed strong core foundations in computer science, programming logic, and systems
+                                architecture.
                             </p>
                         </div>
                     </div>
@@ -463,122 +496,207 @@
         <div class="mb-16 reveal text-center max-w-3xl mx-auto">
             <div class="text-xs font-mono text-zinc-500 tracking-widest uppercase mb-4">[ 02 ] Arsenal</div>
             <h2 class="text-4xl md:text-5xl font-bold tracking-tighter mb-6">Cybersecurity & Development Arsenal</h2>
-            <p class="text-xl text-zinc-600 dark:text-zinc-400">Building secure, scalable, and intelligent solutions using modern cybersecurity, AI, and development technologies.</p>
+            <p class="text-xl text-zinc-600 dark:text-zinc-400">Building secure, scalable, and intelligent solutions
+                using modern cybersecurity, AI, and development technologies.</p>
         </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Offensive -->
-            <div class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300">
+            <div
+                class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300">
                 <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-xl shadow-sm">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-xl shadow-sm">
                         <i class="fas fa-crosshairs"></i>
                     </div>
                     <h3 class="text-xl font-bold tracking-tight">Offensive Security</h3>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">VAPT</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Web App Testing</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">API Security</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">OWASP Top 10</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Recon</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Privilege Escalation</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Metasploit (Basic)</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">VAPT</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Web
+                        App Testing</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">API
+                        Security</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">OWASP
+                        Top 10</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Recon</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Privilege
+                        Escalation</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Metasploit
+                        (Basic)</span>
                 </div>
             </div>
 
             <!-- Defensive -->
-            <div class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300 delay-100">
+            <div
+                class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300 delay-100">
                 <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 rounded-2xl bg-sky-500/10 text-sky-500 flex items-center justify-center text-xl shadow-sm">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-sky-500/10 text-sky-500 flex items-center justify-center text-xl shadow-sm">
                         <i class="fas fa-shield-halved"></i>
                     </div>
                     <h3 class="text-xl font-bold tracking-tight">Defensive Security</h3>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">SIEM (Wazuh)</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Log Analysis</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Threat Detection</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Alert Triage</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Incident Response</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Phishing Detection</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Wireshark</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">SIEM
+                        (Wazuh)</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Log
+                        Analysis</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Threat
+                        Detection</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Alert
+                        Triage</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Incident
+                        Response</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Phishing
+                        Detection</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Wireshark</span>
                 </div>
             </div>
 
             <!-- AI / Dev -->
-            <div class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300 delay-200">
+            <div
+                class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300 delay-200">
                 <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xl shadow-sm">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xl shadow-sm">
                         <i class="fas fa-brain"></i>
                     </div>
                     <h3 class="text-xl font-bold tracking-tight">AI / Dev</h3>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Prompt Engineering</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">API Dev (FastAPI)</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">LLM Integration</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Ollama</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">FullStack (React)</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">JSON Data Handling</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Prompt
+                        Engineering</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">API
+                        Dev (FastAPI)</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">LLM
+                        Integration</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Ollama</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">FullStack
+                        (React)</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">JSON
+                        Data Handling</span>
                 </div>
             </div>
 
             <!-- Tools & Platforms -->
-            <div class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300">
+            <div
+                class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300">
                 <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center text-xl shadow-sm">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center text-xl shadow-sm">
                         <i class="fas fa-toolbox"></i>
                     </div>
                     <h3 class="text-xl font-bold tracking-tight">Tools & Platforms</h3>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Burp Suite</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Nmap</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Wireshark</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Kali Linux</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Splunk (Basic)</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Docker</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">FFUF</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Gobuster</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">TryHackMe</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Hack The Box</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Burp
+                        Suite</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Nmap</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Wireshark</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Kali
+                        Linux</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Splunk
+                        (Basic)</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Docker</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">FFUF</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Gobuster</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">TryHackMe</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Hack
+                        The Box</span>
                 </div>
             </div>
 
             <!-- Programming -->
-            <div class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300 delay-100">
+            <div
+                class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300 delay-100">
                 <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 rounded-2xl bg-yellow-500/10 text-yellow-500 flex items-center justify-center text-xl shadow-sm">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-yellow-500/10 text-yellow-500 flex items-center justify-center text-xl shadow-sm">
                         <i class="fas fa-code"></i>
                     </div>
                     <h3 class="text-xl font-bold tracking-tight">Programming</h3>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Python</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Security Automation</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">FastAPI</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">JavaScript</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Web Security</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Browser Extensions</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">React</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Python</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Security
+                        Automation</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">FastAPI</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">JavaScript</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Web
+                        Security</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Browser
+                        Extensions</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">React</span>
                 </div>
             </div>
 
             <!-- Governance -->
-            <div class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300 delay-200">
+            <div
+                class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300 delay-200">
                 <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-xl shadow-sm">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-xl shadow-sm">
                         <i class="fas fa-file-contract"></i>
                     </div>
                     <h3 class="text-xl font-bold tracking-tight">Governance</h3>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">ISO 27001 (Basic)</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">NIST (Basic)</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Risk Assessment</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">ISMS Concepts</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Secure SDLC</span>
-                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">IAM Fundamentals</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">ISO
+                        27001 (Basic)</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">NIST
+                        (Basic)</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Risk
+                        Assessment</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">ISMS
+                        Concepts</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Secure
+                        SDLC</span>
+                    <span
+                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">IAM
+                        Fundamentals</span>
                 </div>
             </div>
         </div>
@@ -982,17 +1100,19 @@
     <footer id="contact" class="bg-zinc-950 text-white rounded-t-[3rem] mt-16 pt-24 pb-8 px-6 overflow-hidden">
         <div class="max-w-7xl mx-auto">
             <div class="grid md:grid-cols-4 gap-12 mb-20 relative">
-                
+
                 <!-- Overview -->
                 <div>
                     <h4 class="text-xs font-mono font-bold text-zinc-500 tracking-widest uppercase mb-6">Overview</h4>
                     <ul class="space-y-4">
                         <li><a href="#" class="hover:text-brand transition-colors font-medium">Home</a></li>
                         <li><a href="#about" class="hover:text-brand transition-colors font-medium">About</a></li>
-                        <li><a href="#experience" class="hover:text-brand transition-colors font-medium">Journey</a></li>
+                        <li><a href="#experience" class="hover:text-brand transition-colors font-medium">Journey</a>
+                        </li>
                         <li><a href="#skills" class="hover:text-brand transition-colors font-medium">Arsenal</a></li>
                         <li><a href="#projects" class="hover:text-brand transition-colors font-medium">Projects</a></li>
-                        <li><a href="#credentials" class="hover:text-brand transition-colors font-medium">Certifications</a></li>
+                        <li><a href="#credentials"
+                                class="hover:text-brand transition-colors font-medium">Certifications</a></li>
                     </ul>
                 </div>
 
@@ -1012,28 +1132,43 @@
                 <div>
                     <h4 class="text-xs font-mono font-bold text-zinc-500 tracking-widest uppercase mb-6">Socials</h4>
                     <ul class="space-y-4">
-                        <li><a href="https://github.com/Muhammed-Sakir-k" target="_blank" class="hover:text-white text-zinc-400 transition-colors flex items-center gap-2"><i class="fab fa-github"></i> Github</a></li>
-                        <li><a href="https://linkedin.com/in/muhammed-sakir-k" target="_blank" class="hover:text-blue-500 text-zinc-400 transition-colors flex items-center gap-2"><i class="fab fa-linkedin"></i> Linkedin</a></li>
-                        <li><a href="mailto:muhammedsakir.26.career@gmail.com" class="hover:text-brand text-zinc-400 transition-colors flex items-center gap-2"><i class="fas fa-envelope"></i> Email</a></li>
+                        <li><a href="https://github.com/Muhammed-Sakir-k" target="_blank"
+                                class="hover:text-white text-zinc-400 transition-colors flex items-center gap-2"><i
+                                    class="fab fa-github"></i> Github</a></li>
+                        <li><a href="https://linkedin.com/in/muhammed-sakir-k" target="_blank"
+                                class="hover:text-blue-500 text-zinc-400 transition-colors flex items-center gap-2"><i
+                                    class="fab fa-linkedin"></i> Linkedin</a></li>
+                        <li><a href="mailto:muhammedsakir.26.career@gmail.com"
+                                class="hover:text-brand text-zinc-400 transition-colors flex items-center gap-2"><i
+                                    class="fas fa-envelope"></i> Email</a></li>
                     </ul>
                 </div>
 
                 <!-- Big Email Display -->
-                <div class="md:col-span-1 flex flex-col justify-start md:justify-end items-start md:items-end md:absolute right-0 bottom-0 text-left md:text-right">
-                    <div class="text-xs font-mono font-bold text-brand tracking-widest uppercase mb-4 md:hidden">Get in touch</div>
-                    <a href="mailto:muhammedsakir.26.career@gmail.com" class="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tighter hover:text-brand transition-colors block mb-6 leading-tight">muhammedsakir<br>.26.career<br>@gmail.com</a>
+                <div
+                    class="md:col-span-1 flex flex-col justify-start md:justify-end items-start md:items-end md:absolute right-0 bottom-0 text-left md:text-right">
+                    <div class="text-xs font-mono font-bold text-brand tracking-widest uppercase mb-4 md:hidden">Get in
+                        touch</div>
+                    <a href="mailto:muhammedsakir.26.career@gmail.com"
+                        class="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tighter hover:text-brand transition-colors block mb-6 leading-tight">muhammedsakir<br>.26.career<br>@gmail.com</a>
                     <div class="flex gap-4">
-                        <a href="https://github.com/Muhammed-Sakir-k" class="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-xl hover:bg-zinc-800 transition-colors"><i class="fab fa-github"></i></a>
-                        <a href="https://linkedin.com/in/muhammed-sakir-k" class="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-xl hover:bg-blue-500 hover:border-blue-500 transition-colors"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/Muhammed-Sakir-k"
+                            class="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-xl hover:bg-zinc-800 transition-colors"><i
+                                class="fab fa-github"></i></a>
+                        <a href="https://linkedin.com/in/muhammed-sakir-k"
+                            class="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-xl hover:bg-blue-500 hover:border-blue-500 transition-colors"><i
+                                class="fab fa-linkedin"></i></a>
                     </div>
                 </div>
 
             </div>
 
             <!-- Copyright and Top Button -->
-            <div class="pt-8 border-t border-zinc-900 flex flex-col-reverse md:flex-row justify-between items-center text-zinc-500 text-sm font-medium">
+            <div
+                class="pt-8 border-t border-zinc-900 flex flex-col-reverse md:flex-row justify-between items-center text-zinc-500 text-sm font-medium">
                 <p class="mt-4 md:mt-0">Copyright &copy; 2026 Shakir. All rights reserved.</p>
-                <a href="#" class="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:bg-brand hover:text-white hover:border-brand transition-colors group">
+                <a href="#"
+                    class="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:bg-brand hover:text-white hover:border-brand transition-colors group">
                     <i class="fas fa-arrow-up group-hover:-translate-y-1 transition-transform"></i>
                 </a>
             </div>
