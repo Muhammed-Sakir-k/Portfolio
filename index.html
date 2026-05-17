@@ -1,959 +1,1109 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Muhammed Sakir K | Cybersecurity Analyst & VAPT Specialist</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Muhammed Sakir K | Cybersecurity Analyst</title>
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        orbitron: ['Orbitron', 'sans-serif'],
-                        rajdhani: ['Rajdhani', 'sans-serif'],
-                        fira: ['Fira Code', 'monospace'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
                     },
                     colors: {
-                        matrix: '#00ff41',
-                        cyber: '#00d9ff',
-                        alert: '#ff003c',
-                        dark: '#050505',
-                        panel: '#0a0a0a',
+                        brand: '#ff5c35',
+                        bgLight: '#fafafa',
+                        bgDark: '#0a0a0a',
+                        cardLight: '#ffffff',
+                        cardDark: '#121212',
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 40px -2px rgba(0, 0, 0, 0.05)',
+                        'softDark': '0 4px 40px -2px rgba(0, 0, 0, 0.5)',
+                    },
+                    animation: {
+                        'float-slow': 'floatIcon 8s ease-in-out infinite',
+                        'float-medium': 'floatIcon 6s ease-in-out infinite',
+                        'float-fast': 'floatIcon 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        floatIcon: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
                     }
                 }
             }
         }
     </script>
+
     <style>
-        body { background-color: #050505; color: #e0e0e0; overflow-x: hidden; }
-        
-        .glitch {
+        /* Smooth theme transition */
+        body {
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .dark .glass-nav {
+            background: rgba(18, 18, 18, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 1);
+        }
+
+        .dark .glass-card {
+            background: rgba(30, 30, 30, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .pastel-blue {
+            background: #f0f9ff;
+        }
+
+        .pastel-pink {
+            background: #fdf2f8;
+        }
+
+        .pastel-green {
+            background: #f0fdf4;
+        }
+
+        .dark .pastel-blue {
+            background: #0c4a6e;
+            border-color: #0ea5e9;
+        }
+
+        .dark .pastel-pink {
+            background: #831843;
+            border-color: #f43f5e;
+        }
+
+        .dark .pastel-green {
+            background: #14532d;
+            border-color: #22c55e;
+        }
+
+        /* Hide scrollbar */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        .horizontal-scroll-wrapper {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
             position: relative;
-            color: #00ff41;
-        }
-        .glitch::before, .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-        }
-        .glitch::before {
-            left: 2px;
-            text-shadow: -1px 0 #ff003c;
-            clip: rect(24px, 550px, 90px, 0);
-            animation: glitch-anim-2 3s infinite linear alternate-reverse;
-        }
-        .glitch::after {
-            left: -2px;
-            text-shadow: -1px 0 #00d9ff;
-            clip: rect(85px, 550px, 140px, 0);
-            animation: glitch-anim 2.5s infinite linear alternate-reverse;
-        }
-        @keyframes glitch-anim {
-            0% { clip: rect(10px, 9999px, 85px, 0); }
-            20% { clip: rect(63px, 9999px, 130px, 0); }
-            40% { clip: rect(25px, 9999px, 15px, 0); }
-            60% { clip: rect(88px, 9999px, 95px, 0); }
-            80% { clip: rect(43px, 9999px, 70px, 0); }
-            100% { clip: rect(15px, 9999px, 120px, 0); }
-        }
-        @keyframes glitch-anim-2 {
-            0% { clip: rect(65px, 9999px, 100px, 0); }
-            20% { clip: rect(20px, 9999px, 35px, 0); }
-            40% { clip: rect(90px, 9999px, 140px, 0); }
-            60% { clip: rect(40px, 9999px, 60px, 0); }
-            80% { clip: rect(10px, 9999px, 50px, 0); }
-            100% { clip: rect(75px, 9999px, 110px, 0); }
+            display: flex;
+            align-items: center;
         }
 
-        .scanlines {
+        .horizontal-scroll-container {
+            display: flex;
+            width: max-content;
+            padding: 0 5vw;
+        }
+
+        .project-card {
+            width: 450px;
+            height: 480px;
+            margin-right: 2rem;
+            flex-shrink: 0;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @media (max-width: 768px) {
+            .project-card {
+                width: 85vw;
+                height: auto;
+                min-height: 400px;
+                margin-right: 1rem;
+            }
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+        }
+
+        /* Abstract Background Blobs */
+        .blobs-container {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
-            background-size: 100% 4px;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -1;
             pointer-events: none;
-            z-index: 9999;
-            opacity: 0.3;
         }
 
-        .glow-text { text-shadow: 0 0 10px rgba(0,255,65,0.5), 0 0 20px rgba(0,255,65,0.3); }
-        .glow-box { box-shadow: 0 0 20px rgba(0,255,65,0.1), inset 0 0 20px rgba(0,255,65,0.05); }
-        
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: #00ff41; border-radius: 4px; }
-        
-        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-        
-        .skill-track { background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; }
-        .skill-fill { height: 100%; background: linear-gradient(90deg, #00ff41, #00d9ff); width: 0; transition: width 1.5s ease-out; border-radius: 4px; position: relative; overflow: hidden; }
-        .skill-fill::after {
-            content: '';
+        .blob {
             position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shimmer 2s infinite;
-        }
-        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-
-        .tilt-card { transform-style: preserve-3d; transition: transform 0.1s; }
-        .tilt-content { transform: translateZ(20px); }
-
-        .typing::after { content: '|'; animation: blink 1s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-
-        .pulse-ring { position: relative; }
-        .pulse-ring::before {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: inherit;
-            border: 2px solid #00ff41;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.1); opacity: 0; } }
-
-        .hex-bg {
-            background-color: #050505;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%2300ff41' fill-opacity='0.03'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-7.5L27.99 34H28v2.31h-.01L17 42.65V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.5;
+            animation: float 20s infinite alternate;
         }
 
-        .marquee-container { overflow: hidden; white-space: nowrap; }
-        .marquee-content {
-            display: inline-block;
-            animation: marquee 20s linear infinite;
+        .dark .blob {
+            opacity: 0.15;
         }
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: #e0e7ff;
+        }
+
+        .blob-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 40vw;
+            height: 40vw;
+            background: #fae8ff;
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            top: 40%;
+            left: 30%;
+            width: 30vw;
+            height: 30vw;
+            background: #ffedd5;
+            animation-delay: -10s;
+        }
+
+        .dark .blob-1 {
+            background: #4f46e5;
+        }
+
+        .dark .blob-2 {
+            background: #c026d3;
+        }
+
+        .dark .blob-3 {
+            background: #ea580c;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(5%, 5%) scale(1.05);
+            }
+
+            100% {
+                transform: translate(-5%, -5%) scale(0.95);
+            }
+        }
+
+        /* Reveal animation utility */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
-<body class="font-rajdhani hex-bg">
 
-    <div class="scanlines"></div>
-    <canvas id="matrixCanvas" class="fixed inset-0 w-full h-full -z-10 opacity-20"></canvas>
+<body class="bg-bgLight dark:bg-bgDark text-zinc-900 dark:text-zinc-100 transition-colors duration-300">
+
+    <!-- Abstract Background -->
+    <div class="blobs-container">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 top-0 border-b border-white/10 backdrop-blur-md bg-dark/80 transition-all duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="font-orbitron text-2xl font-bold text-matrix tracking-wider glow-text">&lt;MSK /&gt;</div>
-            <div class="hidden md:flex space-x-8 font-fira text-sm tracking-widest">
-                <a href="#about" class="hover:text-matrix transition-colors duration-300">[01] ABOUT</a>
-                <a href="#skills" class="hover:text-matrix transition-colors duration-300">[02] ARSENAL</a>
-                <a href="#projects" class="hover:text-matrix transition-colors duration-300">[03] PROJECTS</a>
-                <a href="#certs" class="hover:text-matrix transition-colors duration-300">[04] CREDS</a>
-                <a href="#contact" class="hover:text-matrix transition-colors duration-300">[05] CONTACT</a>
+    <nav class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-[90%] max-w-4xl">
+        <div
+            class="glass-nav rounded-full px-6 py-3 flex justify-between items-center shadow-soft dark:shadow-softDark">
+            <div class="font-bold tracking-tighter text-xl">MSK<span class="text-brand">.</span></div>
+            <div class="hidden md:flex space-x-8 text-sm font-medium">
+                <a href="#about" class="hover:text-brand transition-colors">About</a>
+                <a href="#skills" class="hover:text-brand transition-colors">Arsenal</a>
+                <a href="#projects" class="hover:text-brand transition-colors">Projects</a>
+                <a href="#creds" class="hover:text-brand transition-colors">Creds</a>
             </div>
-            <button id="mobileMenuBtn" class="md:hidden text-matrix text-2xl"><i class="fas fa-bars"></i></button>
-        </div>
-        <div id="mobileMenu" class="hidden md:hidden bg-panel border-t border-white/10 p-6 space-y-4 font-fira">
-            <a href="#about" class="block hover:text-matrix">[01] ABOUT</a>
-            <a href="#skills" class="block hover:text-matrix">[02] ARSENAL</a>
-            <a href="#projects" class="block hover:text-matrix">[03] PROJECTS</a>
-            <a href="#certs" class="block hover:text-matrix">[04] CREDS</a>
-            <a href="#contact" class="block hover:text-matrix">[05] CONTACT</a>
+            <div class="flex items-center gap-4">
+                <button id="themeToggle"
+                    class="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center hover:scale-105 transition-transform border border-zinc-200 dark:border-zinc-700">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                </button>
+                <a href="#contact"
+                    class="hidden md:block px-5 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-full text-sm font-semibold hover:bg-brand dark:hover:bg-brand dark:hover:text-white transition-colors">Let's
+                    Talk</a>
+                <button class="md:hidden text-xl"><i class="fas fa-bars"></i></button>
+            </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="min-h-screen flex items-center justify-center relative px-6 pt-20">
-        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-            <div class="space-y-6 z-10">
-                <div class="font-fira text-matrix text-sm tracking-widest mb-2 opacity-80">
-                    <i class="fas fa-shield-halved mr-2"></i>SECURITY ANALYST // VAPT // SOC
+    <section
+        class="min-h-screen flex flex-col justify-center items-center pt-32 md:pt-40 pb-20 px-6 relative overflow-hidden">
+        <!-- Floating Icons -->
+        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 flex items-center justify-center text-2xl text-blue-500 animate-float-slow"
+            style="top: 20%; left: 15%;">
+            <i class="fab fa-python"></i>
+        </div>
+        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 flex items-center justify-center text-2xl text-orange-500 animate-float-medium"
+            style="top: 60%; left: 10%;">
+            <i class="fab fa-linux"></i>
+        </div>
+        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 flex items-center justify-center text-2xl text-sky-500 animate-float-fast"
+            style="top: 25%; right: 15%;">
+            <i class="fas fa-shield-halved"></i>
+        </div>
+        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 flex items-center justify-center text-2xl text-emerald-500 animate-float-slow"
+            style="top: 65%; right: 12%;">
+            <i class="fas fa-network-wired"></i>
+        </div>
+        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 flex items-center justify-center text-2xl text-rose-500 animate-float-medium hidden md:flex"
+            style="top: 80%; left: 30%;">
+            <i class="fas fa-bug"></i>
+        </div>
+
+        <div class="max-w-5xl mx-auto text-center reveal active relative z-10">
+            <div class="mb-8 flex justify-center">
+                <div
+                    class="w-32 h-32 rounded-full border-4 border-white dark:border-zinc-800 shadow-xl overflow-hidden bg-zinc-200 dark:bg-zinc-800 relative">
+                    <!-- Placeholder image, user will add from here -->
+                    <img src="muhammed-sakir-k.jpg" alt="Profile Picture" class="w-full h-full object-cover">
+                    <!-- Fallback icon -->
+                    <div class="absolute inset-0 flex items-center justify-center text-zinc-400 -z-10 text-4xl">
+                        <i class="fas fa-user"></i>
+                    </div>
                 </div>
-                <h1 class="font-orbitron text-5xl md:text-7xl font-black leading-tight">
-                    <span class="glitch glow-text" data-text="MUHAMMED">MUHAMMED</span><br>
-                    <span class="glitch glow-text" data-text="SAKIR K">SAKIR K</span>
-                </h1>
-                <div class="h-8">
-                    <span id="typewriter" class="font-fira text-cyber text-lg md:text-xl typing"></span>
+            </div>
+            <div
+                class="inline-block px-4 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-black/50 backdrop-blur-sm text-xs font-mono mb-8 text-zinc-600 dark:text-zinc-400">
+                <i class="fas fa-shield-halved mr-2 text-brand"></i>SECURITY ANALYST & VAPT SPECIALIST
+            </div>
+            <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter leading-[1.1] mb-6">
+                Securing Digital <br />
+                <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-400">Infrastructures.</span>
+            </h1>
+            <p class="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                I'm <strong class="text-zinc-900 dark:text-white">Muhammed Sakir K</strong>. A cybersecurity
+                postgraduate specializing in SOC operations, VAPT, and penetration testing. Ranked Top 1% on TryHackMe.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#projects"
+                    class="px-8 py-4 bg-brand text-white rounded-full font-semibold hover:scale-105 transition-transform shadow-[0_4px_20px_rgba(255,92,53,0.3)]">View
+                    Projects</a>
+                <a href="https://linkedin.com/in/muhammed-sakir-k" target="_blank"
+                    class="px-8 py-4 bg-white dark:bg-zinc-800 rounded-full font-semibold border border-zinc-200 dark:border-zinc-700 hover:scale-105 transition-transform flex items-center gap-2">
+                    <i class="fab fa-linkedin text-[#0A66C2]"></i> LinkedIn
+                </a>
+                <a href="https://github.com/Muhammed-Sakir-k" target="_blank"
+                    class="px-8 py-4 bg-white dark:bg-zinc-800 rounded-full font-semibold border border-zinc-200 dark:border-zinc-700 hover:scale-105 transition-transform flex items-center gap-2">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+            </div>
+
+            <div
+                class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto border-t border-zinc-200 dark:border-zinc-800 pt-10">
+                <div>
+                    <div class="text-3xl font-bold text-zinc-900 dark:text-white mb-1">800+</div>
+                    <div class="text-xs font-mono text-zinc-500 uppercase tracking-wider">Events Analyzed</div>
                 </div>
-                <p class="text-gray-400 text-lg max-w-lg leading-relaxed">
-                    Cybersecurity postgraduate specializing in <span class="text-matrix">SOC operations</span>, 
-                    <span class="text-cyber">VAPT</span>, and <span class="text-alert">penetration testing</span>. 
-                    Ranked <span class="text-matrix font-bold">Top 1%</span> on TryHackMe. Building AI-powered security tools.
+                <div>
+                    <div class="text-3xl font-bold text-zinc-900 dark:text-white mb-1">Top 1%</div>
+                    <div class="text-xs font-mono text-zinc-500 uppercase tracking-wider">TryHackMe</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-zinc-900 dark:text-white mb-1">50+</div>
+                    <div class="text-xs font-mono text-zinc-500 uppercase tracking-wider">Phishing Scenarios</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-zinc-900 dark:text-white mb-1">9</div>
+                    <div class="text-xs font-mono text-zinc-500 uppercase tracking-wider">Certifications</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About & Experience Grid -->
+    <section id="about" class="py-24 px-6 max-w-5xl mx-auto">
+        <div class="glass-card rounded-[2.5rem] p-10 md:p-14 shadow-soft dark:shadow-softDark reveal text-center">
+            <div class="text-xs font-mono text-zinc-500 tracking-widest uppercase mb-4">[ 01 ] About Me</div>
+            <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-8">Bridging the gap between offense and
+                defense.</h2>
+            <div class="space-y-6 text-zinc-600 dark:text-zinc-400 text-lg leading-relaxed text-left">
+                <p>
+                    Currently pursuing my Master's in Computer Applications while actively hunting vulnerabilities. I
+                    leverage AI to develop next-generation security automation tools.
                 </p>
-                <div class="flex flex-wrap gap-4 pt-4">
-                    <a href="#projects" class="group relative px-8 py-3 bg-matrix/10 border border-matrix text-matrix font-orbitron font-bold tracking-wider hover:bg-matrix hover:text-dark transition-all duration-300 overflow-hidden">
-                        <span class="relative z-10">VIEW PROJECTS</span>
-                        <div class="absolute inset-0 bg-matrix transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
-                    </a>
-                    <a href="#contact" class="px-8 py-3 border border-white/20 text-white font-orbitron font-bold tracking-wider hover:border-cyber hover:text-cyber transition-all duration-300">
-                        CONTACT ME
-                    </a>
-                </div>
-                <div class="flex gap-6 pt-6 text-2xl">
-                    <a href="https://linkedin.com/in/muhammed-sakir-k" target="_blank" class="hover:text-matrix hover:scale-110 transition-all"><i class="fab fa-linkedin"></i></a>
-                    <a href="https://github.com/Muhammed-Sakir-k" target="_blank" class="hover:text-cyber hover:scale-110 transition-all"><i class="fab fa-github"></i></a>
-                    <a href="mailto:muhammedsakir.26.career@gmail.com" class="hover:text-alert hover:scale-110 transition-all"><i class="fas fa-envelope"></i></a>
-                </div>
+                <p>
+                    Operating at the intersection of <strong
+                        class="text-zinc-900 dark:text-white font-semibold">Offensive Security (VAPT)</strong> and
+                    <strong class="text-zinc-900 dark:text-white font-semibold">Defensive Operations (SOC)</strong>.
+                    Whether I'm actively hunting zero-days, orchestrating incident responses, or architecting
+                    unbreakable log analysis pipelines, I thrive in the chaos. I don't just secure systems—I compromise
+                    them to understand their breaking points, and rebuild them to be bulletproof.
+                </p>
             </div>
+        </div>
+    </section>
+
+    <!-- My Journey So Far -->
+    <section id="experience" class="py-32 px-6 max-w-7xl mx-auto border-t border-zinc-100 dark:border-zinc-800/50">
+        <div class="flex flex-col md:flex-row gap-16 md:gap-24 relative">
             
-            <div class="relative hidden md:block">
-                <div class="relative w-96 h-96 mx-auto">
-                    <div class="absolute inset-0 border border-matrix/30 rounded-full animate-[spin_10s_linear_infinite]"></div>
-                    <div class="absolute inset-4 border border-cyber/20 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
-                    <div class="absolute inset-8 border border-alert/20 rounded-full animate-[spin_20s_linear_infinite]"></div>
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="text-center">
-                            <div class="font-orbitron text-6xl font-black text-matrix glow-text">TOP</div>
-                            <div class="font-orbitron text-5xl font-black text-white">1%</div>
-                            <div class="font-fira text-sm text-gray-400 mt-2">TRYHACKME GLOBAL</div>
-                        </div>
-                    </div>
-                    <div class="absolute inset-0 animate-[spin_8s_linear_infinite]">
-                        <div class="absolute top-0 left-1/2 w-3 h-3 bg-matrix rounded-full shadow-[0_0_10px_#00ff41]"></div>
-                    </div>
-                    <div class="absolute inset-0 animate-[spin_12s_linear_infinite_reverse]">
-                        <div class="absolute bottom-4 right-4 w-2 h-2 bg-cyber rounded-full shadow-[0_0_10px_#00d9ff]"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <i class="fas fa-chevron-down text-matrix text-2xl"></i>
-        </div>
-    </section>
-
-    <!-- Threat Ticker -->
-    <div class="border-y border-matrix/20 bg-black/50 py-2 marquee-container font-fira text-xs text-matrix/70">
-        <div class="marquee-content">
-            [ ALERT ] TryHackMe Top 1% Ranked &nbsp;//&nbsp; [ INFO ] 800+ Security Events Analyzed &nbsp;//&nbsp; [ WARN ] CEH Certification In Progress &nbsp;//&nbsp; [ SUCCESS ] CBTP Certified &nbsp;//&nbsp; [ ALERT ] Hack The Box Active Player &nbsp;//&nbsp; [ INFO ] AI Security Tool Developer &nbsp;//&nbsp; [ WARN ] Open to Work &nbsp;//&nbsp;
-            [ ALERT ] TryHackMe Top 1% Ranked &nbsp;//&nbsp; [ INFO ] 800+ Security Events Analyzed &nbsp;//&nbsp; [ WARN ] CEH Certification In Progress &nbsp;//&nbsp; [ SUCCESS ] CBTP Certified &nbsp;//&nbsp; [ ALERT ] Hack The Box Active Player &nbsp;//&nbsp; [ INFO ] AI Security Tool Developer &nbsp;//&nbsp; [ WARN ] Open to Work &nbsp;//&nbsp;
-        </div>
-    </div>
-
-    <!-- Stats Bar -->
-    <section class="border-y border-white/10 bg-panel/50 backdrop-blur-sm py-8">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div class="reveal">
-                <div class="font-orbitron text-3xl md:text-4xl font-bold text-matrix counter" data-target="800">0</div>
-                <div class="font-fira text-xs text-gray-500 mt-2 tracking-widest">SECURITY EVENTS ANALYZED</div>
-            </div>
-            <div class="reveal">
-                <div class="font-orbitron text-3xl md:text-4xl font-bold text-cyber counter" data-target="100">0</div>
-                <div class="font-fira text-xs text-gray-500 mt-2 tracking-widest">THM LABS COMPLETED</div>
-            </div>
-            <div class="reveal">
-                <div class="font-orbitron text-3xl md:text-4xl font-bold text-alert counter" data-target="50">0</div>
-                <div class="font-fira text-xs text-gray-500 mt-2 tracking-widest">PHISHING SCENARIOS</div>
-            </div>
-            <div class="reveal">
-                <div class="font-orbitron text-3xl md:text-4xl font-bold text-white counter" data-target="9">0</div>
-                <div class="font-fira text-xs text-gray-500 mt-2 tracking-widest">CERTIFICATIONS</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="py-24 px-6 relative">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex items-center gap-4 mb-12 reveal">
-                <span class="font-fira text-matrix text-sm">[01]</span>
-                <h2 class="font-orbitron text-4xl md:text-5xl font-bold">ABOUT ME</h2>
-                <div class="h-px bg-gradient-to-r from-matrix to-transparent flex-grow ml-4"></div>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="space-y-6 reveal">
-                    <div class="font-fira text-cyber text-sm mb-4">> INITIALIZING PROFILE...</div>
-                    <p class="text-lg text-gray-300 leading-relaxed">
-                        I'm a <span class="text-matrix font-semibold">Cybersecurity Analyst</span> with hands-on experience in 
-                        <span class="text-cyber">SOC operations</span> and 
-                        <span class="text-alert">Vulnerability Assessment & Penetration Testing</span>. 
-                        Currently pursuing my Master's in Computer Applications while actively hunting vulnerabilities and building security tools.
+            <!-- Left Sticky Header -->
+            <div class="md:w-1/3">
+                <div class="sticky top-32">
+                    <div class="text-xs font-mono font-bold text-brand tracking-widest uppercase mb-4">The Journey</div>
+                    <h2 class="text-5xl md:text-6xl font-bold tracking-tighter text-zinc-900 dark:text-white mb-6">My Journey So Far.</h2>
+                    <hr class="border-zinc-200 dark:border-zinc-800 mb-6">
+                    <p class="text-lg text-zinc-500 dark:text-zinc-400">
+                        A timeline of my learning, certifications, and career journey in cybersecurity.
                     </p>
-                    <p class="text-lg text-gray-300 leading-relaxed">
-                        My core expertise spans <span class="text-matrix">threat detection</span>, 
-                        <span class="text-cyber">incident response</span>, 
-                        <span class="text-alert">log analysis</span>, and 
-                        <span class="text-white">privilege escalation</span>. 
-                        I leverage AI to develop next-generation security automation tools.
-                    </p>
-                    
-                    <div class="grid grid-cols-2 gap-4 pt-4">
-                        <div class="border border-white/10 p-4 bg-panel/50 hover:border-matrix/50 transition-colors group">
-                            <i class="fas fa-bug text-alert text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
-                            <div class="font-orbitron font-bold">Offensive</div>
-                            <div class="font-fira text-xs text-gray-500">VAPT, Web App, API</div>
-                        </div>
-                        <div class="border border-white/10 p-4 bg-panel/50 hover:border-cyber/50 transition-colors group">
-                            <i class="fas fa-shield-halved text-cyber text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
-                            <div class="font-orbitron font-bold">Defensive</div>
-                            <div class="font-fira text-xs text-gray-500">SIEM, IR, Monitoring</div>
-                        </div>
-                        <div class="border border-white/10 p-4 bg-panel/50 hover:border-matrix/50 transition-colors group">
-                            <i class="fas fa-brain text-matrix text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
-                            <div class="font-orbitron font-bold">AI / Dev</div>
-                            <div class="font-fira text-xs text-gray-500">LLMs, FastAPI, React</div>
-                        </div>
-                        <div class="border border-white/10 p-4 bg-panel/50 hover:border-white/50 transition-colors group">
-                            <i class="fas fa-clipboard-check text-white text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
-                            <div class="font-orbitron font-bold">Governance</div>
-                            <div class="font-fira text-xs text-gray-500">ISO 27001, NIST</div>
-                        </div>
-                    </div>
                 </div>
-                
-                <div class="relative reveal">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-matrix to-cyber rounded-lg blur opacity-30"></div>
-                    <div class="relative bg-panel border border-white/10 p-8 rounded-lg font-fira text-sm space-y-4">
-                        <div class="flex justify-between text-gray-500 border-b border-white/10 pb-2">
-                            <span>STATUS</span>
-                            <span class="text-matrix animate-pulse">● ACTIVE</span>
-                        </div>
-                        <div class="space-y-3">
-                            <div class="flex justify-between">
-                                <span class="text-gray-400">ROLE</span>
-                                <span class="text-cyber">Cybersecurity Analyst</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-400">LOCATION</span>
-                                <span class="text-white">Bengaluru, India</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-400">EXPERIENCE</span>
-                                <span class="text-white">SOC + VAPT</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-400">CEH</span>
-                                <span class="text-alert animate-pulse">IN PROGRESS</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-400">AVAILABILITY</span>
-                                <span class="text-matrix">OPEN TO WORK</span>
-                            </div>
-                        </div>
-                        <div class="pt-4 border-t border-white/10">
-                            <div class="text-gray-500 mb-2">CURRENT FOCUS</div>
-                            <div class="text-matrix">Advanced Penetration Testing & AI Security Automation</div>
+            </div>
+
+            <!-- Right Timeline -->
+            <div class="md:w-2/3 relative">
+                <!-- Timeline Line -->
+                <div class="absolute left-0 top-4 bottom-0 w-px bg-zinc-200 dark:bg-zinc-800 ml-[9px]"></div>
+
+                <div class="space-y-12">
+                    <!-- Event 1 -->
+                    <div class="relative pl-12 reveal">
+                        <!-- Dot -->
+                        <div class="absolute left-0 top-4 w-5 h-5 rounded-full bg-brand border-4 border-white dark:border-zinc-950"></div>
+                        <!-- Card -->
+                        <div class="glass-card rounded-[2rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 transition-transform duration-300">
+                            <div class="text-sm font-bold text-brand tracking-widest uppercase mb-2">2026 — PRESENT</div>
+                            <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-1">Cybersecurity Intern</h3>
+                            <div class="text-xs font-mono tracking-widest text-zinc-500 uppercase mb-4">WHITE AND BOX - TECH PRODUCTS & SERVICES / BENGALURU</div>
+                            <p class="text-zinc-600 dark:text-zinc-400">
+                                Currently focusing on modern threat detection, vulnerability assessment, and actively enhancing secure architectures.
+                            </p>
                         </div>
                     </div>
+
+                    <!-- Event 2 -->
+                    <div class="relative pl-12 reveal delay-100">
+                        <!-- Dot -->
+                        <div class="absolute left-0 top-4 w-5 h-5 rounded-full bg-zinc-300 dark:bg-zinc-700 border-4 border-white dark:border-zinc-950"></div>
+                        <!-- Card -->
+                        <div class="glass-card rounded-[2rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 transition-transform duration-300">
+                            <div class="text-sm font-bold text-brand tracking-widest uppercase mb-2">2024 — PRESENT</div>
+                            <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-1">Master of Computer Applications</h3>
+                            <div class="text-xs font-mono tracking-widest text-zinc-500 uppercase mb-4">BENGALURU NORTH UNIVERSITY</div>
+                            <p class="text-zinc-600 dark:text-zinc-400">
+                                Pursuing advanced concepts in software development, operating systems, and network security, building the foundation for next-generation security automation.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Event 3 -->
+                    <div class="relative pl-12 reveal delay-200">
+                        <!-- Dot -->
+                        <div class="absolute left-0 top-4 w-5 h-5 rounded-full bg-zinc-300 dark:bg-zinc-700 border-4 border-white dark:border-zinc-950"></div>
+                        <!-- Card -->
+                        <div class="glass-card rounded-[2rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 transition-transform duration-300">
+                            <div class="text-sm font-bold text-brand tracking-widest uppercase mb-2">2021 — 2024</div>
+                            <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-1">Bachelor of Computer Applications</h3>
+                            <div class="text-xs font-mono tracking-widest text-zinc-500 uppercase mb-4">CALICUT UNIVERSITY</div>
+                            <p class="text-zinc-600 dark:text-zinc-400">
+                                Developed strong core foundations in computer science, programming logic, and systems architecture.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Arsenal (Skills) Section -->
+    <section id="skills" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="mb-16 reveal text-center max-w-3xl mx-auto">
+            <div class="text-xs font-mono text-zinc-500 tracking-widest uppercase mb-4">[ 02 ] Arsenal</div>
+            <h2 class="text-4xl md:text-5xl font-bold tracking-tighter mb-6">Tools behind what I build.</h2>
+            <p class="text-xl text-zinc-600 dark:text-zinc-400">Building modern architected solutions with industry leading technology.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Offensive -->
+            <div class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-xl shadow-sm">
+                        <i class="fas fa-crosshairs"></i>
+                    </div>
+                    <h3 class="text-xl font-bold tracking-tight">Offensive Security</h3>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">VAPT</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Web App Testing</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">API Security</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">OWASP Top 10</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Recon</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Privilege Escalation</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Metasploit (Basic)</span>
+                </div>
+            </div>
+
+            <!-- Defensive -->
+            <div class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300 delay-100">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-sky-500/10 text-sky-500 flex items-center justify-center text-xl shadow-sm">
+                        <i class="fas fa-shield-halved"></i>
+                    </div>
+                    <h3 class="text-xl font-bold tracking-tight">Defensive Security</h3>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">SIEM (Wazuh)</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Log Analysis</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Threat Detection</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Alert Triage</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Incident Response</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Phishing Detection</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Wireshark</span>
+                </div>
+            </div>
+
+            <!-- AI / Dev -->
+            <div class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300 delay-200">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xl shadow-sm">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="text-xl font-bold tracking-tight">AI / Dev</h3>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Prompt Engineering</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">API Dev (FastAPI)</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">LLM Integration</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Ollama</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">FullStack (React)</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">JSON Data Handling</span>
+                </div>
+            </div>
+
+            <!-- Tools & Platforms -->
+            <div class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center text-xl shadow-sm">
+                        <i class="fas fa-toolbox"></i>
+                    </div>
+                    <h3 class="text-xl font-bold tracking-tight">Tools & Platforms</h3>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Burp Suite</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Nmap</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Wireshark</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Kali Linux</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Splunk (Basic)</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Docker</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">FFUF</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Gobuster</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">TryHackMe</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Hack The Box</span>
+                </div>
+            </div>
+
+            <!-- Programming -->
+            <div class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300 delay-100">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-yellow-500/10 text-yellow-500 flex items-center justify-center text-xl shadow-sm">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="text-xl font-bold tracking-tight">Programming</h3>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Python</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Security Automation</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">FastAPI</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">JavaScript</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Web Security</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Browser Extensions</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">React</span>
+                </div>
+            </div>
+
+            <!-- Governance -->
+            <div class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300 delay-200">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-xl shadow-sm">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <h3 class="text-xl font-bold tracking-tight">Governance</h3>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">ISO 27001 (Basic)</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">NIST (Basic)</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Risk Assessment</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">ISMS Concepts</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Secure SDLC</span>
+                    <span class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">IAM Fundamentals</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="py-24 px-6 bg-panel/30">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex items-center gap-4 mb-16 reveal">
-                <span class="font-fira text-matrix text-sm">[02]</span>
-                <h2 class="font-orbitron text-4xl md:text-5xl font-bold">ARSENAL</h2>
-                <div class="h-px bg-gradient-to-r from-cyber to-transparent flex-grow ml-4"></div>
-            </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Offensive -->
-                <div class="reveal group">
-                    <div class="border border-white/10 bg-panel/50 p-6 rounded-lg hover:border-alert/50 transition-all duration-300 h-full glow-box">
-                        <div class="flex items-center gap-3 mb-6">
-                            <i class="fas fa-crosshairs text-alert text-2xl"></i>
-                            <h3 class="font-orbitron text-xl font-bold">OFFENSIVE</h3>
-                        </div>
-                        <div class="space-y-4">
-                            <div>
-                                <div class="flex justify-between text-sm mb-1"><span>VAPT</span><span class="text-alert">95%</span></div>
-                                <div class="skill-track h-2"><div class="skill-fill" data-width="95%"></div></div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-sm mb-1"><span>Web App Testing</span><span class="text-alert">90%</span></div>
-                                <div class="skill-track h-2"><div class="skill-fill" data-width="90%"></div></div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-sm mb-1"><span>API Security</span><span class="text-alert">85%</span></div>
-                                <div class="skill-track h-2"><div class="skill-fill" data-width="85%"></div></div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-sm mb-1"><span>OWASP Top 10</span><span class="text-alert">92%</span></div>
-                                <div class="skill-track h-2"><div class="skill-fill" data-width="92%"></div></div>
-                            </div>
-                            <div class="pt-2 flex flex-wrap gap-2">
-                                <span class="px-2 py-1 bg-alert/10 border border-alert/30 text-xs rounded font-fira">Metasploit</span>
-                                <span class="px-2 py-1 bg-alert/10 border border-alert/30 text-xs rounded font-fira">Burp Suite</span>
-                                <span class="px-2 py-1 bg-alert/10 border border-alert/30 text-xs rounded font-fira">Nmap</span>
-                                <span class="px-2 py-1 bg-alert/10 border border-alert/30 text-xs rounded font-fira">FFUF</span>
-                                <span class="px-2 py-1 bg-alert/10 border border-alert/30 text-xs rounded font-fira">Gobuster</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Defensive -->
-                <div class="reveal group">
-                    <div class="border border-white/10 bg-panel/50 p-6 rounded-lg hover:border-cyber/50 transition-all duration-300 h-full glow-box">
-                        <div class="flex items-center gap-3 mb-6">
-                            <i class="fas fa-shield-halved text-cyber text-2xl"></i>
-                            <h3 class="font-orbitron text-xl font-bold">DEFENSIVE</h3>
-                        </div>
-                        <div class="space-y-4">
-                            <div>
-                                <div class="flex justify-between text-sm mb-1"><span>SIEM (Wazuh)</span><span class="text-cyber">88%</span></div>
-                                <div class="skill-track h-2"><div class="skill-fill bg-gradient-to-r from-cyber to-blue-500" data-width="88%"></div></div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-sm mb-1"><span>Log Analysis</span><span class="text-cyber">85%</span></div>
-                                <div class="skill-track h-2"><div class="skill-fill bg-gradient-to-r from-cyber to-blue-500" data-width="85%"></div></div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-sm mb-1"><span>Threat Detection</span><span class="text-cyber">90%</span></div>
-                                <div class="skill-track h-2"><div class="skill-fill bg-gradient-to-r from-cyber to-blue-500" data-width="90%"></div></div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-sm mb-1"><span>Incident Response</span><span class="text-cyber">82%</span></div>
-                                <div class="skill-track h-2"><div class="skill-fill bg-gradient-to-r from-cyber to-blue-500" data-width="82%"></div></div>
-                            </div>
-                            <div class="pt-2 flex flex-wrap gap-2">
-                                <span class="px-2 py-1 bg-cyber/10 border border-cyber/30 text-xs rounded font-fira">Wireshark</span>
-                                <span class="px-2 py-1 bg-cyber/10 border border-cyber/30 text-xs rounded font-fira">Splunk</span>
-                                <span class="px-2 py-1 bg-cyber/10 border border-cyber/30 text-xs rounded font-fira">Docker</span>
-                                <span class="px-2 py-1 bg-cyber/10 border border-cyber/30 text-xs rounded font-fira">Phishing</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- AI / Development -->
-                <div class="reveal group">
-                    <div class="border border-white/10 bg-panel/50 p-6 rounded-lg hover:border-matrix/50 transition-all duration-300 h-full glow-box">
-                        <div class="flex items-center gap-3 mb-6">
-                            <i class="fas fa-brain text-matrix text-2xl"></i>
-                            <h3 class="font-orbitron text-xl font-bold">AI / DEV</h3>
-                        </div>
-                        <div class="space-y-4">
-                            <div>
-                                <div class="flex justify-between text-sm mb-1"><span>Python / FastAPI</span><span class="text-matrix">90%</span></div>
-                                <div class="skill-track h-2"><div class="skill-fill" data-width="90%"></div></div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-sm mb-1"><span>LLM Integration</span><span class="text-matrix">85%</span></div>
-                                <div class="skill-track h-2"><div class="skill-fill" data-width="85%"></div></div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-sm mb-1"><span>JavaScript / React</span><span class="text-matrix">80%</span></div>
-                                <div class="skill-track h-2"><div class="skill-fill" data-width="80%"></div></div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-sm mb-1"><span>Prompt Engineering</span><span class="text-matrix">88%</span></div>
-                                <div class="skill-track h-2"><div class="skill-fill" data-width="88%"></div></div>
-                            </div>
-                            <div class="pt-2 flex flex-wrap gap-2">
-                                <span class="px-2 py-1 bg-matrix/10 border border-matrix/30 text-xs rounded font-fira">Ollama</span>
-                                <span class="px-2 py-1 bg-matrix/10 border border-matrix/30 text-xs rounded font-fira">Chrome Ext</span>
-                                <span class="px-2 py-1 bg-matrix/10 border border-matrix/30 text-xs rounded font-fira">JSON</span>
-                                <span class="px-2 py-1 bg-matrix/10 border border-matrix/30 text-xs rounded font-fira">Flask</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Projects (Horizontal Scroll) -->
+    <section id="projects" class="py-24">
+        <div class="max-w-7xl mx-auto px-6 mb-10 reveal">
+            <div class="text-xs font-mono text-zinc-500 tracking-widest uppercase mb-4">[ 03 ] Featured Work</div>
+            <h2 class="text-4xl md:text-5xl font-bold tracking-tighter">Selected Projects.</h2>
+            <p class="text-zinc-500 mt-4">Scroll to explore <i class="fas fa-arrow-right ml-2"></i></p>
         </div>
-    </section>
 
-    <!-- Experience -->
-    <section class="py-24 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex items-center gap-4 mb-12 reveal">
-                <span class="font-fira text-matrix text-sm">[EXP]</span>
-                <h2 class="font-orbitron text-4xl md:text-5xl font-bold">FIELD OPS</h2>
-                <div class="h-px bg-gradient-to-r from-alert to-transparent flex-grow ml-4"></div>
-            </div>
-
-            <div class="relative border-l-2 border-matrix/30 ml-4 md:ml-0 space-y-12">
-                <div class="reveal relative pl-8 md:pl-12">
-                    <div class="absolute -left-[9px] top-0 w-4 h-4 bg-dark border-2 border-matrix rounded-full"></div>
-                    <div class="bg-panel/50 border border-white/10 p-6 rounded-lg hover:border-matrix/50 transition-all">
-                        <div class="flex flex-wrap justify-between items-start mb-4">
-                            <div>
-                                <h3 class="font-orbitron text-2xl font-bold text-white">Cybersecurity Intern</h3>
-                                <div class="text-matrix font-fira">Future Interns</div>
-                            </div>
-                            <span class="px-3 py-1 bg-matrix/10 border border-matrix/30 text-matrix text-xs font-fira rounded">MAR 2026 - APR 2026</span>
-                        </div>
-                        <ul class="space-y-2 text-gray-400">
-                            <li class="flex items-start gap-2"><i class="fas fa-chevron-right text-matrix mt-1 text-xs"></i> Conducted vulnerability assessments on web applications using Nmap and OWASP ZAP, classifying risks as Low / Medium / High</li>
-                            <li class="flex items-start gap-2"><i class="fas fa-chevron-right text-matrix mt-1 text-xs"></i> Performed phishing email analysis identifying spoofed domains, malicious links, and email header anomalies</li>
-                            <li class="flex items-start gap-2"><i class="fas fa-chevron-right text-matrix mt-1 text-xs"></i> Analyzed API security risks including authentication flaws, data exposure, and input validation using Postman and DevTools</li>
-                            <li class="flex items-start gap-2"><i class="fas fa-chevron-right text-matrix mt-1 text-xs"></i> Prepared client-ready security reports with risk classification, impact analysis, and remediation recommendations</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Education -->
-    <section class="py-16 px-6 bg-panel/20 border-y border-white/5">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex items-center gap-4 mb-10 reveal">
-                <span class="font-fira text-cyber text-sm">[EDU]</span>
-                <h2 class="font-orbitron text-3xl md:text-4xl font-bold">ACADEMIC RECORD</h2>
-                <div class="h-px bg-gradient-to-r from-cyber to-transparent flex-grow ml-4"></div>
-            </div>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="reveal bg-panel border border-white/10 p-6 rounded-lg hover:border-cyber/50 transition-all group">
-                    <div class="flex justify-between items-start mb-3">
-                        <i class="fas fa-graduation-cap text-cyber text-2xl group-hover:scale-110 transition-transform"></i>
-                        <span class="font-fira text-xs text-gray-500">OCT 2024 - PRESENT</span>
-                    </div>
-                    <h3 class="font-orbitron text-xl font-bold mb-1">Master of Computer Applications</h3>
-                    <div class="text-gray-400 text-sm">Krupanidhi College of Management</div>
-                    <div class="font-fira text-xs text-cyber mt-1">Bengaluru North University</div>
-                </div>
-                <div class="reveal bg-panel border border-white/10 p-6 rounded-lg hover:border-matrix/50 transition-all group">
-                    <div class="flex justify-between items-start mb-3">
-                        <i class="fas fa-university text-matrix text-2xl group-hover:scale-110 transition-transform"></i>
-                        <span class="font-fira text-xs text-gray-500">JUN 2021 - MAR 2024</span>
-                    </div>
-                    <h3 class="font-orbitron text-xl font-bold mb-1">Bachelor of Computer Applications</h3>
-                    <div class="text-gray-400 text-sm">LBS Model Degree College</div>
-                    <div class="font-fira text-xs text-matrix mt-1">Calicut University</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="py-24 px-6 bg-panel/30">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex items-center gap-4 mb-16 reveal">
-                <span class="font-fira text-matrix text-sm">[03]</span>
-                <h2 class="font-orbitron text-4xl md:text-5xl font-bold">PROJECTS</h2>
-                <div class="h-px bg-gradient-to-r from-matrix to-transparent flex-grow ml-4"></div>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-8">
+        <div class="horizontal-scroll-wrapper">
+            <div class="horizontal-scroll-container">
                 <!-- Project 1 -->
-                <div class="reveal tilt-card-wrapper">
-                    <div class="tilt-card bg-panel border border-white/10 rounded-lg overflow-hidden hover:border-matrix/50 transition-colors group">
-                        <div class="h-48 bg-gradient-to-br from-matrix/20 to-dark relative overflow-hidden">
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <i class="fas fa-robot text-6xl text-matrix/30 group-hover:scale-110 transition-transform duration-500"></i>
-                            </div>
-                            <div class="absolute top-4 right-4 px-3 py-1 bg-dark/80 border border-matrix/50 text-matrix text-xs font-fira rounded">AI TOOL</div>
+                <div
+                    class="project-card bg-white dark:bg-cardDark rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 flex flex-col justify-between">
+                    <div>
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-3xl mb-8">
+                            <i class="fas fa-robot text-brand"></i>
                         </div>
-                        <div class="p-6 tilt-content">
-                            <h3 class="font-orbitron text-2xl font-bold mb-2 group-hover:text-matrix transition-colors">AI Bug Bounty Mentor</h3>
-                            <p class="text-gray-400 text-sm mb-4">AI-powered cybersecurity assistant that analyzes targets and generates realistic bug bounty testing strategies using local LLM inference via Ollama. Features tool-aware recommendations and PDF report generation.</p>
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">FastAPI</span>
-                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">Python</span>
-                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">Ollama</span>
-                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">LLaMA 3</span>
-                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">React</span>
-                            </div>
-                            <div class="flex gap-4 text-sm font-fira">
-                                <a href="https://github.com/Muhammed-Sakir-k" target="_blank" class="text-matrix hover:underline"><i class="fab fa-github mr-1"></i> SOURCE</a>
-                            </div>
+                        <h3 class="text-3xl font-bold tracking-tight mb-4">AI Bug Bounty Mentor</h3>
+                        <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 text-sm">
+                            AI-powered cybersecurity assistant that analyzes targets and generates realistic bug bounty
+                            testing strategies using local LLM inference via Ollama. Features tool-aware recommendations
+                            and PDF report generation.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span
+                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">FastAPI</span>
+                            <span
+                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">Ollama</span>
+                            <span
+                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">LLaMA
+                                3</span>
                         </div>
                     </div>
+                    <a href="https://github.com/Muhammed-Sakir-k" target="_blank"
+                        class="mt-8 flex items-center justify-center w-full py-4 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-semibold hover:scale-[1.02] transition-transform">
+                        View Source <i class="fab fa-github ml-2"></i>
+                    </a>
                 </div>
 
                 <!-- Project 2 -->
-                <div class="reveal tilt-card-wrapper">
-                    <div class="tilt-card bg-panel border border-white/10 rounded-lg overflow-hidden hover:border-cyber/50 transition-colors group">
-                        <div class="h-48 bg-gradient-to-br from-cyber/20 to-dark relative overflow-hidden">
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <i class="fas fa-chart-line text-6xl text-cyber/30 group-hover:scale-110 transition-transform duration-500"></i>
-                            </div>
-                            <div class="absolute top-4 right-4 px-3 py-1 bg-dark/80 border border-cyber/50 text-cyber text-xs font-fira rounded">SIEM</div>
+                <div
+                    class="project-card bg-white dark:bg-cardDark rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 flex flex-col justify-between">
+                    <div>
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-3xl mb-8">
+                            <i class="fas fa-chart-line text-blue-500"></i>
                         </div>
-                        <div class="p-6 tilt-content">
-                            <h3 class="font-orbitron text-2xl font-bold mb-2 group-hover:text-cyber transition-colors">XSiem Dashboard</h3>
-                            <p class="text-gray-400 text-sm mb-4">Wazuh-based SIEM monitoring system analyzing 800+ security events with real-time dashboards, alert triage, and automated alerting. Simulated SSH brute force, port scanning, and RDP attacks to validate detection rules.</p>
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">Wazuh</span>
-                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">Docker</span>
-                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">React</span>
-                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">OpenSearch</span>
-                            </div>
-                            <div class="flex gap-4 text-sm font-fira">
-                                <a href="https://github.com/Muhammed-Sakir-k/xsiem" target="_blank" class="text-matrix hover:underline"><i class="fab fa-github mr-1"></i> SOURCE</a>
-                            </div>
+                        <h3 class="text-3xl font-bold tracking-tight mb-4">XSiem Dashboard</h3>
+                        <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 text-sm">
+                            Wazuh-based SIEM monitoring system analyzing 800+ security events with real-time dashboards,
+                            alert triage, and automated alerting. Simulated attacks to validate detection rules.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span
+                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">Wazuh</span>
+                            <span
+                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">Docker</span>
+                            <span
+                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">React</span>
                         </div>
                     </div>
+                    <a href="https://github.com/Muhammed-Sakir-k/xsiem" target="_blank"
+                        class="mt-8 flex items-center justify-center w-full py-4 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-semibold hover:scale-[1.02] transition-transform">
+                        View Source <i class="fab fa-github ml-2"></i>
+                    </a>
                 </div>
 
                 <!-- Project 3 -->
-                <div class="reveal tilt-card-wrapper">
-                    <div class="tilt-card bg-panel border border-white/10 rounded-lg overflow-hidden hover:border-alert/50 transition-colors group">
-                        <div class="h-48 bg-gradient-to-br from-alert/20 to-dark relative overflow-hidden">
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <i class="fas fa-shield-virus text-6xl text-alert/30 group-hover:scale-110 transition-transform duration-500"></i>
-                            </div>
-                            <div class="absolute top-4 right-4 px-3 py-1 bg-dark/80 border border-alert/50 text-alert text-xs font-fira rounded">SECURITY</div>
+                <div
+                    class="project-card bg-white dark:bg-cardDark rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 flex flex-col justify-between">
+                    <div>
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-3xl mb-8">
+                            <i class="fas fa-shield-virus text-emerald-500"></i>
                         </div>
-                        <div class="p-6 tilt-content">
-                            <h3 class="font-orbitron text-2xl font-bold mb-2 group-hover:text-alert transition-colors">PhishAlert Extension</h3>
-                            <p class="text-gray-400 text-sm mb-4">Browser extension detecting phishing attempts by monitoring login page behavior in real-time. Achieved high accuracy across 50+ simulated attack scenarios with reduced false positives and real-time credential compromise alerts.</p>
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">JavaScript</span>
-                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">Chrome API</span>
-                            </div>
-                            <div class="flex gap-4 text-sm font-fira">
-                                <a href="https://github.com/Muhammed-Sakir-k/PhishAlert" target="_blank" class="text-matrix hover:underline"><i class="fab fa-github mr-1"></i> SOURCE</a>
-                            </div>
+                        <h3 class="text-3xl font-bold tracking-tight mb-4">PhishAlert Extension</h3>
+                        <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 text-sm">
+                            Browser extension detecting phishing attempts by monitoring login page behavior in
+                            real-time. Achieved high accuracy across 50+ simulated attack scenarios with reduced false
+                            positives.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span
+                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">JavaScript</span>
+                            <span
+                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">Chrome
+                                API</span>
                         </div>
                     </div>
+                    <a href="https://github.com/Muhammed-Sakir-k/PhishAlert" target="_blank"
+                        class="mt-8 flex items-center justify-center w-full py-4 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-semibold hover:scale-[1.02] transition-transform">
+                        View Source <i class="fab fa-github ml-2"></i>
+                    </a>
                 </div>
 
                 <!-- Project 4 -->
-                <div class="reveal tilt-card-wrapper">
-                    <div class="tilt-card bg-panel border border-white/10 rounded-lg overflow-hidden hover:border-white/50 transition-colors group">
-                        <div class="h-48 bg-gradient-to-br from-white/10 to-dark relative overflow-hidden">
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <i class="fas fa-shopping-cart text-6xl text-white/20 group-hover:scale-110 transition-transform duration-500"></i>
-                            </div>
-                            <div class="absolute top-4 right-4 px-3 py-1 bg-dark/80 border border-white/30 text-white text-xs font-fira rounded">FULL STACK</div>
+                <div
+                    class="project-card bg-white dark:bg-cardDark rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 flex flex-col justify-between">
+                    <div>
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-3xl mb-8">
+                            <i class="fas fa-shopping-cart text-purple-500"></i>
                         </div>
-                        <div class="p-6 tilt-content">
-                            <h3 class="font-orbitron text-2xl font-bold mb-2 group-hover:text-white transition-colors">CostIQ Platform</h3>
-                            <p class="text-gray-400 text-sm mb-4">Price comparison platform with secure web scraping from Amazon, Flipkart, and JioMart. Features historical price tracking, trend visualization with Chart.js, and smart alerts for optimal buying time with secure coding practices.</p>
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">Python</span>
-                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">Flask</span>
-                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">SQLite</span>
-                                <span class="px-2 py-1 bg-white/5 text-xs rounded font-fira">Chart.js</span>
-                            </div>
-                            <div class="flex gap-4 text-sm font-fira">
-                                <a href="https://github.com/Muhammed-Sakir-k/CostIQ" target="_blank" class="text-matrix hover:underline"><i class="fab fa-github mr-1"></i> SOURCE</a>
-                            </div>
+                        <h3 class="text-3xl font-bold tracking-tight mb-4">CostIQ Platform</h3>
+                        <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 text-sm">
+                            Price comparison platform with secure web scraping from Amazon, Flipkart, and JioMart.
+                            Features historical price tracking, trend visualization, and smart alerts with secure coding
+                            practices.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span
+                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">Python
+                                / Flask</span>
+                            <span
+                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">SQLite</span>
+                            <span
+                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">Chart.js</span>
                         </div>
                     </div>
+                    <a href="https://github.com/Muhammed-Sakir-k/CostIQ" target="_blank"
+                        class="mt-8 flex items-center justify-center w-full py-4 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-semibold hover:scale-[1.02] transition-transform">
+                        View Source <i class="fab fa-github ml-2"></i>
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Certifications -->
-    <section id="certs" class="py-24 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex items-center gap-4 mb-16 reveal">
-                <span class="font-fira text-matrix text-sm">[04]</span>
-                <h2 class="font-orbitron text-4xl md:text-5xl font-bold">CREDENTIALS</h2>
-                <div class="h-px bg-gradient-to-r from-cyber to-transparent flex-grow ml-4"></div>
+    <!-- Certifications List -->
+    <section id="creds" class="py-24 px-6 glass-card border-y border-white/50 dark:border-white/5 relative z-10">
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-16 text-center reveal">
+                <div class="text-xs font-mono text-zinc-500 tracking-widest uppercase mb-4">[ 04 ] Credentials</div>
+                <h2 class="text-4xl md:text-5xl font-bold tracking-tighter">Certifications.</h2>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="reveal group relative bg-panel border border-white/10 p-6 rounded-lg hover:border-matrix/50 transition-all overflow-hidden">
-                    <div class="absolute top-0 right-0 w-20 h-20 bg-matrix/5 rounded-bl-full group-hover:bg-matrix/10 transition-colors"></div>
-                    <i class="fas fa-certificate text-matrix text-3xl mb-4"></i>
-                    <h3 class="font-orbitron text-lg font-bold mb-1">CBTP</h3>
-                    <div class="text-gray-400 text-sm mb-2">Certified Blue Team Practitioner</div>
-                    <div class="font-fira text-xs text-matrix">The SecOps Group | APR 2026</div>
+            <div class="grid md:grid-cols-2 gap-4">
+                <!-- Cert 1 -->
+                <div
+                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
+                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
+                        <div
+                            class="w-12 h-12 rounded-full bg-brand/10 text-brand flex items-center justify-center text-xl shrink-0">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg leading-tight">Certified Blue Team Practitioner (CBTP)</h4>
+                            <div class="text-zinc-500 text-sm">The SecOps Group</div>
+                        </div>
+                    </div>
+                    <div
+                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
+                        APR 2026</div>
                 </div>
 
-                <div class="reveal group relative bg-panel border border-white/10 p-6 rounded-lg hover:border-cyber/50 transition-all overflow-hidden">
-                    <div class="absolute top-0 right-0 w-20 h-20 bg-cyber/5 rounded-bl-full group-hover:bg-cyber/10 transition-colors"></div>
-                    <i class="fas fa-certificate text-cyber text-3xl mb-4"></i>
-                    <h3 class="font-orbitron text-lg font-bold mb-1">ASA</h3>
-                    <div class="text-gray-400 text-sm mb-2">Advanced SOC Analyst</div>
-                    <div class="font-fira text-xs text-cyber">TECHBYHEART | MAR 2026</div>
+                <!-- Cert 2 -->
+                <div
+                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
+                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
+                        <div
+                            class="w-12 h-12 rounded-full bg-orange-500/10 text-orange-500 flex items-center justify-center text-xl shrink-0">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg leading-tight">Cybersecurity Training Program</h4>
+                            <div class="text-zinc-500 text-sm">Honeywell</div>
+                        </div>
+                    </div>
+                    <div
+                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
+                        MAR 2026</div>
                 </div>
 
-                <div class="reveal group relative bg-panel border border-white/10 p-6 rounded-lg hover:border-matrix/50 transition-all overflow-hidden">
-                    <div class="absolute top-0 right-0 w-20 h-20 bg-matrix/5 rounded-bl-full group-hover:bg-matrix/10 transition-colors"></div>
-                    <i class="fas fa-certificate text-matrix text-3xl mb-4"></i>
-                    <h3 class="font-orbitron text-lg font-bold mb-1">Endpoint Security</h3>
-                    <div class="text-gray-400 text-sm mb-2">Cisco Networking Academy</div>
-                    <div class="font-fira text-xs text-matrix">MAR 2026</div>
+                <!-- Cert 3 -->
+                <div
+                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
+                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
+                        <div
+                            class="w-12 h-12 rounded-full bg-sky-500/10 text-sky-500 flex items-center justify-center text-xl shrink-0">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg leading-tight">Endpoint Security</h4>
+                            <div class="text-zinc-500 text-sm">Cisco</div>
+                        </div>
+                    </div>
+                    <div
+                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
+                        MAR 2026</div>
                 </div>
 
-                <div class="reveal group relative bg-panel border border-white/10 p-6 rounded-lg hover:border-cyber/50 transition-all overflow-hidden">
-                    <div class="absolute top-0 right-0 w-20 h-20 bg-cyber/5 rounded-bl-full group-hover:bg-cyber/10 transition-colors"></div>
-                    <i class="fas fa-certificate text-cyber text-3xl mb-4"></i>
-                    <h3 class="font-orbitron text-lg font-bold mb-1">Cybersecurity Training</h3>
-                    <div class="text-gray-400 text-sm mb-2">Honeywell (BharatCares)</div>
-                    <div class="font-fira text-xs text-cyber">MAR 2026</div>
+                <!-- Cert 4 -->
+                <div
+                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
+                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
+                        <div
+                            class="w-12 h-12 rounded-full bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-xl shrink-0">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg leading-tight">Advanced SOC Analyst</h4>
+                            <div class="text-zinc-500 text-sm">TBH</div>
+                        </div>
+                    </div>
+                    <div
+                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
+                        MAR 2026</div>
                 </div>
 
-                <div class="reveal group relative bg-panel border border-white/10 p-6 rounded-lg hover:border-alert/50 transition-all overflow-hidden">
-                    <div class="absolute top-0 right-0 w-20 h-20 bg-alert/5 rounded-bl-full group-hover:bg-alert/10 transition-colors"></div>
-                    <i class="fas fa-certificate text-alert text-3xl mb-4"></i>
-                    <h3 class="font-orbitron text-lg font-bold mb-1">Ethical Hacker</h3>
-                    <div class="text-gray-400 text-sm mb-2">Cisco Networking Academy</div>
-                    <div class="font-fira text-xs text-alert">JAN 2026</div>
+                <!-- Cert 5 -->
+                <div
+                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
+                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
+                        <div
+                            class="w-12 h-12 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center text-xl shrink-0">
+                            <i class="fas fa-fire-shield"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg leading-tight">Fortinet Certified Fundamentals</h4>
+                            <div class="text-zinc-500 text-sm">Fortinet</div>
+                        </div>
+                    </div>
+                    <div
+                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
+                        JAN 2026</div>
                 </div>
 
-                <div class="reveal group relative bg-panel border border-white/10 p-6 rounded-lg hover:border-matrix/50 transition-all overflow-hidden">
-                    <div class="absolute top-0 right-0 w-20 h-20 bg-matrix/5 rounded-bl-full group-hover:bg-matrix/10 transition-colors"></div>
-                    <i class="fas fa-certificate text-matrix text-3xl mb-4"></i>
-                    <h3 class="font-orbitron text-lg font-bold mb-1">Fortinet Certified</h3>
-                    <div class="text-gray-400 text-sm mb-2">Fundamentals Cybersecurity</div>
-                    <div class="font-fira text-xs text-matrix">JAN 2026</div>
+                <!-- Cert 6 -->
+                <div
+                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
+                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
+                        <div
+                            class="w-12 h-12 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center text-xl shrink-0">
+                            <i class="fas fa-bug"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg leading-tight">Threat Landscape 3.0</h4>
+                            <div class="text-zinc-500 text-sm">Fortinet</div>
+                        </div>
+                    </div>
+                    <div
+                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
+                        SEP 2025</div>
                 </div>
 
-                <div class="reveal group relative bg-panel border border-white/10 p-6 rounded-lg hover:border-cyber/50 transition-all overflow-hidden">
-                    <div class="absolute top-0 right-0 w-20 h-20 bg-cyber/5 rounded-bl-full group-hover:bg-cyber/10 transition-colors"></div>
-                    <i class="fas fa-certificate text-cyber text-3xl mb-4"></i>
-                    <h3 class="font-orbitron text-lg font-bold mb-1">Certified Security Tester</h3>
-                    <div class="text-gray-400 text-sm mb-2">TECHBYHEART</div>
-                    <div class="font-fira text-xs text-cyber">DEC 2025</div>
+                <!-- Cert 7 -->
+                <div
+                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
+                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
+                        <div
+                            class="w-12 h-12 rounded-full bg-green-500/10 text-green-500 flex items-center justify-center text-xl shrink-0">
+                            <i class="fas fa-user-secret"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg leading-tight">Ethical Hacker</h4>
+                            <div class="text-zinc-500 text-sm">Cisco Networking Academy</div>
+                        </div>
+                    </div>
+                    <div
+                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
+                        JAN 2026</div>
                 </div>
 
-                <div class="reveal group relative bg-panel border border-white/10 p-6 rounded-lg hover:border-white/50 transition-all overflow-hidden">
-                    <div class="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-bl-full group-hover:bg-white/10 transition-colors"></div>
-                    <i class="fas fa-certificate text-white text-3xl mb-4"></i>
-                    <h3 class="font-orbitron text-lg font-bold mb-1">Foundations of Cybersecurity</h3>
-                    <div class="text-gray-400 text-sm mb-2">Google</div>
-                    <div class="font-fira text-xs text-white">SEP 2025</div>
+                <!-- Cert 8 -->
+                <div
+                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
+                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
+                        <div
+                            class="w-12 h-12 rounded-full bg-teal-500/10 text-teal-500 flex items-center justify-center text-xl shrink-0">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg leading-tight">Cyber Job Simulation</h4>
+                            <div class="text-zinc-500 text-sm">Deloitte Australia</div>
+                        </div>
+                    </div>
+                    <div
+                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
+                        JAN 2026</div>
                 </div>
 
-                <div class="reveal group relative bg-panel border border-alert/30 p-6 rounded-lg hover:border-alert/60 transition-all overflow-hidden pulse-ring">
-                    <div class="absolute top-0 right-0 w-20 h-20 bg-alert/5 rounded-bl-full group-hover:bg-alert/10 transition-colors"></div>
-                    <i class="fas fa-spinner text-alert text-3xl mb-4 animate-spin"></i>
-                    <h3 class="font-orbitron text-lg font-bold mb-1 text-alert">CEH (In Progress)</h3>
-                    <div class="text-gray-400 text-sm mb-2">Certified Ethical Hacker</div>
-                    <div class="font-fira text-xs text-alert">EC-Council</div>
+                <!-- Cert 9 -->
+                <div
+                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
+                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
+                        <div
+                            class="w-12 h-12 rounded-full bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-xl shrink-0">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg leading-tight">Certified Security Tester</h4>
+                            <div class="text-zinc-500 text-sm">TBH</div>
+                        </div>
+                    </div>
+                    <div
+                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
+                        DEC 2025</div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Labs & CTF -->
-    <section class="py-16 px-6 bg-panel/20 border-y border-white/5">
-        <div class="max-w-7xl mx-auto text-center">
-            <div class="reveal mb-8">
-                <span class="font-fira text-alert text-sm">[LABS]</span>
-                <h2 class="font-orbitron text-3xl font-bold mt-2">HANDS-ON BATTLEFIELD</h2>
-            </div>
-            <div class="reveal flex flex-wrap justify-center gap-8">
-                <div class="bg-panel border border-matrix/30 px-8 py-6 rounded-lg hover:border-matrix transition-all group">
-                    <i class="fas fa-flag text-matrix text-4xl mb-3 group-hover:scale-110 transition-transform"></i>
-                    <div class="font-orbitron text-2xl font-bold text-white">TryHackMe</div>
-                    <div class="font-fira text-sm text-matrix mt-1">TOP 1% GLOBALLY</div>
-                    <div class="text-gray-500 text-xs mt-2">100+ Labs Completed</div>
+                <!-- Cert 10 -->
+                <div
+                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
+                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
+                        <div
+                            class="w-12 h-12 rounded-full bg-yellow-500/10 text-yellow-500 flex items-center justify-center text-xl shrink-0">
+                            <i class="fab fa-google"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg leading-tight">Foundations of Cybersecurity</h4>
+                            <div class="text-zinc-500 text-sm">Google</div>
+                        </div>
+                    </div>
+                    <div
+                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
+                        SEP 2025</div>
                 </div>
-                <div class="bg-panel border border-cyber/30 px-8 py-6 rounded-lg hover:border-cyber transition-all group">
-                    <i class="fas fa-cube text-cyber text-4xl mb-3 group-hover:scale-110 transition-transform"></i>
-                    <div class="font-orbitron text-2xl font-bold text-white">Hack The Box</div>
-                    <div class="font-fira text-sm text-cyber mt-1">ACTIVE PLAYER</div>
-                    <div class="text-gray-500 text-xs mt-2">Real-World Scenarios</div>
+
+                <!-- Cert 11 -->
+                <div
+                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
+                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
+                        <div
+                            class="w-12 h-12 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center text-xl shrink-0">
+                            <i class="fab fa-python"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg leading-tight">Python Essentials 1</h4>
+                            <div class="text-zinc-500 text-sm">Cisco Networking Academy</div>
+                        </div>
+                    </div>
+                    <div
+                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
+                        AUG 2025</div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-24 px-6 bg-panel/30 relative overflow-hidden">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-matrix/5 via-transparent to-transparent"></div>
-        <div class="max-w-4xl mx-auto relative z-10 text-center">
-            <div class="reveal mb-12">
-                <span class="font-fira text-matrix text-sm">[05]</span>
-                <h2 class="font-orbitron text-4xl md:text-6xl font-bold mt-4 mb-6">ESTABLISH CONNECTION</h2>
-                <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-                    Ready to secure your infrastructure or collaborate on the next breakthrough security tool? 
-                    Let's talk.
-                </p>
-            </div>
-
-            <div class="reveal grid md:grid-cols-3 gap-6 mb-12">
-                <a href="mailto:muhammedsakir.26.career@gmail.com" class="group bg-panel border border-white/10 p-6 rounded-lg hover:border-matrix/50 transition-all">
-                    <i class="fas fa-envelope text-matrix text-3xl mb-4 group-hover:scale-110 transition-transform"></i>
-                    <div class="font-orbitron font-bold mb-1">EMAIL</div>
-                    <div class="font-fira text-xs text-gray-400 break-all">muhammedsakir.26.career@gmail.com</div>
-                </a>
-                <a href="tel:+917560990920" class="group bg-panel border border-white/10 p-6 rounded-lg hover:border-cyber/50 transition-all">
-                    <i class="fas fa-phone text-cyber text-3xl mb-4 group-hover:scale-110 transition-transform"></i>
-                    <div class="font-orbitron font-bold mb-1">PHONE</div>
-                    <div class="font-fira text-xs text-gray-400">+91 7560990920</div>
-                </a>
-                <div class="group bg-panel border border-white/10 p-6 rounded-lg hover:border-alert/50 transition-all">
-                    <i class="fas fa-map-marker-alt text-alert text-3xl mb-4 group-hover:scale-110 transition-transform"></i>
-                    <div class="font-orbitron font-bold mb-1">LOCATION</div>
-                    <div class="font-fira text-xs text-gray-400">Bengaluru, India</div>
+                <!-- Cert 12 -->
+                <div
+                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
+                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
+                        <div
+                            class="w-12 h-12 rounded-full bg-sky-500/10 text-sky-500 flex items-center justify-center text-xl shrink-0">
+                            <i class="fas fa-wifi"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg leading-tight">Networking Basics</h4>
+                            <div class="text-zinc-500 text-sm">Cisco Networking Academy</div>
+                        </div>
+                    </div>
+                    <div
+                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
+                        JUL 2025</div>
                 </div>
-            </div>
 
-            <div class="reveal flex justify-center gap-8 text-3xl">
-                <a href="https://linkedin.com/in/muhammed-sakir-k" target="_blank" class="w-14 h-14 flex items-center justify-center border border-white/10 rounded-full hover:border-matrix hover:text-matrix hover:shadow-[0_0_20px_rgba(0,255,65,0.3)] transition-all">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a href="https://github.com/Muhammed-Sakir-k" target="_blank" class="w-14 h-14 flex items-center justify-center border border-white/10 rounded-full hover:border-cyber hover:text-cyber hover:shadow-[0_0_20px_rgba(0,217,255,0.3)] transition-all">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="https://muhammed-sakir-k.github.io/Portfolio/" target="_blank" class="w-14 h-14 flex items-center justify-center border border-white/10 rounded-full hover:border-alert hover:text-alert hover:shadow-[0_0_20px_rgba(255,0,60,0.3)] transition-all">
-                    <i class="fas fa-globe"></i>
-                </a>
+                <!-- Cert 13 -->
+                <div
+                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
+                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
+                        <div
+                            class="w-12 h-12 rounded-full bg-brand/10 text-brand flex items-center justify-center text-xl shrink-0">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg leading-tight">Intro to Cybersecurity</h4>
+                            <div class="text-zinc-500 text-sm">Cisco Networking Academy</div>
+                        </div>
+                    </div>
+                    <div
+                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
+                        JUL 2025</div>
+                </div>
+
+                <!-- Cert 14 (Ongoing) -->
+                <div
+                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-brand/30 dark:border-brand/50 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal relative overflow-hidden md:col-span-2 lg:col-span-1">
+                    <div class="absolute right-0 top-0 w-32 h-32 bg-brand/5 rounded-bl-full blur-2xl"></div>
+                    <div class="flex items-center gap-4 mb-4 md:mb-0 relative z-10 w-full md:w-auto">
+                        <div
+                            class="w-12 h-12 rounded-full bg-brand/20 text-brand flex items-center justify-center text-xl animate-pulse shrink-0">
+                            <i class="fas fa-spinner"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg leading-tight">Certified Ethical Hacker (CEH)</h4>
+                            <div class="text-zinc-500 text-sm">EC-Council</div>
+                        </div>
+                    </div>
+                    <div
+                        class="font-mono text-xs text-brand border border-brand/50 px-3 py-1 rounded-full relative z-10 bg-brand/5 whitespace-nowrap mt-2 md:mt-0">
+                        IN PROGRESS</div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="border-t border-white/10 py-8 text-center font-fira text-xs text-gray-600">
-        <p> MUHAMMED SAKIR K | SECURED BY DESIGN | <span class="text-matrix">ENCRYPTED CONNECTION</span> | <span class="text-cyber">OPEN TO WORK</span></p>
+    <footer id="contact" class="bg-zinc-950 text-white rounded-t-[3rem] mt-16 pt-24 pb-8 px-6 overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-12 mb-20 relative">
+                
+                <!-- Overview -->
+                <div>
+                    <h4 class="text-xs font-mono font-bold text-zinc-500 tracking-widest uppercase mb-6">Overview</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="hover:text-brand transition-colors font-medium">Home</a></li>
+                        <li><a href="#about" class="hover:text-brand transition-colors font-medium">About</a></li>
+                        <li><a href="#experience" class="hover:text-brand transition-colors font-medium">Journey</a></li>
+                        <li><a href="#skills" class="hover:text-brand transition-colors font-medium">Arsenal</a></li>
+                        <li><a href="#projects" class="hover:text-brand transition-colors font-medium">Projects</a></li>
+                        <li><a href="#credentials" class="hover:text-brand transition-colors font-medium">Certifications</a></li>
+                    </ul>
+                </div>
+
+                <!-- Roles/Skills -->
+                <div>
+                    <h4 class="text-xs font-mono font-bold text-zinc-500 tracking-widest uppercase mb-6">Expertise</h4>
+                    <ul class="space-y-4">
+                        <li class="text-zinc-300">Offensive Security</li>
+                        <li class="text-zinc-300">SOC Analysis</li>
+                        <li class="text-zinc-300">Threat Hunting</li>
+                        <li class="text-zinc-300">Security Automation</li>
+                        <li class="text-zinc-300">Web Pentesting</li>
+                    </ul>
+                </div>
+
+                <!-- Socials -->
+                <div>
+                    <h4 class="text-xs font-mono font-bold text-zinc-500 tracking-widest uppercase mb-6">Socials</h4>
+                    <ul class="space-y-4">
+                        <li><a href="https://github.com/Muhammed-Sakir-k" target="_blank" class="hover:text-white text-zinc-400 transition-colors flex items-center gap-2"><i class="fab fa-github"></i> Github</a></li>
+                        <li><a href="https://linkedin.com/in/muhammed-sakir-k" target="_blank" class="hover:text-blue-500 text-zinc-400 transition-colors flex items-center gap-2"><i class="fab fa-linkedin"></i> Linkedin</a></li>
+                        <li><a href="mailto:muhammedsakir.26.career@gmail.com" class="hover:text-brand text-zinc-400 transition-colors flex items-center gap-2"><i class="fas fa-envelope"></i> Email</a></li>
+                    </ul>
+                </div>
+
+                <!-- Big Email Display -->
+                <div class="md:col-span-1 flex flex-col justify-start md:justify-end items-start md:items-end md:absolute right-0 bottom-0 text-left md:text-right">
+                    <div class="text-xs font-mono font-bold text-brand tracking-widest uppercase mb-4 md:hidden">Get in touch</div>
+                    <a href="mailto:muhammedsakir.26.career@gmail.com" class="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tighter hover:text-brand transition-colors block mb-6 leading-tight">muhammedsakir<br>.26.career<br>@gmail.com</a>
+                    <div class="flex gap-4">
+                        <a href="https://github.com/Muhammed-Sakir-k" class="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-xl hover:bg-zinc-800 transition-colors"><i class="fab fa-github"></i></a>
+                        <a href="https://linkedin.com/in/muhammed-sakir-k" class="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-xl hover:bg-blue-500 hover:border-blue-500 transition-colors"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Copyright and Top Button -->
+            <div class="pt-8 border-t border-zinc-900 flex flex-col-reverse md:flex-row justify-between items-center text-zinc-500 text-sm font-medium">
+                <p class="mt-4 md:mt-0">Copyright &copy; 2026 Shakir. All rights reserved.</p>
+                <a href="#" class="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:bg-brand hover:text-white hover:border-brand transition-colors group">
+                    <i class="fas fa-arrow-up group-hover:-translate-y-1 transition-transform"></i>
+                </a>
+            </div>
+        </div>
     </footer>
 
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script>
-        // Matrix Rain Effect
-        const canvas = document.getElementById('matrixCanvas');
-        const ctx = canvas.getContext('2d');
-        
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?';
-        const fontSize = 14;
-        const columns = canvas.width / fontSize;
-        const drops = [];
-        
-        for (let i = 0; i < columns; i++) {
-            drops[i] = Math.random() * -100;
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('themeToggle');
+
+        // Check local storage or system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
         }
-        
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = '#00ff41';
-            ctx.font = fontSize + 'px monospace';
-            
-            for (let i = 0; i < drops.length; i++) {
-                const text = chars[Math.floor(Math.random() * chars.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
+
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            if (document.documentElement.classList.contains('dark')) {
+                localStorage.theme = 'dark';
+            } else {
+                localStorage.theme = 'light';
             }
-        }
-        
-        setInterval(drawMatrix, 35);
-        
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
         });
 
-        // Typewriter Effect
-        const phrases = [
-            'Securing Digital Infrastructures...',
-            'Hunting Vulnerabilities...',
-            'Analyzing Threats...',
-            'Building AI Security Tools...'
-        ];
-        let phraseIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-        const typewriter = document.getElementById('typewriter');
-        
-        function typeEffect() {
-            const current = phrases[phraseIndex];
-            
-            if (isDeleting) {
-                typewriter.textContent = current.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                typewriter.textContent = current.substring(0, charIndex + 1);
-                charIndex++;
-            }
-            
-            let typeSpeed = isDeleting ? 50 : 100;
-            
-            if (!isDeleting && charIndex === current.length) {
-                typeSpeed = 2000;
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                phraseIndex = (phraseIndex + 1) % phrases.length;
-                typeSpeed = 500;
-            }
-            
-            setTimeout(typeEffect, typeSpeed);
-        }
-        typeEffect();
-
-        // Intersection Observer for reveals
+        // Intersection Observer for fade-in reveals
         const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
-                    
-                    const fills = entry.target.querySelectorAll('.skill-fill');
-                    fills.forEach(fill => {
-                        fill.style.width = fill.getAttribute('data-width');
-                    });
-                    
-                    const counters = entry.target.querySelectorAll('.counter');
-                    counters.forEach(counter => {
-                        const target = parseInt(counter.getAttribute('data-target'));
-                        const duration = 2000;
-                        const increment = target / (duration / 16);
-                        let current = 0;
-                        const updateCounter = () => {
-                            current += increment;
-                            if (current < target) {
-                                counter.textContent = Math.floor(current) + (target > 100 ? '+' : '');
-                                requestAnimationFrame(updateCounter);
-                            } else {
-                                counter.textContent = target + (target > 100 ? '+' : '');
-                            }
-                        };
-                        updateCounter();
-                    });
+                    observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
-        
+
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Tilt effect for project cards
-        document.querySelectorAll('.tilt-card-wrapper').forEach(wrapper => {
-            const card = wrapper.querySelector('.tilt-card');
-            
-            wrapper.addEventListener('mousemove', (e) => {
-                const rect = wrapper.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = (y - centerY) / 20;
-                const rotateY = (centerX - x) / 20;
-                
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            });
-            
-            wrapper.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
-            });
-        });
+        // GSAP Horizontal Scroll
+        gsap.registerPlugin(ScrollTrigger);
 
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+        // Only apply on desktop devices where there's room to scroll horizontally comfortably
+        let mm = gsap.matchMedia();
 
-        // Smooth scroll for nav links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    mobileMenu.classList.add('hidden');
-                }
-            });
-        });
+        mm.add("(min-width: 768px)", () => {
+            const container = document.querySelector(".horizontal-scroll-container");
+            const wrapper = document.querySelector(".horizontal-scroll-wrapper");
 
-        // Navbar background on scroll
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 50) {
-                nav.classList.add('shadow-lg', 'shadow-matrix/5');
-            } else {
-                nav.classList.remove('shadow-lg', 'shadow-matrix/5');
+            if (container && wrapper) {
+                // Calculate scroll distance
+                let scrollWidth = container.scrollWidth - window.innerWidth + (window.innerWidth * 0.1); // Add a bit of padding
+
+                gsap.to(container, {
+                    x: -scrollWidth,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: wrapper,
+                        pin: true,
+                        scrub: 1,
+                        end: () => "+=" + scrollWidth,
+                        invalidateOnRefresh: true
+                    }
+                });
             }
         });
     </script>
 </body>
+
 </html>
