@@ -421,6 +421,28 @@
                 <div class="absolute left-0 top-4 bottom-0 w-px bg-zinc-200 dark:bg-zinc-800 ml-[9px]"></div>
 
                 <div class="space-y-12">
+                    <!-- Event 0 - Award -->
+                    <div class="relative pl-12 reveal">
+                        <!-- Dot -->
+                        <div
+                            class="absolute left-0 top-4 w-5 h-5 rounded-full bg-yellow-400 border-4 border-white dark:border-zinc-950">
+                        </div>
+                        <!-- Card -->
+                        <div
+                            class="glass-card rounded-[2rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 transition-transform duration-300">
+                            <div class="text-sm font-bold text-brand tracking-widest uppercase mb-2">JULY 2026
+                            </div>
+                            <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-1">
+                                <i class="fas fa-trophy text-yellow-500 mr-2"></i>Tech Visionary Award
+                            </h3>
+                            <div class="text-xs font-mono tracking-widest text-zinc-500 uppercase mb-4">KRUPANIDHI
+                                COLLEGE OF MANAGEMENT</div>
+                            <p class="text-zinc-600 dark:text-zinc-400">
+                                Awarded for outstanding technical innovation and contribution during the MCA program.
+                            </p>
+                        </div>
+                    </div>
+
                     <!-- Event 1 -->
                     <div class="relative pl-12 reveal">
                         <!-- Dot -->
@@ -430,14 +452,14 @@
                         <!-- Card -->
                         <div
                             class="glass-card rounded-[2rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 transition-transform duration-300">
-                            <div class="text-sm font-bold text-brand tracking-widest uppercase mb-2">2026 — PRESENT
+                            <div class="text-sm font-bold text-brand tracking-widest uppercase mb-2">APR 2026 — JUL 2026
                             </div>
                             <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-1">Cybersecurity Intern</h3>
                             <div class="text-xs font-mono tracking-widest text-zinc-500 uppercase mb-4">WHITE AND BOX -
                                 TECH PRODUCTS & SERVICES / BENGALURU</div>
                             <p class="text-zinc-600 dark:text-zinc-400">
-                                Currently focusing on modern threat detection, vulnerability assessment, and actively
-                                enhancing secure architectures.
+                                Web application and API penetration testing, phishing IOC analysis, vulnerability
+                                assessment, and client security reporting.
                             </p>
                         </div>
                     </div>
@@ -451,15 +473,15 @@
                         <!-- Card -->
                         <div
                             class="glass-card rounded-[2rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 transition-transform duration-300">
-                            <div class="text-sm font-bold text-brand tracking-widest uppercase mb-2">2024 — PRESENT
+                            <div class="text-sm font-bold text-brand tracking-widest uppercase mb-2">2024 — 2026
                             </div>
                             <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-1">Master of Computer
                                 Applications</h3>
-                            <div class="text-xs font-mono tracking-widest text-zinc-500 uppercase mb-4">BENGALURU NORTH
-                                UNIVERSITY</div>
+                            <div class="text-xs font-mono tracking-widest text-zinc-500 uppercase mb-4">KRUPANIDHI
+                                COLLEGE OF MANAGEMENT / BENGALURU NORTH UNIVERSITY</div>
                             <p class="text-zinc-600 dark:text-zinc-400">
-                                Pursuing advanced concepts in software development, operating systems, and network
-                                security, building the foundation for next-generation security automation.
+                                Specialisation in Cybersecurity & AI Systems, building the foundation for
+                                next-generation security automation.
                             </p>
                         </div>
                     </div>
@@ -712,6 +734,45 @@
 
         <div class="horizontal-scroll-wrapper">
             <div class="horizontal-scroll-container">
+                <!-- Project 0 - Final Year Project (AI-IDS) -->
+                <div
+                    class="project-card bg-white dark:bg-cardDark rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark border-2 border-brand/40 flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute top-6 right-6 px-3 py-1 bg-brand/10 text-brand rounded-full text-xs font-bold tracking-widest uppercase">Final Year Project</div>
+                    <div>
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-3xl mb-8">
+                            <i class="fas fa-satellite-dish text-brand"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold tracking-tight mb-4">AI-IDS: Real-Time Network Intrusion Detection Platform</h3>
+                        <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 text-sm">
+                            An AI-based network intrusion detection system that explains threats instead of just
+                            flagging them. Dual-layer detection (XGBoost ML classifier + behavioral rule engine)
+                            feeds a Groq/LLaMA 3.3 70B AI layer that generates MITRE ATT&CK-mapped forensic reports,
+                            predicts likely follow-on attacks, and answers plain-English questions about live alert
+                            data via a real-time WebSocket dashboard with 11 live sections.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span
+                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">Scapy</span>
+                            <span
+                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">XGBoost</span>
+                            <span
+                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">Groq
+                                / LLaMA 3.3 70B</span>
+                            <span
+                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">Flask
+                                WebSockets</span>
+                            <span
+                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">MITRE
+                                ATT&CK</span>
+                        </div>
+                    </div>
+                    <a href="https://github.com/Muhammed-Sakir-k" target="_blank"
+                        class="mt-8 flex items-center justify-center w-full py-4 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-semibold hover:scale-[1.02] transition-transform">
+                        View Source <i class="fab fa-github ml-2"></i>
+                    </a>
+                </div>
+
                 <!-- Project 1 -->
                 <div
                     class="project-card bg-white dark:bg-cardDark rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 flex flex-col justify-between">
