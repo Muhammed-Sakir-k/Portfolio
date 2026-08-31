@@ -1,1304 +1,1020 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Muhammed Sakir K | Cybersecurity Analyst</title>
+    <title>Muhammed Sakir K — root@security</title>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
 
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        mono: ['Fira Code', 'monospace'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        brand: '#ff5c35',
-                        bgLight: '#fafafa',
-                        bgDark: '#0a0a0a',
-                        cardLight: '#ffffff',
-                        cardDark: '#121212',
+                        void: '#050706',
+                        panel: '#0a0d0c',
+                        panel2: '#0f1412',
+                        line: 'rgba(120,255,180,0.12)',
+                        ink: '#dfe8e3',
+                        dim: '#66746e',
+                        signal: '#39e58c',
+                        signal2: '#2fd6e0',
+                        threat: '#ff5462',
+                        warn: '#ffb648',
                     },
-                    boxShadow: {
-                        'soft': '0 4px 40px -2px rgba(0, 0, 0, 0.05)',
-                        'softDark': '0 4px 40px -2px rgba(0, 0, 0, 0.5)',
-                    },
-                    animation: {
-                        'float-slow': 'floatIcon 8s ease-in-out infinite',
-                        'float-medium': 'floatIcon 6s ease-in-out infinite',
-                        'float-fast': 'floatIcon 4s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        floatIcon: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        }
-                    }
                 }
             }
         }
     </script>
 
     <style>
-        /* Smooth theme transition */
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
-            transition: background-color 0.5s ease, color 0.5s ease;
+            background: #050706;
+            color: #dfe8e3;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            cursor: none;
+        }
+        @media (pointer: coarse) {
+            body { cursor: auto; }
         }
 
-        .glass-nav {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+        ::selection { background: #39e58c; color: #050706; }
+
+        /* ---------- Custom cursor ---------- */
+        .cur-dot, .cur-ring {
+            position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%);
+            border-radius: 9999px;
+        }
+        .cur-dot { width: 5px; height: 5px; background: #39e58c; }
+        .cur-ring {
+            width: 30px; height: 30px; border: 1px solid rgba(57,229,140,0.5);
+            transition: width .18s ease, height .18s ease, border-color .18s ease, background .18s ease;
+        }
+        .cur-ring.active { width: 54px; height: 54px; border-color: #2fd6e0; background: rgba(47,214,224,0.08); }
+        @media (pointer: coarse) { .cur-dot, .cur-ring { display: none; } }
+
+        /* ---------- Background canvas + overlays ---------- */
+        #net-canvas { position: fixed; inset: 0; z-index: -3; opacity: .55; }
+        .vignette {
+            position: fixed; inset: 0; z-index: -2; pointer-events: none;
+            background: radial-gradient(ellipse at center, transparent 35%, #050706 92%);
+        }
+        .scanlines {
+            position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .3;
+            background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 3px);
+        }
+        .grain {
+            position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .04; mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
 
-        .dark .glass-nav {
-            background: rgba(18, 18, 18, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        /* ---------- Terminal window chrome ---------- */
+        .term {
+            background: rgba(10,13,12,0.72);
+            border: 1px solid rgba(120,255,180,0.14);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
         }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 1);
+        .term-bar {
+            display: flex; align-items: center; gap: 8px;
+            padding: 10px 14px;
+            border-bottom: 1px solid rgba(120,255,180,0.12);
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
         }
+        .term-dot { width: 9px; height: 9px; border-radius: 9999px; }
 
-        .dark .glass-card {
-            background: rgba(30, 30, 30, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        /* ---------- Glitch headline ---------- */
+        .glitch-wrap { position: relative; display: inline-block; }
+        .glitch-wrap .g-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0; mix-blend-mode: screen;
         }
+        .glitch-active .g-layer.g1 { animation: glitch1 .34s steps(2,end) 1; color: #ff5462; opacity: .85; }
+        .glitch-active .g-layer.g2 { animation: glitch2 .34s steps(2,end) 1; color: #2fd6e0; opacity: .85; }
+        @keyframes glitch1 { 0% { clip-path: inset(0 0 88% 0); transform: translate(-4px,-2px);} 50% {clip-path: inset(40% 0 20% 0); transform: translate(4px,1px);} 100% {clip-path: inset(80% 0 2% 0); transform: translate(-2px,2px);} }
+        @keyframes glitch2 { 0% { clip-path: inset(60% 0 5% 0); transform: translate(4px,2px);} 50% {clip-path: inset(10% 0 60% 0); transform: translate(-3px,-1px);} 100% {clip-path: inset(30% 0 40% 0); transform: translate(3px,-2px);} }
 
-        .pastel-blue {
-            background: #f0f9ff;
+        /* ---------- Blinking cursor block ---------- */
+        .blk-cursor { display: inline-block; width: .55em; height: 1em; background: #39e58c; vertical-align: -0.15em; animation: blink 1s steps(1) infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* ---------- Reveal ---------- */
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* ---------- Target reticle avatar frame ---------- */
+        .reticle { position: relative; }
+        .reticle::before, .reticle::after,
+        .reticle .rb1, .reticle .rb2 {
+            content: ''; position: absolute; width: 22px; height: 22px;
+            border: 2px solid #39e58c;
         }
+        .reticle::before { top: -8px; left: -8px; border-right: none; border-bottom: none; }
+        .reticle::after { bottom: -8px; right: -8px; border-left: none; border-top: none; }
+        .reticle .rb1 { top: -8px; right: -8px; border-left: none; border-bottom: none; }
+        .reticle .rb2 { bottom: -8px; left: -8px; border-right: none; border-top: none; }
 
-        .pastel-pink {
-            background: #fdf2f8;
+        /* ---------- Skill chip ---------- */
+        .chip {
+            font-family: 'JetBrains Mono', monospace; font-size: .74rem;
+            padding: .4rem .7rem; border: 1px solid rgba(120,255,180,0.18);
+            background: rgba(120,255,180,0.03); border-radius: 4px;
+            transition: border-color .2s ease, background .2s ease, transform .2s ease;
+            position: relative; overflow: hidden;
         }
+        .chip:hover { border-color: #39e58c; background: rgba(57,229,140,0.08); transform: translateY(-2px); }
 
-        .pastel-green {
-            background: #f0fdf4;
-        }
+        /* ---------- Project card tilt ---------- */
+        .tilt-card { transform-style: preserve-3d; will-change: transform; }
 
-        .dark .pastel-blue {
-            background: #0c4a6e;
-            border-color: #0ea5e9;
-        }
-
-        .dark .pastel-pink {
-            background: #831843;
-            border-color: #f43f5e;
-        }
-
-        .dark .pastel-green {
-            background: #14532d;
-            border-color: #22c55e;
-        }
-
-        /* Hide scrollbar */
-        ::-webkit-scrollbar {
-            width: 0px;
-            height: 0px;
-            background: transparent;
-        }
-
-        .horizontal-scroll-wrapper {
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .horizontal-scroll-container {
-            display: flex;
-            width: max-content;
-            padding: 0 5vw;
-        }
-
-        .project-card {
-            width: 450px;
-            height: 480px;
-            margin-right: 2rem;
-            flex-shrink: 0;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
+        /* ---------- Horizontal scroll (unchanged mechanics) ---------- */
+        .horizontal-scroll-wrapper { width: 100%; height: 100vh; overflow: hidden; position: relative; display: flex; align-items: center; }
+        .horizontal-scroll-container { display: flex; width: max-content; padding: 0 5vw; }
+        .project-card { width: 460px; flex-shrink: 0; margin-right: 2rem; }
         @media (max-width: 768px) {
-            .horizontal-scroll-wrapper {
-                height: auto;
-                overflow-x: auto;
-                overflow-y: hidden;
-                scroll-snap-type: x mandatory;
-                padding-bottom: 2rem;
-                -webkit-overflow-scrolling: touch;
-            }
-            .horizontal-scroll-container {
-                padding: 0 1rem;
-            }
-            .project-card {
-                width: 85vw;
-                height: auto;
-                min-height: 400px;
-                margin-right: 1rem;
-                scroll-snap-align: center;
-            }
+            .horizontal-scroll-wrapper { height: auto; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; padding-bottom: 1.5rem; -webkit-overflow-scrolling: touch; }
+            .horizontal-scroll-container { padding: 0 1rem; }
+            .project-card { width: 86vw; margin-right: 1rem; scroll-snap-align: center; }
         }
 
-        .project-card:hover {
-            transform: translateY(-10px);
-        }
+        ::-webkit-scrollbar { width: 0; height: 0; background: transparent; }
 
-        /* Abstract Background Blobs */
-        .blobs-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            z-index: -1;
-            pointer-events: none;
-        }
+        .status-dot { width: 7px; height: 7px; border-radius: 9999px; background: #39e58c; box-shadow: 0 0 8px #39e58c; animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
 
-        .blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.5;
-            animation: float 20s infinite alternate;
-        }
-
-        .dark .blob {
-            opacity: 0.15;
-        }
-
-        .blob-1 {
-            top: -10%;
-            left: -10%;
-            width: 50vw;
-            height: 50vw;
-            background: #e0e7ff;
-        }
-
-        .blob-2 {
-            bottom: -10%;
-            right: -10%;
-            width: 40vw;
-            height: 40vw;
-            background: #fae8ff;
-            animation-delay: -5s;
-        }
-
-        .blob-3 {
-            top: 40%;
-            left: 30%;
-            width: 30vw;
-            height: 30vw;
-            background: #ffedd5;
-            animation-delay: -10s;
-        }
-
-        .dark .blob-1 {
-            background: #4f46e5;
-        }
-
-        .dark .blob-2 {
-            background: #c026d3;
-        }
-
-        .dark .blob-3 {
-            background: #ea580c;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translate(0, 0) scale(1);
-            }
-
-            50% {
-                transform: translate(5%, 5%) scale(1.05);
-            }
-
-            100% {
-                transform: translate(-5%, -5%) scale(0.95);
-            }
-        }
-
-        /* Reveal animation utility */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { transition: none !important; }
+            .status-dot { animation: none; }
+            .blk-cursor { animation: none; }
         }
     </style>
 </head>
 
-<body class="bg-bgLight dark:bg-bgDark text-zinc-900 dark:text-zinc-100 transition-colors duration-300">
+<body class="antialiased">
 
-    <!-- Abstract Background -->
-    <div class="blobs-container">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
-    </div>
+    <canvas id="net-canvas"></canvas>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+    <div class="grain"></div>
+    <div class="cur-dot" id="curDot"></div>
+    <div class="cur-ring" id="curRing"></div>
 
-    <!-- Navigation -->
-    <nav class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-[90%] max-w-4xl">
-        <div
-            class="glass-nav rounded-full px-6 py-3 flex justify-between items-center shadow-soft dark:shadow-softDark">
-            <div class="font-bold tracking-tighter text-xl">MSK<span class="text-brand">.</span></div>
-            <div class="hidden md:flex space-x-8 text-sm font-medium">
-                <a href="#about" class="hover:text-brand transition-colors">About</a>
-                <a href="#skills" class="hover:text-brand transition-colors">Arsenal</a>
-                <a href="#projects" class="hover:text-brand transition-colors">Projects</a>
-                <a href="#creds" class="hover:text-brand transition-colors">Creds</a>
+    <!-- Nav -->
+    <nav class="fixed top-5 left-1/2 -translate-x-1/2 z-50 w-[94%] max-w-4xl">
+        <div class="term rounded-lg px-5 py-3 flex justify-between items-center">
+            <div class="font-mono font-bold tracking-tight text-sm text-ink">root<span class="text-signal">@</span>sakir<span class="text-dim">:~$</span></div>
+            <div class="hidden md:flex space-x-7 text-xs font-mono text-dim">
+                <a href="#about" class="hover:text-signal transition-colors" data-cursor>whoami</a>
+                <a href="#experience" class="hover:text-signal transition-colors" data-cursor>trace</a>
+                <a href="#skills" class="hover:text-signal transition-colors" data-cursor>arsenal</a>
+                <a href="#projects" class="hover:text-signal transition-colors" data-cursor>projects</a>
+                <a href="#creds" class="hover:text-signal transition-colors" data-cursor>creds.log</a>
             </div>
             <div class="flex items-center gap-4">
-                <button id="themeToggle"
-                    class="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center hover:scale-105 transition-transform border border-zinc-200 dark:border-zinc-700">
-                    <i class="fas fa-moon dark:hidden"></i>
-                    <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
-                </button>
-                <a href="#contact"
-                    class="hidden md:block px-5 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-full text-sm font-semibold hover:bg-brand dark:hover:bg-brand dark:hover:text-white transition-colors">Let's
-                    Talk</a>
-                <button class="md:hidden text-xl"><i class="fas fa-bars"></i></button>
+                <span class="hidden sm:flex items-center gap-2 text-[11px] font-mono text-dim"><span class="status-dot"></span>SECURE</span>
+                <a href="#contact" data-cursor
+                    class="px-4 py-1.5 bg-signal text-void rounded text-xs font-mono font-bold hover:bg-signal2 transition-colors">&gt; connect_</a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section
-        class="min-h-screen flex flex-col justify-center items-center pt-32 md:pt-40 pb-20 px-6 relative overflow-hidden">
-        <!-- Floating Icons -->
-        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 hidden md:flex items-center justify-center text-2xl text-blue-500 animate-float-slow"
-            style="top: 20%; left: 15%;">
-            <i class="fab fa-python"></i>
-        </div>
-        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 hidden md:flex items-center justify-center text-2xl text-orange-500 animate-float-medium"
-            style="top: 60%; left: 10%;">
-            <i class="fab fa-linux"></i>
-        </div>
-        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 hidden md:flex items-center justify-center text-2xl text-sky-500 animate-float-fast"
-            style="top: 25%; right: 15%;">
-            <i class="fas fa-shield-halved"></i>
-        </div>
-        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 hidden md:flex items-center justify-center text-2xl text-emerald-500 animate-float-slow"
-            style="top: 65%; right: 12%;">
-            <i class="fas fa-network-wired"></i>
-        </div>
-        <div class="absolute w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 shadow-soft border border-zinc-100 dark:border-zinc-700 hidden md:flex items-center justify-center text-2xl text-rose-500 animate-float-medium"
-            style="top: 80%; left: 30%;">
-            <i class="fas fa-bug"></i>
+    <!-- Hero -->
+    <section class="min-h-screen flex flex-col justify-center items-center pt-40 pb-16 px-6 relative">
+        <div class="max-w-3xl w-full mx-auto">
+            <div class="term rounded-xl overflow-hidden mb-10">
+                <div class="term-bar">
+                    <span class="term-dot bg-[#ff5f57]"></span>
+                    <span class="term-dot bg-[#febc2e]"></span>
+                    <span class="term-dot bg-[#28c840]"></span>
+                    <span class="ml-2 text-[11px] font-mono text-dim">sakir@security:~ — interactive</span>
+                </div>
+                <div class="p-5 font-mono text-[13px] leading-relaxed" id="termBody" style="height: 280px; overflow-y: auto; cursor: text;">
+                    <div id="termOutput"></div>
+                    <div class="flex items-center gap-2 flex-wrap" id="termLine" style="display:none;">
+                        <span class="text-signal shrink-0" id="termPromptLabel">root@sakir:~$</span>
+                        <input id="termInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"
+                            class="flex-1 bg-transparent outline-none text-ink" style="caret-color:#39e58c; min-width:60px;">
+                    </div>
+                </div>
+                <div class="px-5 py-3 text-[11px] font-mono text-dim border-t border-line" id="termHint">
+                    try: <span class="text-signal">whoami</span> · <span class="text-signal">ls</span> · <span class="text-signal">cat about.md</span> · <span class="text-signal">cd projects</span> · <span class="text-signal">help</span>
+                </div>
+            </div>
         </div>
 
-        <div class="max-w-5xl mx-auto text-center reveal active relative z-10">
+        <div class="max-w-5xl w-full mx-auto text-center relative z-10" id="heroReveal" style="opacity:0;">
             <div class="mb-8 flex justify-center">
-                <div
-                    class="w-32 h-32 rounded-full border-4 border-white dark:border-zinc-800 shadow-xl overflow-hidden bg-zinc-200 dark:bg-zinc-800 relative">
-                    <!-- Placeholder image, user will add from here -->
-                    <img src="muhammed-sakir-k.jpg" alt="Profile Picture" class="w-full h-full object-cover">
-                    <!-- Fallback icon -->
-                    <div class="absolute inset-0 flex items-center justify-center text-zinc-400 -z-10 text-4xl">
-                        <i class="fas fa-user"></i>
-                    </div>
+                <div class="reticle w-28 h-28 overflow-hidden bg-panel2">
+                    <div class="rb1"></div><div class="rb2"></div>
+                    <img src="muhammed-sakir-k.jpg" alt="Profile" class="w-full h-full object-cover grayscale contrast-125">
                 </div>
             </div>
-            <div
-                class="inline-block px-4 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-black/50 backdrop-blur-sm text-xs font-mono mb-8 text-zinc-600 dark:text-zinc-400">
-                <i class="fas fa-shield-halved mr-2 text-brand"></i>SECURITY ANALYST & VAPT SPECIALIST
-            </div>
-            <h1 class="text-4xl sm:text-6xl md:text-8xl font-extrabold tracking-tighter leading-[1.1] mb-6">
-                Securing Digital <br />
-                <span
-                    class="text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-400 break-words">Infrastructures.</span>
+
+            <h1 class="glitch-wrap text-4xl sm:text-6xl md:text-7xl font-mono font-extrabold tracking-tighter leading-[1.05] mb-6" id="glitchTitle">
+                <span class="g-layer g1" aria-hidden="true">Securing Digital<br>Infrastructures.</span>
+                <span class="g-layer g2" aria-hidden="true">Securing Digital<br>Infrastructures.</span>
+                Securing Digital<br>
+                <span class="text-signal">Infrastructures.</span>
             </h1>
-            <p class="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-                I'm <strong class="text-zinc-900 dark:text-white">Muhammed Sakir K</strong>. A cybersecurity
-                postgraduate specializing in SOC operations, VAPT, and penetration testing. Ranked Top 1% on TryHackMe.
+
+            <p class="text-base md:text-lg text-dim max-w-2xl mx-auto mb-10 leading-relaxed font-sans">
+                I'm <strong class="text-ink">Muhammed Sakir K</strong> — a cybersecurity postgraduate working across
+                SOC operations, VAPT, and penetration testing. Ranked top 1% on TryHackMe.
             </p>
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="#projects"
-                    class="px-8 py-4 bg-brand text-white rounded-full font-semibold hover:scale-105 transition-transform shadow-[0_4px_20px_rgba(255,92,53,0.3)]">View
-                    Projects</a>
-                <a href="https://linkedin.com/in/muhammed-sakir-k" target="_blank"
-                    class="px-8 py-4 bg-white dark:bg-zinc-800 rounded-full font-semibold border border-zinc-200 dark:border-zinc-700 hover:scale-105 transition-transform flex items-center gap-2">
-                    <i class="fab fa-linkedin text-[#0A66C2]"></i> LinkedIn
+
+            <div class="flex flex-wrap justify-center gap-3">
+                <a href="#projects" data-cursor
+                    class="px-6 py-3 bg-signal text-void rounded font-mono font-bold text-sm hover:bg-signal2 transition-colors">./view_projects</a>
+                <a href="https://linkedin.com/in/muhammed-sakir-k" target="_blank" data-cursor
+                    class="px-6 py-3 term rounded font-mono text-sm hover:border-signal border border-transparent transition-colors flex items-center gap-2">
+                    <i class="fab fa-linkedin text-[#2fd6e0]"></i> linkedin
                 </a>
-                <a href="https://github.com/Muhammed-Sakir-k" target="_blank"
-                    class="px-8 py-4 bg-white dark:bg-zinc-800 rounded-full font-semibold border border-zinc-200 dark:border-zinc-700 hover:scale-105 transition-transform flex items-center gap-2">
-                    <i class="fab fa-github"></i> GitHub
+                <a href="https://github.com/Muhammed-Sakir-k" target="_blank" data-cursor
+                    class="px-6 py-3 term rounded font-mono text-sm hover:border-signal border border-transparent transition-colors flex items-center gap-2">
+                    <i class="fab fa-github"></i> github
                 </a>
             </div>
 
-            <div
-                class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto border-t border-zinc-200 dark:border-zinc-800 pt-10">
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto border-t border-line pt-8">
                 <div>
-                    <div class="text-3xl font-bold text-zinc-900 dark:text-white mb-1">800+</div>
-                    <div class="text-xs font-mono text-zinc-500 uppercase tracking-wider">Events Analyzed</div>
+                    <div class="text-3xl font-mono font-bold text-ink mb-1"><span class="counter" data-target="800">0</span>+</div>
+                    <div class="text-[11px] font-mono text-dim">events_analyzed</div>
                 </div>
                 <div>
-                    <div class="text-3xl font-bold text-zinc-900 dark:text-white mb-1">Top 1%</div>
-                    <div class="text-xs font-mono text-zinc-500 uppercase tracking-wider">TryHackMe</div>
+                    <div class="text-3xl font-mono font-bold text-ink mb-1">Top <span class="counter" data-target="1">0</span>%</div>
+                    <div class="text-[11px] font-mono text-dim">tryhackme_rank</div>
                 </div>
                 <div>
-                    <div class="text-3xl font-bold text-zinc-900 dark:text-white mb-1">50+</div>
-                    <div class="text-xs font-mono text-zinc-500 uppercase tracking-wider">Phishing Scenarios</div>
+                    <div class="text-3xl font-mono font-bold text-ink mb-1"><span class="counter" data-target="50">0</span>+</div>
+                    <div class="text-[11px] font-mono text-dim">phishing_sims</div>
                 </div>
                 <div>
-                    <div class="text-3xl font-bold text-zinc-900 dark:text-white mb-1">9</div>
-                    <div class="text-xs font-mono text-zinc-500 uppercase tracking-wider">Certifications</div>
+                    <div class="text-3xl font-mono font-bold text-ink mb-1"><span class="counter" data-target="9">0</span></div>
+                    <div class="text-[11px] font-mono text-dim">certifications</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- About & Experience Grid -->
-    <section id="about" class="py-24 px-6 max-w-5xl mx-auto">
-        <div class="glass-card rounded-[2.5rem] p-6 sm:p-10 md:p-14 shadow-soft dark:shadow-softDark reveal text-center">
-            <div class="text-xs font-mono text-zinc-500 tracking-widest uppercase mb-4">[ 01 ] About Me</div>
-            <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-8">Bridging the gap between offense and
-                defense.</h2>
-            <div class="space-y-6 text-zinc-600 dark:text-zinc-400 text-lg leading-relaxed text-left">
-                <p>
-                    Currently pursuing my Master's in Computer Applications while actively hunting vulnerabilities. I
-                    leverage AI to develop next-generation security automation tools.
-                </p>
-                <p>
-                    Operating at the intersection of <strong
-                        class="text-zinc-900 dark:text-white font-semibold">Offensive Security (VAPT)</strong> and
-                    <strong class="text-zinc-900 dark:text-white font-semibold">Defensive Operations (SOC)</strong>.
-                    Whether I'm actively hunting zero-days, orchestrating incident responses, or architecting
-                    unbreakable log analysis pipelines, I thrive in the chaos. I don't just secure systems—I compromise
-                    them to understand their breaking points, and rebuild them to be bulletproof.
-                </p>
+    <!-- About -->
+    <section id="about" class="py-20 px-6 max-w-4xl mx-auto">
+        <div class="term rounded-xl overflow-hidden reveal">
+            <div class="term-bar">
+                <span class="term-dot bg-[#ff5f57]"></span><span class="term-dot bg-[#febc2e]"></span><span class="term-dot bg-[#28c840]"></span>
+                <span class="ml-2 text-[11px] font-mono text-dim">about.md</span>
+            </div>
+            <div class="p-8 sm:p-12">
+                <div class="font-mono text-signal text-xs mb-4">$ cat about.md</div>
+                <h2 class="text-2xl md:text-4xl font-mono font-bold tracking-tight mb-8 text-ink" data-scramble>Bridging the gap between offense and defense.</h2>
+                <div class="space-y-5 text-dim leading-relaxed font-sans">
+                    <p>Currently pursuing my Master's in Computer Applications while actively hunting vulnerabilities. I leverage AI to develop next-generation security automation tools.</p>
+                    <p>Operating at the intersection of <strong class="text-ink">offensive security (VAPT)</strong> and <strong class="text-ink">defensive operations (SOC)</strong>. Whether hunting zero-days, orchestrating incident responses, or architecting log analysis pipelines — I don't just secure systems, I compromise them to understand their breaking points, then rebuild them to be bulletproof.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- My Journey So Far -->
-    <section id="experience" class="py-32 px-6 max-w-7xl mx-auto border-t border-zinc-100 dark:border-zinc-800/50">
-        <div class="flex flex-col md:flex-row gap-16 md:gap-24 relative">
-
-            <!-- Left Sticky Header -->
+    <!-- Journey / Trace route -->
+    <section id="experience" class="py-28 px-6 max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row gap-14 md:gap-20 relative">
             <div class="md:w-1/3">
-                <div class="sticky top-32">
-                    <div class="text-xs font-mono font-bold text-brand tracking-widest uppercase mb-4">The Journey</div>
-                    <h2 class="text-5xl md:text-6xl font-bold tracking-tighter text-zinc-900 dark:text-white mb-6">My
-                        Journey So Far.</h2>
-                    <hr class="border-zinc-200 dark:border-zinc-800 mb-6">
-                    <p class="text-lg text-zinc-500 dark:text-zinc-400">
-                        A timeline of my learning, certifications, and career journey in cybersecurity.
-                    </p>
+                <div class="sticky top-32 reveal">
+                    <div class="font-mono text-signal text-xs mb-3">$ traceroute career</div>
+                    <h2 class="text-4xl md:text-5xl font-mono font-bold tracking-tight text-ink mb-5" data-scramble>My Journey So Far.</h2>
+                    <p class="text-dim leading-relaxed">A trace of learning, certifications, and career hops along the way.</p>
                 </div>
             </div>
 
-            <!-- Right Timeline -->
             <div class="md:w-2/3 relative">
-                <!-- Timeline Line -->
-                <div class="absolute left-0 top-4 bottom-0 w-px bg-zinc-200 dark:bg-zinc-800 ml-[9px]"></div>
+                <div class="absolute left-0 top-3 bottom-0 w-px ml-[9px]" style="background-image: linear-gradient(to bottom, rgba(120,255,180,0.35) 0, rgba(120,255,180,0.35) 6px, transparent 6px, transparent 12px); background-size: 1px 12px;"></div>
 
-                <div class="space-y-12">
-                    <!-- Event 0 - Award -->
+                <div class="space-y-10">
                     <div class="relative pl-12 reveal">
-                        <!-- Dot -->
-                        <div
-                            class="absolute left-0 top-4 w-5 h-5 rounded-full bg-yellow-400 border-4 border-white dark:border-zinc-950">
-                        </div>
-                        <!-- Card -->
-                        <div
-                            class="glass-card rounded-[2rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 transition-transform duration-300">
-                            <div class="text-sm font-bold text-brand tracking-widest uppercase mb-2">JULY 2026
-                            </div>
-                            <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-1">
-                                <i class="fas fa-trophy text-yellow-500 mr-2"></i>Tech Visionary Award
-                            </h3>
-                            <div class="text-xs font-mono tracking-widest text-zinc-500 uppercase mb-4">KRUPANIDHI
-                                COLLEGE OF MANAGEMENT</div>
-                            <p class="text-zinc-600 dark:text-zinc-400">
-                                Awarded for outstanding technical innovation and contribution during the MCA program.
-                            </p>
+                        <div class="absolute left-0 top-2 w-5 h-5 rounded-full bg-warn shadow-[0_0_10px_#ffb648]"></div>
+                        <div class="term rounded-xl p-7 hover:-translate-y-1 transition-transform duration-300">
+                            <div class="text-xs font-mono text-warn mb-2 flex items-center gap-2"><i class="fas fa-trophy"></i> JUL 2026 · [AWARD]</div>
+                            <h3 class="text-xl font-mono font-bold text-ink mb-1">Tech Visionary Award</h3>
+                            <div class="text-[11px] font-mono text-dim mb-3">KRUPANIDHI COLLEGE OF MANAGEMENT</div>
+                            <p class="text-dim text-sm leading-relaxed">Awarded for outstanding technical innovation and contribution during the MCA program.</p>
                         </div>
                     </div>
 
-                    <!-- Event 1 -->
                     <div class="relative pl-12 reveal">
-                        <!-- Dot -->
-                        <div
-                            class="absolute left-0 top-4 w-5 h-5 rounded-full bg-brand border-4 border-white dark:border-zinc-950">
-                        </div>
-                        <!-- Card -->
-                        <div
-                            class="glass-card rounded-[2rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 transition-transform duration-300">
-                            <div class="text-sm font-bold text-brand tracking-widest uppercase mb-2">APR 2026 — JUL 2026
-                            </div>
-                            <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-1">Cybersecurity Intern</h3>
-                            <div class="text-xs font-mono tracking-widest text-zinc-500 uppercase mb-4">WHITE AND BOX -
-                                TECH PRODUCTS & SERVICES / BENGALURU</div>
-                            <p class="text-zinc-600 dark:text-zinc-400">
-                                Web application and API penetration testing, phishing IOC analysis, vulnerability
-                                assessment, and client security reporting.
-                            </p>
+                        <div class="absolute left-0 top-2 w-5 h-5 rounded-full bg-signal shadow-[0_0_10px_#39e58c]"></div>
+                        <div class="term rounded-xl p-7 hover:-translate-y-1 transition-transform duration-300">
+                            <div class="text-xs font-mono text-signal mb-2">APR 2026 — JUL 2026 · [ACTIVE]</div>
+                            <h3 class="text-xl font-mono font-bold text-ink mb-1">Cybersecurity Intern</h3>
+                            <div class="text-[11px] font-mono text-dim mb-3">WHITE AND BOX — TECH PRODUCTS & SERVICES / BENGALURU</div>
+                            <p class="text-dim text-sm leading-relaxed">Web application and API penetration testing, phishing IOC analysis, vulnerability assessment, and client security reporting.</p>
                         </div>
                     </div>
 
-                    <!-- Event 2 -->
-                    <div class="relative pl-12 reveal delay-100">
-                        <!-- Dot -->
-                        <div
-                            class="absolute left-0 top-4 w-5 h-5 rounded-full bg-zinc-300 dark:bg-zinc-700 border-4 border-white dark:border-zinc-950">
-                        </div>
-                        <!-- Card -->
-                        <div
-                            class="glass-card rounded-[2rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 transition-transform duration-300">
-                            <div class="text-sm font-bold text-brand tracking-widest uppercase mb-2">2024 — 2026
-                            </div>
-                            <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-1">Master of Computer
-                                Applications</h3>
-                            <div class="text-xs font-mono tracking-widest text-zinc-500 uppercase mb-4">KRUPANIDHI
-                                COLLEGE OF MANAGEMENT / BENGALURU NORTH UNIVERSITY</div>
-                            <p class="text-zinc-600 dark:text-zinc-400">
-                                Specialisation in Cybersecurity & AI Systems, building the foundation for
-                                next-generation security automation.
-                            </p>
+                    <div class="relative pl-12 reveal">
+                        <div class="absolute left-0 top-2 w-5 h-5 rounded-full bg-dim/60 border border-line"></div>
+                        <div class="term rounded-xl p-7 hover:-translate-y-1 transition-transform duration-300">
+                            <div class="text-xs font-mono text-dim mb-2">2024 — 2026 · [EDU]</div>
+                            <h3 class="text-xl font-mono font-bold text-ink mb-1">Master of Computer Applications</h3>
+                            <div class="text-[11px] font-mono text-dim mb-3">KRUPANIDHI COLLEGE OF MANAGEMENT / BENGALURU NORTH UNIVERSITY</div>
+                            <p class="text-dim text-sm leading-relaxed">Specialisation in cybersecurity & AI systems, building the foundation for next-generation security automation.</p>
                         </div>
                     </div>
 
-                    <!-- Event 3 -->
-                    <div class="relative pl-12 reveal delay-200">
-                        <!-- Dot -->
-                        <div
-                            class="absolute left-0 top-4 w-5 h-5 rounded-full bg-zinc-300 dark:bg-zinc-700 border-4 border-white dark:border-zinc-950">
-                        </div>
-                        <!-- Card -->
-                        <div
-                            class="glass-card rounded-[2rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 transition-transform duration-300">
-                            <div class="text-sm font-bold text-brand tracking-widest uppercase mb-2">2021 — 2024</div>
-                            <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-1">Bachelor of Computer
-                                Applications</h3>
-                            <div class="text-xs font-mono tracking-widest text-zinc-500 uppercase mb-4">CALICUT
-                                UNIVERSITY</div>
-                            <p class="text-zinc-600 dark:text-zinc-400">
-                                Developed strong core foundations in computer science, programming logic, and systems
-                                architecture.
-                            </p>
+                    <div class="relative pl-12 reveal">
+                        <div class="absolute left-0 top-2 w-5 h-5 rounded-full bg-dim/60 border border-line"></div>
+                        <div class="term rounded-xl p-7 hover:-translate-y-1 transition-transform duration-300">
+                            <div class="text-xs font-mono text-dim mb-2">2021 — 2024 · [EDU]</div>
+                            <h3 class="text-xl font-mono font-bold text-ink mb-1">Bachelor of Computer Applications</h3>
+                            <div class="text-[11px] font-mono text-dim mb-3">CALICUT UNIVERSITY</div>
+                            <p class="text-dim text-sm leading-relaxed">Developed strong core foundations in computer science, programming logic, and systems architecture.</p>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         </div>
     </section>
 
-    <!-- Arsenal (Skills) Section -->
+    <!-- Arsenal -->
     <section id="skills" class="py-24 px-6 max-w-7xl mx-auto">
-        <div class="mb-16 reveal text-center max-w-3xl mx-auto">
-            <div class="text-xs font-mono text-zinc-500 tracking-widest uppercase mb-4">[ 02 ] Arsenal</div>
-            <h2 class="text-4xl md:text-5xl font-bold tracking-tighter mb-6">Cybersecurity & Development Arsenal</h2>
-            <p class="text-xl text-zinc-600 dark:text-zinc-400">Building secure, scalable, and intelligent solutions
-                using modern cybersecurity, AI, and development technologies.</p>
+        <div class="mb-14 reveal max-w-2xl">
+            <div class="font-mono text-signal text-xs mb-3">$ cat arsenal.json</div>
+            <h2 class="text-3xl md:text-5xl font-mono font-bold tracking-tight mb-4 text-ink" data-scramble>Cybersecurity & Development Arsenal</h2>
+            <p class="text-dim leading-relaxed">Building secure, scalable, intelligent solutions using modern security, AI, and development tooling.</p>
         </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Offensive -->
-            <div
-                class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300">
-                <div class="flex items-center gap-4 mb-6">
-                    <div
-                        class="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-xl shadow-sm">
-                        <i class="fas fa-crosshairs"></i>
-                    </div>
-                    <h3 class="text-xl font-bold tracking-tight">Offensive Security</h3>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div class="term rounded-2xl p-7 reveal">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-10 h-10 rounded-lg bg-threat/10 text-threat flex items-center justify-center"><i class="fas fa-crosshairs"></i></div>
+                    <h3 class="font-mono font-bold text-ink">offensive/</h3>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">VAPT</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Web
-                        App Testing</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">API
-                        Security</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">OWASP
-                        Top 10</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Recon</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Privilege
-                        Escalation</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Metasploit
-                        (Basic)</span>
+                    <span class="chip">VAPT</span><span class="chip">Web App Testing</span><span class="chip">API Security</span>
+                    <span class="chip">OWASP Top 10</span><span class="chip">Recon</span><span class="chip">Privilege Escalation</span>
+                    <span class="chip">Metasploit (basic)</span>
                 </div>
             </div>
 
-            <!-- Defensive -->
-            <div
-                class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300 delay-100">
-                <div class="flex items-center gap-4 mb-6">
-                    <div
-                        class="w-12 h-12 rounded-2xl bg-sky-500/10 text-sky-500 flex items-center justify-center text-xl shadow-sm">
-                        <i class="fas fa-shield-halved"></i>
-                    </div>
-                    <h3 class="text-xl font-bold tracking-tight">Defensive Security</h3>
+            <div class="term rounded-2xl p-7 reveal">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-10 h-10 rounded-lg bg-signal2/10 text-signal2 flex items-center justify-center"><i class="fas fa-shield-halved"></i></div>
+                    <h3 class="font-mono font-bold text-ink">defensive/</h3>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">SIEM
-                        (Wazuh)</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Log
-                        Analysis</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Threat
-                        Detection</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Alert
-                        Triage</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Incident
-                        Response</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Phishing
-                        Detection</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Wireshark</span>
+                    <span class="chip">SIEM (Wazuh)</span><span class="chip">Log Analysis</span><span class="chip">Threat Detection</span>
+                    <span class="chip">Alert Triage</span><span class="chip">Incident Response</span><span class="chip">Phishing Detection</span>
+                    <span class="chip">Wireshark</span>
                 </div>
             </div>
 
-            <!-- AI / Dev -->
-            <div
-                class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300 delay-200">
-                <div class="flex items-center gap-4 mb-6">
-                    <div
-                        class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xl shadow-sm">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <h3 class="text-xl font-bold tracking-tight">AI / Dev</h3>
+            <div class="term rounded-2xl p-7 reveal">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-10 h-10 rounded-lg bg-signal/10 text-signal flex items-center justify-center"><i class="fas fa-brain"></i></div>
+                    <h3 class="font-mono font-bold text-ink">ai_dev/</h3>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Prompt
-                        Engineering</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">API
-                        Dev (FastAPI)</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">LLM
-                        Integration</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Ollama</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">FullStack
-                        (React)</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">JSON
-                        Data Handling</span>
+                    <span class="chip">Prompt Engineering</span><span class="chip">FastAPI</span><span class="chip">LLM Integration</span>
+                    <span class="chip">Ollama</span><span class="chip">React</span><span class="chip">JSON Handling</span>
                 </div>
             </div>
 
-            <!-- Tools & Platforms -->
-            <div
-                class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300">
-                <div class="flex items-center gap-4 mb-6">
-                    <div
-                        class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center text-xl shadow-sm">
-                        <i class="fas fa-toolbox"></i>
-                    </div>
-                    <h3 class="text-xl font-bold tracking-tight">Tools & Platforms</h3>
+            <div class="term rounded-2xl p-7 reveal">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-10 h-10 rounded-lg bg-warn/10 text-warn flex items-center justify-center"><i class="fas fa-toolbox"></i></div>
+                    <h3 class="font-mono font-bold text-ink">tools/</h3>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Burp
-                        Suite</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Nmap</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Wireshark</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Kali
-                        Linux</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Splunk
-                        (Basic)</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Docker</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">FFUF</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Gobuster</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">TryHackMe</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Hack
-                        The Box</span>
+                    <span class="chip">Burp Suite</span><span class="chip">Nmap</span><span class="chip">Wireshark</span>
+                    <span class="chip">Kali Linux</span><span class="chip">Splunk (basic)</span><span class="chip">Docker</span>
+                    <span class="chip">FFUF</span><span class="chip">Gobuster</span><span class="chip">TryHackMe</span><span class="chip">Hack The Box</span>
                 </div>
             </div>
 
-            <!-- Programming -->
-            <div
-                class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300 delay-100">
-                <div class="flex items-center gap-4 mb-6">
-                    <div
-                        class="w-12 h-12 rounded-2xl bg-yellow-500/10 text-yellow-500 flex items-center justify-center text-xl shadow-sm">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3 class="text-xl font-bold tracking-tight">Programming</h3>
+            <div class="term rounded-2xl p-7 reveal">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-10 h-10 rounded-lg bg-[#c084fc]/10 text-[#c084fc] flex items-center justify-center"><i class="fas fa-code"></i></div>
+                    <h3 class="font-mono font-bold text-ink">code/</h3>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Python</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Security
-                        Automation</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">FastAPI</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">JavaScript</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Web
-                        Security</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Browser
-                        Extensions</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">React</span>
+                    <span class="chip">Python</span><span class="chip">Security Automation</span><span class="chip">FastAPI</span>
+                    <span class="chip">JavaScript</span><span class="chip">Web Security</span><span class="chip">Browser Extensions</span><span class="chip">React</span>
                 </div>
             </div>
 
-            <!-- Governance -->
-            <div
-                class="glass-card rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark reveal hover:-translate-y-2 transition-transform duration-300 delay-200">
-                <div class="flex items-center gap-4 mb-6">
-                    <div
-                        class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-xl shadow-sm">
-                        <i class="fas fa-file-contract"></i>
-                    </div>
-                    <h3 class="text-xl font-bold tracking-tight">Governance</h3>
+            <div class="term rounded-2xl p-7 reveal">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-10 h-10 rounded-lg bg-[#818cf8]/10 text-[#818cf8] flex items-center justify-center"><i class="fas fa-file-contract"></i></div>
+                    <h3 class="font-mono font-bold text-ink">governance/</h3>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">ISO
-                        27001 (Basic)</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">NIST
-                        (Basic)</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Risk
-                        Assessment</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">ISMS
-                        Concepts</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">Secure
-                        SDLC</span>
-                    <span
-                        class="px-3 py-1.5 bg-white/60 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium">IAM
-                        Fundamentals</span>
+                    <span class="chip">ISO 27001 (basic)</span><span class="chip">NIST (basic)</span><span class="chip">Risk Assessment</span>
+                    <span class="chip">ISMS Concepts</span><span class="chip">Secure SDLC</span><span class="chip">IAM Fundamentals</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Projects (Horizontal Scroll) -->
+    <!-- Projects (horizontal scroll retained) -->
     <section id="projects" class="py-24">
         <div class="max-w-7xl mx-auto px-6 mb-10 reveal">
-            <div class="text-xs font-mono text-zinc-500 tracking-widest uppercase mb-4">[ 03 ] Featured Work</div>
-            <h2 class="text-4xl md:text-5xl font-bold tracking-tighter">Selected Projects.</h2>
-            <p class="text-zinc-500 mt-4">Scroll to explore <i class="fas fa-arrow-right ml-2"></i></p>
+            <div class="font-mono text-signal text-xs mb-3">$ ls -la ~/projects</div>
+            <h2 class="text-3xl md:text-5xl font-mono font-bold tracking-tight text-ink" data-scramble>Selected Projects.</h2>
+            <p class="text-dim mt-3 font-mono text-sm">scroll to explore <i class="fas fa-arrow-right ml-1"></i></p>
         </div>
 
         <div class="horizontal-scroll-wrapper">
             <div class="horizontal-scroll-container">
-                <!-- Project 0 - Final Year Project (AI-IDS) -->
-                <div
-                    class="project-card bg-white dark:bg-cardDark rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark border-2 border-brand/40 flex flex-col justify-between relative overflow-hidden">
-                    <div class="absolute top-6 right-6 px-3 py-1 bg-brand/10 text-brand rounded-full text-xs font-bold tracking-widest uppercase">Final Year Project</div>
-                    <div>
-                        <div
-                            class="w-16 h-16 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-3xl mb-8">
-                            <i class="fas fa-satellite-dish text-brand"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold tracking-tight mb-4">AI-IDS: Real-Time Network Intrusion Detection Platform</h3>
-                        <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 text-sm">
-                            An AI-based network intrusion detection system that explains threats instead of just
-                            flagging them. Dual-layer detection (XGBoost ML classifier + behavioral rule engine)
-                            feeds a Groq/LLaMA 3.3 70B AI layer that generates MITRE ATT&CK-mapped forensic reports,
-                            predicts likely follow-on attacks, and answers plain-English questions about live alert
-                            data via a real-time WebSocket dashboard with 11 live sections.
-                        </p>
+
+                <div class="project-card tilt-card term rounded-2xl overflow-hidden flex flex-col justify-between border-signal/30" style="border-width:1px;">
+                    <div class="term-bar">
+                        <span class="term-dot bg-[#ff5f57]"></span><span class="term-dot bg-[#febc2e]"></span><span class="term-dot bg-[#28c840]"></span>
+                        <span class="ml-2 text-[11px] font-mono text-signal">final_year_project.py</span>
+                    </div>
+                    <div class="p-7 flex-1">
+                        <div class="w-14 h-14 rounded-xl bg-panel2 flex items-center justify-center text-2xl mb-6"><i class="fas fa-satellite-dish text-signal"></i></div>
+                        <h3 class="text-xl font-mono font-bold text-ink mb-3">AI-IDS: Real-Time Network Intrusion Detection Platform</h3>
+                        <p class="text-dim text-sm leading-relaxed mb-5">An AI-based intrusion detection system that explains threats instead of just flagging them. Dual-layer detection (XGBoost classifier + behavioral rule engine) feeds a Groq/LLaMA 3.3 70B layer that generates MITRE ATT&CK-mapped forensic reports, predicts follow-on attacks, and answers plain-English questions via a real-time WebSocket dashboard.</p>
                         <div class="flex flex-wrap gap-2">
-                            <span
-                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">Scapy</span>
-                            <span
-                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">XGBoost</span>
-                            <span
-                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">Groq
-                                / LLaMA 3.3 70B</span>
-                            <span
-                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">Flask
-                                WebSockets</span>
-                            <span
-                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">MITRE
-                                ATT&CK</span>
+                            <span class="chip">Scapy</span><span class="chip">XGBoost</span><span class="chip">Groq / LLaMA 3.3 70B</span><span class="chip">Flask WebSockets</span><span class="chip">MITRE ATT&CK</span>
                         </div>
                     </div>
-                    <a href="https://github.com/Muhammed-Sakir-k" target="_blank"
-                        class="mt-8 flex items-center justify-center w-full py-4 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-semibold hover:scale-[1.02] transition-transform">
-                        View Source <i class="fab fa-github ml-2"></i>
-                    </a>
+                    <a href="https://github.com/Muhammed-Sakir-k" target="_blank" data-cursor class="m-5 mt-0 flex items-center justify-center py-3 rounded-lg bg-signal text-void font-mono font-bold text-sm hover:bg-signal2 transition-colors">view_source <i class="fab fa-github ml-2"></i></a>
                 </div>
 
-                <!-- Project 1 -->
-                <div
-                    class="project-card bg-white dark:bg-cardDark rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 flex flex-col justify-between">
-                    <div>
-                        <div
-                            class="w-16 h-16 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-3xl mb-8">
-                            <i class="fas fa-robot text-brand"></i>
-                        </div>
-                        <h3 class="text-3xl font-bold tracking-tight mb-4">AI Bug Bounty Mentor</h3>
-                        <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 text-sm">
-                            AI-powered cybersecurity assistant that analyzes targets and generates realistic bug bounty
-                            testing strategies using local LLM inference via Ollama. Features tool-aware recommendations
-                            and PDF report generation.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span
-                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">FastAPI</span>
-                            <span
-                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">Ollama</span>
-                            <span
-                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">LLaMA
-                                3</span>
-                        </div>
+                <div class="project-card tilt-card term rounded-2xl overflow-hidden flex flex-col justify-between">
+                    <div class="term-bar">
+                        <span class="term-dot bg-[#ff5f57]"></span><span class="term-dot bg-[#febc2e]"></span><span class="term-dot bg-[#28c840]"></span>
+                        <span class="ml-2 text-[11px] font-mono text-dim">bounty_mentor.py</span>
                     </div>
-                    <a href="https://github.com/Muhammed-Sakir-k" target="_blank"
-                        class="mt-8 flex items-center justify-center w-full py-4 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-semibold hover:scale-[1.02] transition-transform">
-                        View Source <i class="fab fa-github ml-2"></i>
-                    </a>
+                    <div class="p-7 flex-1">
+                        <div class="w-14 h-14 rounded-xl bg-panel2 flex items-center justify-center text-2xl mb-6"><i class="fas fa-robot text-signal"></i></div>
+                        <h3 class="text-xl font-mono font-bold text-ink mb-3">AI Bug Bounty Mentor</h3>
+                        <p class="text-dim text-sm leading-relaxed mb-5">AI-powered assistant that analyzes targets and generates realistic bug bounty testing strategies using local LLM inference via Ollama. Features tool-aware recommendations and PDF report generation.</p>
+                        <div class="flex flex-wrap gap-2"><span class="chip">FastAPI</span><span class="chip">Ollama</span><span class="chip">LLaMA 3</span></div>
+                    </div>
+                    <a href="https://github.com/Muhammed-Sakir-k" target="_blank" data-cursor class="m-5 mt-0 flex items-center justify-center py-3 rounded-lg bg-ink text-void font-mono font-bold text-sm hover:bg-signal transition-colors">view_source <i class="fab fa-github ml-2"></i></a>
                 </div>
 
-                <!-- Project 2 -->
-                <div
-                    class="project-card bg-white dark:bg-cardDark rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 flex flex-col justify-between">
-                    <div>
-                        <div
-                            class="w-16 h-16 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-3xl mb-8">
-                            <i class="fas fa-chart-line text-blue-500"></i>
-                        </div>
-                        <h3 class="text-3xl font-bold tracking-tight mb-4">XSiem Dashboard</h3>
-                        <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 text-sm">
-                            Wazuh-based SIEM monitoring system analyzing 800+ security events with real-time dashboards,
-                            alert triage, and automated alerting. Simulated attacks to validate detection rules.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span
-                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">Wazuh</span>
-                            <span
-                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">Docker</span>
-                            <span
-                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">React</span>
-                        </div>
+                <div class="project-card tilt-card term rounded-2xl overflow-hidden flex flex-col justify-between">
+                    <div class="term-bar">
+                        <span class="term-dot bg-[#ff5f57]"></span><span class="term-dot bg-[#febc2e]"></span><span class="term-dot bg-[#28c840]"></span>
+                        <span class="ml-2 text-[11px] font-mono text-dim">xsiem_dashboard.js</span>
                     </div>
-                    <a href="https://github.com/Muhammed-Sakir-k/xsiem" target="_blank"
-                        class="mt-8 flex items-center justify-center w-full py-4 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-semibold hover:scale-[1.02] transition-transform">
-                        View Source <i class="fab fa-github ml-2"></i>
-                    </a>
+                    <div class="p-7 flex-1">
+                        <div class="w-14 h-14 rounded-xl bg-panel2 flex items-center justify-center text-2xl mb-6"><i class="fas fa-chart-line text-signal2"></i></div>
+                        <h3 class="text-xl font-mono font-bold text-ink mb-3">XSiem Dashboard</h3>
+                        <p class="text-dim text-sm leading-relaxed mb-5">Wazuh-based SIEM monitoring system analyzing 800+ security events with real-time dashboards, alert triage, and automated alerting. Simulated attacks to validate detection rules.</p>
+                        <div class="flex flex-wrap gap-2"><span class="chip">Wazuh</span><span class="chip">Docker</span><span class="chip">React</span></div>
+                    </div>
+                    <a href="https://github.com/Muhammed-Sakir-k/xsiem" target="_blank" data-cursor class="m-5 mt-0 flex items-center justify-center py-3 rounded-lg bg-ink text-void font-mono font-bold text-sm hover:bg-signal transition-colors">view_source <i class="fab fa-github ml-2"></i></a>
                 </div>
 
-                <!-- Project 3 -->
-                <div
-                    class="project-card bg-white dark:bg-cardDark rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 flex flex-col justify-between">
-                    <div>
-                        <div
-                            class="w-16 h-16 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-3xl mb-8">
-                            <i class="fas fa-shield-virus text-emerald-500"></i>
-                        </div>
-                        <h3 class="text-3xl font-bold tracking-tight mb-4">PhishAlert Extension</h3>
-                        <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 text-sm">
-                            Browser extension detecting phishing attempts by monitoring login page behavior in
-                            real-time. Achieved high accuracy across 50+ simulated attack scenarios with reduced false
-                            positives.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span
-                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">JavaScript</span>
-                            <span
-                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">Chrome
-                                API</span>
-                        </div>
+                <div class="project-card tilt-card term rounded-2xl overflow-hidden flex flex-col justify-between">
+                    <div class="term-bar">
+                        <span class="term-dot bg-[#ff5f57]"></span><span class="term-dot bg-[#febc2e]"></span><span class="term-dot bg-[#28c840]"></span>
+                        <span class="ml-2 text-[11px] font-mono text-dim">phishalert.js</span>
                     </div>
-                    <a href="https://github.com/Muhammed-Sakir-k/PhishAlert" target="_blank"
-                        class="mt-8 flex items-center justify-center w-full py-4 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-semibold hover:scale-[1.02] transition-transform">
-                        View Source <i class="fab fa-github ml-2"></i>
-                    </a>
+                    <div class="p-7 flex-1">
+                        <div class="w-14 h-14 rounded-xl bg-panel2 flex items-center justify-center text-2xl mb-6"><i class="fas fa-shield-virus text-signal"></i></div>
+                        <h3 class="text-xl font-mono font-bold text-ink mb-3">PhishAlert Extension</h3>
+                        <p class="text-dim text-sm leading-relaxed mb-5">Browser extension detecting phishing attempts by monitoring login page behavior in real-time. Achieved high accuracy across 50+ simulated attack scenarios with reduced false positives.</p>
+                        <div class="flex flex-wrap gap-2"><span class="chip">JavaScript</span><span class="chip">Chrome API</span></div>
+                    </div>
+                    <a href="https://github.com/Muhammed-Sakir-k/PhishAlert" target="_blank" data-cursor class="m-5 mt-0 flex items-center justify-center py-3 rounded-lg bg-ink text-void font-mono font-bold text-sm hover:bg-signal transition-colors">view_source <i class="fab fa-github ml-2"></i></a>
                 </div>
 
-                <!-- Project 4 -->
-                <div
-                    class="project-card bg-white dark:bg-cardDark rounded-[2.5rem] p-8 shadow-soft dark:shadow-softDark border border-zinc-100 dark:border-zinc-800 flex flex-col justify-between">
-                    <div>
-                        <div
-                            class="w-16 h-16 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-3xl mb-8">
-                            <i class="fas fa-shopping-cart text-purple-500"></i>
-                        </div>
-                        <h3 class="text-3xl font-bold tracking-tight mb-4">CostIQ Platform</h3>
-                        <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 text-sm">
-                            Price comparison platform with secure web scraping from Amazon, Flipkart, and JioMart.
-                            Features historical price tracking, trend visualization, and smart alerts with secure coding
-                            practices.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span
-                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">Python
-                                / Flask</span>
-                            <span
-                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">SQLite</span>
-                            <span
-                                class="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700">Chart.js</span>
-                        </div>
+                <div class="project-card tilt-card term rounded-2xl overflow-hidden flex flex-col justify-between">
+                    <div class="term-bar">
+                        <span class="term-dot bg-[#ff5f57]"></span><span class="term-dot bg-[#febc2e]"></span><span class="term-dot bg-[#28c840]"></span>
+                        <span class="ml-2 text-[11px] font-mono text-dim">costiq.py</span>
                     </div>
-                    <a href="https://github.com/Muhammed-Sakir-k/CostIQ" target="_blank"
-                        class="mt-8 flex items-center justify-center w-full py-4 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-semibold hover:scale-[1.02] transition-transform">
-                        View Source <i class="fab fa-github ml-2"></i>
-                    </a>
+                    <div class="p-7 flex-1">
+                        <div class="w-14 h-14 rounded-xl bg-panel2 flex items-center justify-center text-2xl mb-6"><i class="fas fa-shopping-cart text-[#c084fc]"></i></div>
+                        <h3 class="text-xl font-mono font-bold text-ink mb-3">CostIQ Platform</h3>
+                        <p class="text-dim text-sm leading-relaxed mb-5">Price comparison platform with secure web scraping from Amazon, Flipkart, and JioMart. Features historical price tracking, trend visualization, and smart alerts with secure coding practices.</p>
+                        <div class="flex flex-wrap gap-2"><span class="chip">Python / Flask</span><span class="chip">SQLite</span><span class="chip">Chart.js</span></div>
+                    </div>
+                    <a href="https://github.com/Muhammed-Sakir-k/CostIQ" target="_blank" data-cursor class="m-5 mt-0 flex items-center justify-center py-3 rounded-lg bg-ink text-void font-mono font-bold text-sm hover:bg-signal transition-colors">view_source <i class="fab fa-github ml-2"></i></a>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Certifications List -->
-    <section id="creds" class="py-24 px-6 glass-card border-y border-white/50 dark:border-white/5 relative z-10">
+    <!-- Certifications log -->
+    <section id="creds" class="py-24 px-6 relative z-10">
         <div class="max-w-4xl mx-auto">
-            <div class="mb-16 text-center reveal">
-                <div class="text-xs font-mono text-zinc-500 tracking-widest uppercase mb-4">[ 04 ] Credentials</div>
-                <h2 class="text-4xl md:text-5xl font-bold tracking-tighter">Certifications.</h2>
+            <div class="mb-10 reveal">
+                <div class="font-mono text-signal text-xs mb-3">$ tail -f certifications.log</div>
+                <h2 class="text-3xl md:text-5xl font-mono font-bold tracking-tight text-ink" data-scramble>Certifications.</h2>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-4">
-                <!-- Cert 1 -->
-                <div
-                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
-                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
-                        <div
-                            class="w-12 h-12 rounded-full bg-brand/10 text-brand flex items-center justify-center text-xl shrink-0">
-                            <i class="fas fa-certificate"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-lg leading-tight">Certified Blue Team Practitioner (CBTP)</h4>
-                            <div class="text-zinc-500 text-sm">The SecOps Group</div>
-                        </div>
-                    </div>
-                    <div
-                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
-                        APR 2026</div>
+            <div class="term rounded-xl overflow-hidden reveal">
+                <div class="term-bar">
+                    <span class="term-dot bg-[#ff5f57]"></span><span class="term-dot bg-[#febc2e]"></span><span class="term-dot bg-[#28c840]"></span>
+                    <span class="ml-2 text-[11px] font-mono text-dim">certifications.log</span>
                 </div>
-
-                <!-- Cert 2 -->
-                <div
-                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
-                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
-                        <div
-                            class="w-12 h-12 rounded-full bg-orange-500/10 text-orange-500 flex items-center justify-center text-xl shrink-0">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-lg leading-tight">Cybersecurity Training Program</h4>
-                            <div class="text-zinc-500 text-sm">Honeywell</div>
-                        </div>
-                    </div>
-                    <div
-                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
-                        MAR 2026</div>
-                </div>
-
-                <!-- Cert 3 -->
-                <div
-                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
-                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
-                        <div
-                            class="w-12 h-12 rounded-full bg-sky-500/10 text-sky-500 flex items-center justify-center text-xl shrink-0">
-                            <i class="fas fa-network-wired"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-lg leading-tight">Endpoint Security</h4>
-                            <div class="text-zinc-500 text-sm">Cisco</div>
-                        </div>
-                    </div>
-                    <div
-                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
-                        MAR 2026</div>
-                </div>
-
-                <!-- Cert 4 -->
-                <div
-                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
-                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
-                        <div
-                            class="w-12 h-12 rounded-full bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-xl shrink-0">
-                            <i class="fas fa-user-shield"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-lg leading-tight">Advanced SOC Analyst</h4>
-                            <div class="text-zinc-500 text-sm">TBH</div>
-                        </div>
-                    </div>
-                    <div
-                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
-                        MAR 2026</div>
-                </div>
-
-                <!-- Cert 5 -->
-                <div
-                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
-                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
-                        <div
-                            class="w-12 h-12 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center text-xl shrink-0">
-                            <i class="fas fa-fire-shield"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-lg leading-tight">Fortinet Certified Fundamentals</h4>
-                            <div class="text-zinc-500 text-sm">Fortinet</div>
-                        </div>
-                    </div>
-                    <div
-                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
-                        JAN 2026</div>
-                </div>
-
-                <!-- Cert 6 -->
-                <div
-                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
-                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
-                        <div
-                            class="w-12 h-12 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center text-xl shrink-0">
-                            <i class="fas fa-bug"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-lg leading-tight">Threat Landscape 3.0</h4>
-                            <div class="text-zinc-500 text-sm">Fortinet</div>
-                        </div>
-                    </div>
-                    <div
-                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
-                        SEP 2025</div>
-                </div>
-
-                <!-- Cert 7 -->
-                <div
-                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
-                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
-                        <div
-                            class="w-12 h-12 rounded-full bg-green-500/10 text-green-500 flex items-center justify-center text-xl shrink-0">
-                            <i class="fas fa-user-secret"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-lg leading-tight">Ethical Hacker</h4>
-                            <div class="text-zinc-500 text-sm">Cisco Networking Academy</div>
-                        </div>
-                    </div>
-                    <div
-                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
-                        JAN 2026</div>
-                </div>
-
-                <!-- Cert 8 -->
-                <div
-                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
-                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
-                        <div
-                            class="w-12 h-12 rounded-full bg-teal-500/10 text-teal-500 flex items-center justify-center text-xl shrink-0">
-                            <i class="fas fa-laptop-code"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-lg leading-tight">Cyber Job Simulation</h4>
-                            <div class="text-zinc-500 text-sm">Deloitte Australia</div>
-                        </div>
-                    </div>
-                    <div
-                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
-                        JAN 2026</div>
-                </div>
-
-                <!-- Cert 9 -->
-                <div
-                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
-                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
-                        <div
-                            class="w-12 h-12 rounded-full bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-xl shrink-0">
-                            <i class="fas fa-search"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-lg leading-tight">Certified Security Tester</h4>
-                            <div class="text-zinc-500 text-sm">TBH</div>
-                        </div>
-                    </div>
-                    <div
-                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
-                        DEC 2025</div>
-                </div>
-
-                <!-- Cert 10 -->
-                <div
-                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
-                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
-                        <div
-                            class="w-12 h-12 rounded-full bg-yellow-500/10 text-yellow-500 flex items-center justify-center text-xl shrink-0">
-                            <i class="fab fa-google"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-lg leading-tight">Foundations of Cybersecurity</h4>
-                            <div class="text-zinc-500 text-sm">Google</div>
-                        </div>
-                    </div>
-                    <div
-                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
-                        SEP 2025</div>
-                </div>
-
-                <!-- Cert 11 -->
-                <div
-                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
-                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
-                        <div
-                            class="w-12 h-12 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center text-xl shrink-0">
-                            <i class="fab fa-python"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-lg leading-tight">Python Essentials 1</h4>
-                            <div class="text-zinc-500 text-sm">Cisco Networking Academy</div>
-                        </div>
-                    </div>
-                    <div
-                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
-                        AUG 2025</div>
-                </div>
-
-                <!-- Cert 12 -->
-                <div
-                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
-                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
-                        <div
-                            class="w-12 h-12 rounded-full bg-sky-500/10 text-sky-500 flex items-center justify-center text-xl shrink-0">
-                            <i class="fas fa-wifi"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-lg leading-tight">Networking Basics</h4>
-                            <div class="text-zinc-500 text-sm">Cisco Networking Academy</div>
-                        </div>
-                    </div>
-                    <div
-                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
-                        JUL 2025</div>
-                </div>
-
-                <!-- Cert 13 -->
-                <div
-                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal">
-                    <div class="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
-                        <div
-                            class="w-12 h-12 rounded-full bg-brand/10 text-brand flex items-center justify-center text-xl shrink-0">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-lg leading-tight">Intro to Cybersecurity</h4>
-                            <div class="text-zinc-500 text-sm">Cisco Networking Academy</div>
-                        </div>
-                    </div>
-                    <div
-                        class="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full whitespace-nowrap mt-2 md:mt-0">
-                        JUL 2025</div>
-                </div>
-
-                <!-- Cert 14 (Ongoing) -->
-                <div
-                    class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur border border-brand/30 dark:border-brand/50 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-soft transition-all reveal relative overflow-hidden md:col-span-2 lg:col-span-1">
-                    <div class="absolute right-0 top-0 w-32 h-32 bg-brand/5 rounded-bl-full blur-2xl"></div>
-                    <div class="flex items-center gap-4 mb-4 md:mb-0 relative z-10 w-full md:w-auto">
-                        <div
-                            class="w-12 h-12 rounded-full bg-brand/20 text-brand flex items-center justify-center text-xl animate-pulse shrink-0">
-                            <i class="fas fa-spinner"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-lg leading-tight">Certified Ethical Hacker (CEH)</h4>
-                            <div class="text-zinc-500 text-sm">EC-Council</div>
-                        </div>
-                    </div>
-                    <div
-                        class="font-mono text-xs text-brand border border-brand/50 px-3 py-1 rounded-full relative z-10 bg-brand/5 whitespace-nowrap mt-2 md:mt-0">
-                        IN PROGRESS</div>
+                <div class="p-6 sm:p-8 font-mono text-[13px] leading-loose" id="certLog">
+                    <div class="log-line" data-status="OK" data-date="APR 2026">Certified Blue Team Practitioner (CBTP) — The SecOps Group</div>
+                    <div class="log-line" data-status="OK" data-date="MAR 2026">Cybersecurity Training Program — Honeywell</div>
+                    <div class="log-line" data-status="OK" data-date="MAR 2026">Endpoint Security — Cisco</div>
+                    <div class="log-line" data-status="OK" data-date="MAR 2026">Advanced SOC Analyst — TBH</div>
+                    <div class="log-line" data-status="OK" data-date="JAN 2026">Fortinet Certified Fundamentals — Fortinet</div>
+                    <div class="log-line" data-status="OK" data-date="SEP 2025">Threat Landscape 3.0 — Fortinet</div>
+                    <div class="log-line" data-status="OK" data-date="JAN 2026">Ethical Hacker — Cisco Networking Academy</div>
+                    <div class="log-line" data-status="OK" data-date="JAN 2026">Cyber Job Simulation — Deloitte Australia</div>
+                    <div class="log-line" data-status="OK" data-date="DEC 2025">Certified Security Tester — TBH</div>
+                    <div class="log-line" data-status="OK" data-date="SEP 2025">Foundations of Cybersecurity — Google</div>
+                    <div class="log-line" data-status="OK" data-date="AUG 2025">Python Essentials 1 — Cisco Networking Academy</div>
+                    <div class="log-line" data-status="OK" data-date="JUL 2025">Networking Basics — Cisco Networking Academy</div>
+                    <div class="log-line" data-status="OK" data-date="JUL 2025">Intro to Cybersecurity — Cisco Networking Academy</div>
+                    <div class="log-line" data-status="PENDING" data-date="IN PROGRESS">Certified Ethical Hacker (CEH) — EC-Council</div>
+                    <div class="mt-3 text-dim">&gt; <span class="blk-cursor"></span></div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer id="contact" class="bg-zinc-950 text-white rounded-t-[3rem] mt-16 pt-24 pb-8 px-6 overflow-hidden">
+    <footer id="contact" class="mt-16 pt-24 pb-8 px-6 border-t border-line">
         <div class="max-w-7xl mx-auto">
             <div class="grid md:grid-cols-4 gap-12 mb-20 relative">
-
-                <!-- Overview -->
                 <div>
-                    <h4 class="text-xs font-mono font-bold text-zinc-500 tracking-widest uppercase mb-6">Overview</h4>
-                    <ul class="space-y-4">
-                        <li><a href="#" class="hover:text-brand transition-colors font-medium">Home</a></li>
-                        <li><a href="#about" class="hover:text-brand transition-colors font-medium">About</a></li>
-                        <li><a href="#experience" class="hover:text-brand transition-colors font-medium">Journey</a>
-                        </li>
-                        <li><a href="#skills" class="hover:text-brand transition-colors font-medium">Arsenal</a></li>
-                        <li><a href="#projects" class="hover:text-brand transition-colors font-medium">Projects</a></li>
-                        <li><a href="#credentials"
-                                class="hover:text-brand transition-colors font-medium">Certifications</a></li>
+                    <h4 class="text-[11px] font-mono text-dim mb-6">// overview</h4>
+                    <ul class="space-y-3 font-mono text-sm">
+                        <li><a href="#" class="hover:text-signal transition-colors" data-cursor>home</a></li>
+                        <li><a href="#about" class="hover:text-signal transition-colors" data-cursor>about</a></li>
+                        <li><a href="#experience" class="hover:text-signal transition-colors" data-cursor>journey</a></li>
+                        <li><a href="#skills" class="hover:text-signal transition-colors" data-cursor>arsenal</a></li>
+                        <li><a href="#projects" class="hover:text-signal transition-colors" data-cursor>projects</a></li>
+                        <li><a href="#creds" class="hover:text-signal transition-colors" data-cursor>certifications</a></li>
                     </ul>
                 </div>
-
-                <!-- Roles/Skills -->
                 <div>
-                    <h4 class="text-xs font-mono font-bold text-zinc-500 tracking-widest uppercase mb-6">Expertise</h4>
-                    <ul class="space-y-4">
-                        <li class="text-zinc-300">Offensive Security</li>
-                        <li class="text-zinc-300">SOC Analysis</li>
-                        <li class="text-zinc-300">Threat Hunting</li>
-                        <li class="text-zinc-300">Security Automation</li>
-                        <li class="text-zinc-300">Web Pentesting</li>
+                    <h4 class="text-[11px] font-mono text-dim mb-6">// expertise</h4>
+                    <ul class="space-y-3 text-dim font-mono text-sm">
+                        <li>Offensive Security</li><li>SOC Analysis</li><li>Threat Hunting</li>
+                        <li>Security Automation</li><li>Web Pentesting</li>
                     </ul>
                 </div>
-
-                <!-- Socials -->
                 <div>
-                    <h4 class="text-xs font-mono font-bold text-zinc-500 tracking-widest uppercase mb-6">Socials</h4>
-                    <ul class="space-y-4">
-                        <li><a href="https://github.com/Muhammed-Sakir-k" target="_blank"
-                                class="hover:text-white text-zinc-400 transition-colors flex items-center gap-2"><i
-                                    class="fab fa-github"></i> Github</a></li>
-                        <li><a href="https://linkedin.com/in/muhammed-sakir-k" target="_blank"
-                                class="hover:text-blue-500 text-zinc-400 transition-colors flex items-center gap-2"><i
-                                    class="fab fa-linkedin"></i> Linkedin</a></li>
-                        <li><a href="mailto:muhammedsakir.26.career@gmail.com"
-                                class="hover:text-brand text-zinc-400 transition-colors flex items-center gap-2"><i
-                                    class="fas fa-envelope"></i> Email</a></li>
+                    <h4 class="text-[11px] font-mono text-dim mb-6">// socials</h4>
+                    <ul class="space-y-3 font-mono text-sm">
+                        <li><a href="https://github.com/Muhammed-Sakir-k" target="_blank" class="hover:text-signal text-dim transition-colors flex items-center gap-2" data-cursor><i class="fab fa-github"></i> github</a></li>
+                        <li><a href="https://linkedin.com/in/muhammed-sakir-k" target="_blank" class="hover:text-signal2 text-dim transition-colors flex items-center gap-2" data-cursor><i class="fab fa-linkedin"></i> linkedin</a></li>
+                        <li><a href="mailto:muhammedsakir.26.career@gmail.com" class="hover:text-signal text-dim transition-colors flex items-center gap-2" data-cursor><i class="fas fa-envelope"></i> email</a></li>
                     </ul>
                 </div>
-
-                <!-- Big Email Display -->
-                <div
-                    class="md:col-span-1 flex flex-col justify-start md:justify-end items-start md:items-end md:absolute right-0 bottom-0 text-left md:text-right">
-                    <div class="text-xs font-mono font-bold text-brand tracking-widest uppercase mb-4 md:hidden">Get in
-                        touch</div>
-                    <a href="mailto:muhammedsakir.26.career@gmail.com"
-                        class="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tighter hover:text-brand transition-colors block mb-6 leading-tight">muhammedsakir<br>.26.career<br>@gmail.com</a>
-                    <div class="flex gap-4">
-                        <a href="https://github.com/Muhammed-Sakir-k"
-                            class="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-xl hover:bg-zinc-800 transition-colors"><i
-                                class="fab fa-github"></i></a>
-                        <a href="https://linkedin.com/in/muhammed-sakir-k"
-                            class="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-xl hover:bg-blue-500 hover:border-blue-500 transition-colors"><i
-                                class="fab fa-linkedin"></i></a>
+                <div class="md:col-span-1 flex flex-col justify-start md:justify-end items-start md:items-end text-left md:text-right">
+                    <div class="text-[11px] font-mono text-signal mb-3">// connection open</div>
+                    <a href="mailto:muhammedsakir.26.career@gmail.com" data-cursor
+                        class="text-xl md:text-2xl font-mono font-bold tracking-tight hover:text-signal transition-colors block mb-6 leading-tight text-ink">muhammedsakir<br>.26.career<br>@gmail.com</a>
+                    <div class="flex gap-3">
+                        <a href="https://github.com/Muhammed-Sakir-k" data-cursor class="w-11 h-11 rounded-lg term flex items-center justify-center hover:border-signal transition-colors"><i class="fab fa-github"></i></a>
+                        <a href="https://linkedin.com/in/muhammed-sakir-k" data-cursor class="w-11 h-11 rounded-lg term flex items-center justify-center hover:border-signal2 transition-colors"><i class="fab fa-linkedin"></i></a>
                     </div>
                 </div>
-
             </div>
-
-            <!-- Copyright and Top Button -->
-            <div
-                class="pt-8 border-t border-zinc-900 flex flex-col-reverse md:flex-row justify-between items-center text-zinc-500 text-sm font-medium">
-                <p class="mt-4 md:mt-0">Copyright &copy; 2026 Shakir. All rights reserved.</p>
-                <a href="#"
-                    class="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:bg-brand hover:text-white hover:border-brand transition-colors group">
+            <div class="pt-8 border-t border-line flex flex-col-reverse md:flex-row justify-between items-center text-dim text-xs font-mono">
+                <p class="mt-4 md:mt-0">© 2026 Sakir — connection terminated gracefully.</p>
+                <a href="#" data-cursor class="w-11 h-11 rounded-full term flex items-center justify-center hover:border-signal hover:text-signal transition-colors group">
                     <i class="fas fa-arrow-up group-hover:-translate-y-1 transition-transform"></i>
                 </a>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script>
-        // Theme Toggle Logic
-        const themeToggle = document.getElementById('themeToggle');
+    (function() {
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isCoarse = window.matchMedia('(pointer: coarse)').matches;
 
-        // Check local storage or system preference
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
+        /* ---------------- Custom cursor ---------------- */
+        if (!isCoarse) {
+            const dot = document.getElementById('curDot');
+            const ring = document.getElementById('curRing');
+            let mx = 0, my = 0, rx = 0, ry = 0;
+            window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
+            function loop() { rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(loop); }
+            loop();
+            document.querySelectorAll('a, button, [data-cursor]').forEach(el => {
+                el.addEventListener('mouseenter', () => ring.classList.add('active'));
+                el.addEventListener('mouseleave', () => ring.classList.remove('active'));
+            });
         }
 
-        themeToggle.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
-            if (document.documentElement.classList.contains('dark')) {
-                localStorage.theme = 'dark';
-            } else {
-                localStorage.theme = 'light';
-            }
-        });
+        /* ---------------- Network canvas background ---------------- */
+        const canvas = document.getElementById('net-canvas');
+        const ctx = canvas.getContext('2d');
+        let w, h, nodes = [];
+        const isMobile = window.innerWidth < 768;
+        const NODE_COUNT = isMobile ? 34 : 80;
+        const LINK_DIST = isMobile ? 110 : 150;
 
-        // Intersection Observer for fade-in reveals
-        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target);
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        for (let i = 0; i < NODE_COUNT; i++) {
+            nodes.push({
+                x: Math.random() * w, y: Math.random() * h,
+                vx: (Math.random() - 0.5) * 0.25, vy: (Math.random() - 0.5) * 0.25,
+            });
+        }
+
+        let mouseX = -9999, mouseY = -9999;
+        window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+
+        let packet = null;
+        function spawnPacket() {
+            if (nodes.length < 2) return;
+            const a = nodes[Math.floor(Math.random() * nodes.length)];
+            const candidates = nodes.filter(n => n !== a && Math.hypot(n.x - a.x, n.y - a.y) < LINK_DIST);
+            if (!candidates.length) return;
+            const b = candidates[Math.floor(Math.random() * candidates.length)];
+            packet = { a, b, t: 0 };
+        }
+        setInterval(spawnPacket, 2600);
+
+        function drawFrame() {
+            ctx.clearRect(0, 0, w, h);
+            for (let n of nodes) {
+                if (!reduceMotion) {
+                    n.x += n.vx; n.y += n.vy;
+                    const dx = n.x - mouseX, dy = n.y - mouseY;
+                    const dist = Math.hypot(dx, dy);
+                    if (dist < 120) { n.x += dx / dist * 0.6; n.y += dy / dist * 0.6; }
+                    if (n.x < 0 || n.x > w) n.vx *= -1;
+                    if (n.y < 0 || n.y > h) n.vy *= -1;
+                }
+            }
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const d = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y);
+                    if (d < LINK_DIST) {
+                        ctx.strokeStyle = `rgba(57,229,140,${0.14 * (1 - d / LINK_DIST)})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke();
+                    }
+                }
+            }
+            for (let n of nodes) {
+                ctx.fillStyle = 'rgba(57,229,140,0.55)';
+                ctx.beginPath(); ctx.arc(n.x, n.y, 1.6, 0, Math.PI * 2); ctx.fill();
+            }
+            if (packet && !reduceMotion) {
+                packet.t += 0.02;
+                if (packet.t >= 1) { packet = null; }
+                else {
+                    const px = packet.a.x + (packet.b.x - packet.a.x) * packet.t;
+                    const py = packet.a.y + (packet.b.y - packet.a.y) * packet.t;
+                    ctx.fillStyle = '#2fd6e0';
+                    ctx.shadowColor = '#2fd6e0'; ctx.shadowBlur = 8;
+                    ctx.beginPath(); ctx.arc(px, py, 2.6, 0, Math.PI * 2); ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            }
+            requestAnimationFrame(drawFrame);
+        }
+        drawFrame();
+
+        /* ---------------- Boot sequence typing ---------------- */
+        const bootLines = [
+            'root@sakir-terminal:~$ whoami',
+            '[+] Muhammed Sakir K',
+            '[+] role: Cybersecurity Analyst / VAPT Specialist',
+            '[+] status: scanning infrastructure...',
+            '[+] scan complete — 0 vulnerabilities found in this human.',
+            '[+] type \'help\' to explore this machine.'
+        ];
+        const bootEl = document.getElementById('termOutput');
+        const termBody = document.getElementById('termBody');
+        const termLine = document.getElementById('termLine');
+        const termInput = document.getElementById('termInput');
+        const heroReveal = document.getElementById('heroReveal');
+        const glitchTitle = document.getElementById('glitchTitle');
+
+        function typeLines(lines, el, done) {
+            if (reduceMotion) {
+                lines.forEach(l => { const d = document.createElement('div'); d.className = 'mb-1 ' + (l.startsWith('[+]') ? 'text-signal' : 'text-ink'); d.textContent = l; el.appendChild(d); });
+                done && done();
+                return;
+            }
+            let li = 0;
+            function typeLine() {
+                if (li >= lines.length) { done && done(); return; }
+                const line = lines[li];
+                const div = document.createElement('div');
+                div.className = 'mb-1 ' + (line.startsWith('[+]') ? 'text-signal' : 'text-ink');
+                el.appendChild(div);
+                let ci = 0;
+                const speed = 14;
+                (function typeChar() {
+                    if (ci < line.length) {
+                        div.textContent += line[ci]; ci++;
+                        termBody.scrollTop = termBody.scrollHeight;
+                        setTimeout(typeChar, speed);
+                    } else {
+                        li++;
+                        setTimeout(typeLine, 160);
+                    }
+                })();
+            }
+            typeLine();
+        }
+
+        /* ---------------- Virtual filesystem ---------------- */
+        const homeFS = {
+            'about.md': "Muhammed Sakir K\nFinal-year MCA student, Bengaluru North University\nCybersecurity Intern @ White and Box (ArukuX Group)\nSpecialisation: Cybersecurity & AI Systems\n\nOperating at the intersection of offensive security (VAPT) and\ndefensive operations (SOC). I don't just secure systems — I\ncompromise them to find their breaking points, then rebuild them\nto be bulletproof.",
+            'contact.md': "email    : muhammedsakir.26.career@gmail.com\ngithub   : github.com/Muhammed-Sakir-k\nlinkedin : linkedin.com/in/muhammed-sakir-k",
+            'certifications.log': "[APR 2026] [OK] Certified Blue Team Practitioner (CBTP) — The SecOps Group\n[MAR 2026] [OK] Cybersecurity Training Program — Honeywell\n[MAR 2026] [OK] Endpoint Security — Cisco\n[MAR 2026] [OK] Advanced SOC Analyst — TBH\n[JAN 2026] [OK] Fortinet Certified Fundamentals — Fortinet\n[SEP 2025] [OK] Threat Landscape 3.0 — Fortinet\n[JAN 2026] [OK] Ethical Hacker — Cisco Networking Academy\n[JAN 2026] [OK] Cyber Job Simulation — Deloitte Australia\n[DEC 2025] [OK] Certified Security Tester — TBH\n[SEP 2025] [OK] Foundations of Cybersecurity — Google\n[AUG 2025] [OK] Python Essentials 1 — Cisco Networking Academy\n[JUL 2025] [OK] Networking Basics — Cisco Networking Academy\n[JUL 2025] [OK] Intro to Cybersecurity — Cisco Networking Academy\n[IN PROGRESS] [..] Certified Ethical Hacker (CEH) — EC-Council",
+            'awards': {
+                'tech_visionary.md': "Tech Visionary Award — Krupanidhi College of Management (Jul 2026)\nAwarded for outstanding technical innovation and contribution\nduring the MCA program."
+            },
+            'experience': {
+                'internship.md': "Cybersecurity Intern — White and Box (Apr 2026 – Jul 2026)\nWeb app & API penetration testing, phishing IOC analysis,\nvulnerability assessment, client security reporting.",
+                'mca.md': "Master of Computer Applications — Krupanidhi College of Management\n/ Bengaluru North University (2024–2026)\nSpecialisation in Cybersecurity & AI Systems.",
+                'bca.md': "Bachelor of Computer Applications — Calicut University (2021–2024)\nCore foundations in computer science, programming logic, and\nsystems architecture."
+            },
+            'skills': {
+                'offensive.md': "VAPT, Web App Testing, API Security, OWASP Top 10, Recon,\nPrivilege Escalation, Metasploit (basic)",
+                'defensive.md': "SIEM (Wazuh), Log Analysis, Threat Detection, Alert Triage,\nIncident Response, Phishing Detection, Wireshark",
+                'ai_dev.md': "Prompt Engineering, FastAPI, LLM Integration, Ollama, React,\nJSON Handling",
+                'tools.md': "Burp Suite, Nmap, Wireshark, Kali Linux, Splunk (basic), Docker,\nFFUF, Gobuster, TryHackMe, Hack The Box",
+                'code.md': "Python, Security Automation, FastAPI, JavaScript, Web Security,\nBrowser Extensions, React",
+                'governance.md': "ISO 27001 (basic), NIST (basic), Risk Assessment, ISMS Concepts,\nSecure SDLC, IAM Fundamentals"
+            },
+            'projects': {
+                'ai-ids.md': "AI-IDS: Real-Time Network Intrusion Detection Platform (Final Year Project)\nDual-layer detection (XGBoost + behavioral rule engine) feeding a\nGroq/LLaMA 3.3 70B layer for MITRE ATT&CK-mapped forensic reports.\nStack: Scapy, XGBoost, Groq/LLaMA 3.3 70B, Flask WebSockets\ngithub.com/Muhammed-Sakir-k",
+                'bounty-mentor.md': "AI Bug Bounty Mentor\nAI assistant generating bug bounty testing strategies via local\nLLM inference (Ollama). Tool-aware recommendations + PDF reports.\nStack: FastAPI, Ollama, LLaMA 3\ngithub.com/Muhammed-Sakir-k",
+                'xsiem.md': "XSiem Dashboard\nWazuh-based SIEM analyzing 800+ security events, real-time\ndashboards, alert triage, automated alerting.\nStack: Wazuh, Docker, React\ngithub.com/Muhammed-Sakir-k/xsiem",
+                'phishalert.md': "PhishAlert Extension\nBrowser extension detecting phishing via login-page behavior\nmonitoring. 50+ simulated attack scenarios, low false positives.\nStack: JavaScript, Chrome API\ngithub.com/Muhammed-Sakir-k/PhishAlert",
+                'costiq.md': "CostIQ Platform\nPrice comparison platform with secure scraping (Amazon, Flipkart,\nJioMart), historical price tracking, trend visualization.\nStack: Python/Flask, SQLite, Chart.js\ngithub.com/Muhammed-Sakir-k/CostIQ"
+            }
+        };
+
+        let cwd = [];
+        function pathStr() { return cwd.length ? '~/' + cwd.join('/') : '~'; }
+        function updatePrompt() { document.getElementById('termPromptLabel').textContent = `root@sakir:${pathStr()}$`; }
+        function getNode(pathArr) {
+            let node = homeFS;
+            for (const seg of pathArr) {
+                if (node && typeof node === 'object' && seg in node) node = node[seg];
+                else return null;
+            }
+            return node;
+        }
+        function resolvePath(argPath) {
+            let base = argPath.startsWith('/') ? [] : cwd.slice();
+            const parts = argPath.split('/').filter(Boolean);
+            for (const p of parts) {
+                if (p === '.') continue;
+                else if (p === '..') base.pop();
+                else base.push(p);
+            }
+            return base;
+        }
+        function escapeHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+        function printText(text, cls) {
+            const div = document.createElement('div');
+            div.className = 'whitespace-pre-wrap mb-2 ' + (cls || 'text-dim');
+            div.textContent = text;
+            bootEl.appendChild(div);
+        }
+        function echoCommand(cmd) {
+            const div = document.createElement('div');
+            div.innerHTML = `<span class="text-signal">root@sakir:${pathStr()}$</span> <span class="text-ink">${escapeHtml(cmd)}</span>`;
+            bootEl.appendChild(div);
+        }
+
+        const helpText = "available commands:\n  whoami         identity check\n  ls [dir]       list directory contents\n  cd <dir>       change directory\n  cat <file>     print file contents\n  pwd            print working directory\n  neofetch       system info banner\n  clear          clear the terminal\n  help           show this message";
+
+        function neofetchText() {
+            return "root@sakir\n-----------\nOS      : SakirOS 2026\nHost    : Bengaluru, IN\nShell   : sakir-sh\nRole    : Cybersecurity Analyst / VAPT\nStatus  : root@security — top 1% TryHackMe\nUptime  : since 2024 (MCA)";
+        }
+
+        function runCommand(raw) {
+            const trimmed = raw.trim();
+            if (!trimmed) return;
+            echoCommand(raw);
+            const [cmd, ...rest] = trimmed.split(/\s+/);
+            const arg = rest.join(' ');
+            switch (cmd.toLowerCase()) {
+                case 'help': printText(helpText); break;
+                case 'whoami': printText('Muhammed Sakir K\nCybersecurity Analyst / VAPT Specialist\nprivileges: root (on this terminal only)', 'text-signal'); break;
+                case 'pwd': printText(pathStr()); break;
+                case 'clear': bootEl.innerHTML = ''; break;
+                case 'neofetch': printText(neofetchText(), 'text-signal2'); break;
+                case 'sudo': printText('Permission denied: nice try. This incident will be reported.', 'text-threat'); break;
+                case 'date': printText(new Date().toString()); break;
+                case 'echo': printText(arg); break;
+                case 'ls': {
+                    const target = arg ? resolvePath(arg) : cwd;
+                    const node = getNode(target);
+                    if (node === null) printText(`ls: cannot access '${arg}': No such file or directory`);
+                    else if (typeof node === 'string') printText(arg || '');
+                    else {
+                        const entries = Object.keys(node).map(k => typeof node[k] === 'string' ? k : k + '/');
+                        printText(entries.join('   '), 'text-signal');
+                    }
+                    break;
+                }
+                case 'cd': {
+                    if (!arg || arg === '~') { cwd = []; updatePrompt(); break; }
+                    const target = resolvePath(arg);
+                    const node = getNode(target);
+                    if (node === null || typeof node === 'string') printText(`cd: no such directory: ${arg}`);
+                    else { cwd = target; updatePrompt(); }
+                    break;
+                }
+                case 'cat': {
+                    if (!arg) { printText('cat: missing file operand'); break; }
+                    let target = resolvePath(arg);
+                    let node = getNode(target);
+                    if (node === null) { target = resolvePath(arg + '.md'); node = getNode(target); }
+                    if (node === null) printText(`cat: ${arg}: No such file or directory`);
+                    else if (typeof node !== 'string') printText(`cat: ${arg}: Is a directory`);
+                    else printText(node, 'text-ink');
+                    break;
+                }
+                default: printText(`command not found: ${cmd} (type 'help')`);
+            }
+            termBody.scrollTop = termBody.scrollHeight;
+        }
+
+        typeLines(bootLines, bootEl, () => {
+            heroReveal.style.transition = 'opacity .8s ease';
+            heroReveal.style.opacity = '1';
+            glitchTitle.classList.add('glitch-active');
+            setTimeout(() => glitchTitle.classList.remove('glitch-active'), 500);
+
+            termLine.style.display = 'flex';
+            updatePrompt();
+            if (!isCoarse) termInput.focus();
+
+            let cmdHistory = [], histIndex = 0;
+            termInput.addEventListener('keydown', e => {
+                if (e.key === 'Enter') {
+                    const val = termInput.value;
+                    cmdHistory.push(val); histIndex = cmdHistory.length;
+                    runCommand(val);
+                    termInput.value = '';
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (histIndex > 0) { histIndex--; termInput.value = cmdHistory[histIndex] || ''; }
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (histIndex < cmdHistory.length - 1) { histIndex++; termInput.value = cmdHistory[histIndex]; }
+                    else { histIndex = cmdHistory.length; termInput.value = ''; }
                 }
             });
-        }, observerOptions);
+            termBody.addEventListener('click', () => termInput.focus());
+        });
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        /* ---------------- Counters ---------------- */
+        function animateCounters() {
+            document.querySelectorAll('.counter').forEach(el => {
+                const target = parseInt(el.dataset.target, 10);
+                if (reduceMotion) { el.textContent = target; return; }
+                let cur = 0;
+                const step = Math.max(1, Math.ceil(target / 40));
+                const t = setInterval(() => {
+                    cur += step;
+                    if (cur >= target) { cur = target; clearInterval(t); }
+                    el.textContent = cur;
+                }, 30);
+            });
+        }
+        setTimeout(animateCounters, 1400);
 
-        // GSAP Horizontal Scroll
+        /* ---------------- Reveal on scroll ---------------- */
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) { entry.target.classList.add('active'); io.unobserve(entry.target); }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+        /* ---------------- Text scramble ---------------- */
+        class TextScramble {
+            constructor(el) { this.el = el; this.chars = '!<>-_\\/[]{}=+*^?#01'; }
+            setText(newText) {
+                const oldText = this.el.textContent;
+                const length = Math.max(oldText.length, newText.length);
+                this.queue = [];
+                for (let i = 0; i < length; i++) {
+                    const from = oldText[i] || '';
+                    const to = newText[i] || '';
+                    const start = Math.floor(Math.random() * 18);
+                    const end = start + Math.floor(Math.random() * 18);
+                    this.queue.push({ from, to, start, end });
+                }
+                cancelAnimationFrame(this.frameReq);
+                this.frame = 0;
+                this.update();
+            }
+            update() {
+                let output = '', complete = 0;
+                for (let i = 0; i < this.queue.length; i++) {
+                    let { from, to, start, end, char } = this.queue[i];
+                    if (this.frame >= end) { complete++; output += to; }
+                    else if (this.frame >= start) {
+                        if (!char || Math.random() < 0.3) { char = this.chars[Math.floor(Math.random() * this.chars.length)]; this.queue[i].char = char; }
+                        output += `<span style="color:#39e58c;opacity:.7">${char}</span>`;
+                    } else output += from;
+                }
+                this.el.innerHTML = output;
+                if (complete === this.queue.length) return;
+                this.frameReq = requestAnimationFrame(this.update.bind(this));
+                this.frame++;
+            }
+        }
+
+        if (!reduceMotion) {
+            document.querySelectorAll('[data-scramble]').forEach(el => {
+                const original = el.textContent;
+                const fx = new TextScramble(el);
+                const obs = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) { fx.setText(original); obs.unobserve(el); }
+                    });
+                }, { threshold: 0.4 });
+                obs.observe(el);
+            });
+        }
+
+        /* ---------------- Cert log stagger reveal ---------------- */
+        const certLines = document.querySelectorAll('#certLog .log-line');
+        certLines.forEach((line, i) => {
+            const status = line.dataset.status;
+            const date = line.dataset.date;
+            const text = line.textContent;
+            line.innerHTML = `<span class="text-dim">[${date}]</span> <span class="${status === 'OK' ? 'text-signal' : 'text-warn'}">[${status}]</span> <span class="text-ink">${text}</span>`;
+            line.style.opacity = 0;
+            line.style.transform = 'translateX(-8px)';
+            line.style.transition = 'opacity .5s ease, transform .5s ease';
+        });
+        const certObs = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    certLines.forEach((line, i) => {
+                        setTimeout(() => { line.style.opacity = 1; line.style.transform = 'translateX(0)'; }, reduceMotion ? 0 : i * 90);
+                    });
+                    certObs.disconnect();
+                }
+            });
+        }, { threshold: 0.2 });
+        certObs.observe(document.getElementById('certLog'));
+
+        /* ---------------- Project card 3D tilt ---------------- */
+        if (!isCoarse) {
+            document.querySelectorAll('.tilt-card').forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    const r = card.getBoundingClientRect();
+                    const px = (e.clientX - r.left) / r.width - 0.5;
+                    const py = (e.clientY - r.top) / r.height - 0.5;
+                    card.style.transform = `perspective(900px) rotateY(${px * 8}deg) rotateX(${-py * 8}deg) translateY(-4px)`;
+                });
+                card.addEventListener('mouseleave', () => { card.style.transform = 'perspective(900px) rotateY(0) rotateX(0) translateY(0)'; });
+            });
+        }
+
+        /* ---------------- GSAP horizontal scroll ---------------- */
         gsap.registerPlugin(ScrollTrigger);
-
-        // Only apply on desktop devices where there's room to scroll horizontally comfortably
         let mm = gsap.matchMedia();
-
         mm.add("(min-width: 768px)", () => {
             const container = document.querySelector(".horizontal-scroll-container");
             const wrapper = document.querySelector(".horizontal-scroll-wrapper");
-
             if (container && wrapper) {
-                // Calculate scroll distance
-                let scrollWidth = container.scrollWidth - window.innerWidth + (window.innerWidth * 0.1); // Add a bit of padding
-
+                let scrollWidth = container.scrollWidth - window.innerWidth + (window.innerWidth * 0.1);
                 gsap.to(container, {
-                    x: -scrollWidth,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: wrapper,
-                        pin: true,
-                        scrub: 1,
-                        end: () => "+=" + scrollWidth,
-                        invalidateOnRefresh: true
-                    }
+                    x: -scrollWidth, ease: "none",
+                    scrollTrigger: { trigger: wrapper, pin: true, scrub: 1, end: () => "+=" + scrollWidth, invalidateOnRefresh: true }
                 });
             }
         });
+    })();
     </script>
 </body>
 
